@@ -14,7 +14,7 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-// import { logout } from "../../../features/auth/authSlice";
+import { logout } from "../../../features/auth/authSlice";
 import ROLES from "../../../constants/userRoles";
 
 const AccountPopover = ({ user, menuOptions, onLocalCartChange }) => {
@@ -37,10 +37,10 @@ const AccountPopover = ({ user, menuOptions, onLocalCartChange }) => {
       onLocalCartChange(null);
     }
 
-    dispatch(clearData());
-    dispatch(clearCart());
+    // dispatch(clearData());
+    // dispatch(clearCart());
     setOpen(null);
-    navigate("/");
+    navigate("/login");
   };
 
   return (

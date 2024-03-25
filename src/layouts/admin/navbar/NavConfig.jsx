@@ -45,6 +45,21 @@ const navConfig = [
       ]
     },
     {
+      title: 'product',
+      path: '/admin/products',
+      icon: getIcon('icon-park-outline:ad-product'),
+      children: [
+        {
+          title: 'list',
+          path: '/admin/products/list'
+        },
+        {
+          title: 'create',
+          path: '/admin/products/create'
+        },
+      ]
+    },
+    {
       title: 'product variant',
       path: '/admin/product-variants',
       icon: getIcon('fluent-mdl2:product-variant'),
@@ -78,6 +93,11 @@ const navConfig = [
       title: 'warehouse',
       path: '/admin/warehouse',
       icon: getIcon('material-symbols:inventory-2-outline-rounded')
+    },
+    {
+      title: 'discounts',
+      path: '/admin/discounts',
+      icon: getIcon('ic:baseline-discount')
     },
     {
       title: 'banners',

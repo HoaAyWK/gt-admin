@@ -9,12 +9,12 @@ import ACTION_STATUS from '../../../constants/actionStatus';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  // { id: 'numberOfProducts', label: 'Number of products', alignRight: true },
+  { id: 'createdAt', label: 'Created At', alignRight: false },
+  { id: 'updatedAt', label: 'Updated At', alignRight: false },
   { id: '', label: '', alignRight: false },
 ];
 
-const CategroyList = () => {
+const CategoryList = () => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
@@ -50,14 +50,14 @@ const CategroyList = () => {
     setPage(0);
   };
 
-  const filterdCategories = applySortFilter(categories, getComparator(order, orderBy), filterName);
+  const filteredCategories = applySortFilter(categories, getComparator(order, orderBy), filterName);
 
   return (
     <DataTable
       order={order}
       orderBy={orderBy}
       filterName={filterName}
-      filteredData={filterdCategories}
+      filteredData={filteredCategories}
       tableHead={TABLE_HEAD}
       title='categories'
       page={page}
@@ -67,11 +67,11 @@ const CategroyList = () => {
       handleFilterByName={handleFilterByName}
       handleRequestSort={handleRequestSort}
     >
-      {filterdCategories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+      {filteredCategories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
         <CategoryLine key={row.id} category={row} />
       ))}
     </DataTable>
   );
 };
 
-export default CategroyList;
+export default CategoryList;

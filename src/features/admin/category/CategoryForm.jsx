@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,33 +6,31 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Stack } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
-import { refresh } from './categorySlice';
+import { getCategories, refresh, selectAllCategories } from './categorySlice';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
-const status = [
-  { id: true, name: 'Available' },
-  { id: false, name: 'Unavailable' }
-];
 
 const CategoryForm = (props) => {
   const { dialogTitle, dialogContent, open, handleClose, isEdit, category, action, actionStatus } = props;
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const categories = useSelector(selectAllCategories);
+  const { getCategoriesStatus } = useSelector((state) => state.adminCategories);
 
   const CategorySchema = Yup.object().shape({
     id: Yup.string(),
     name: Yup.string()
       .required('Name is required'),
-    status: Yup.boolean(),
+    parentId: Yup.string(),
   });
 
   const defaultValues = category ? category : {
     id: '',
     name: '',
-    status: status[0].id
+    parentId: null,
   };
 
   const methods = useForm({
@@ -41,6 +39,22 @@ const CategoryForm = (props) => {
   });
 
   const { handleSubmit, reset } = methods;
+
+  useEffect(() => {
+    if (getCategoriesStatus === ACTION_STATUS.IDLE) {
+      dispatch(getCategories());
+    }
+  }, []);
+
+  const exclusiveSelfCategories = useMemo(() => {
+    if (!category) {
+      return categories;
+    }
+
+    const filteredCategories = categories.filter((item) => item.id !== category.id);
+
+    return filteredCategories.filter((item) => item.parentId != category.id);
+  }, [category, categories]);
 
   const onSubmit = async (data) => {
     try {
@@ -67,7 +81,7 @@ const CategoryForm = (props) => {
             <RHFTextField type='hidden' name='id' sx={{ display: 'none' }}/>
             <Stack spacing={2}>
               <RHFTextField autoFocus name='name' label='Name' />
-              <RHFSelect name='status' data={status} label='Status' id='status' />
+              <RHFSelect name='parentId' data={exclusiveSelfCategories} label='Parent' id='parentId' />
             </Stack>
 
         </Box>

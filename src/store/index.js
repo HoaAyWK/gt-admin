@@ -10,6 +10,8 @@ import accountReducer from '../features/settings/accountSlice';
 import adminProductOriginReducer from '../features/admin/product-origin/productOriginSlice';
 import adminBannerReducer from '../features/admin/banner/bannerSlice';
 import adminProductVariantReducer from '../features/admin/product-variant/productVariantSlice';
+import productReducer from '../features/admin/product/productSlice';
+import discountReducer from '../features/admin/discount/discountSlice';
 
 export const store = configureStore({
   reducer: {
@@ -23,5 +25,7 @@ export const store = configureStore({
     adminProductOrigins: adminProductOriginReducer,
     adminProductVariants: adminProductVariantReducer,
     adminBanners: adminBannerReducer,
+    products: productReducer,
+    discounts: discountReducer,
   },
 });

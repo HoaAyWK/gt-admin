@@ -6,7 +6,7 @@ import ROLES from "./constants/userRoles";
 import { useLocalStorage } from "./hooks";
 import { LoadingPage } from "./components";
 import ACTION_STATUS from "./constants/actionStatus";
-// import { getCurrentUserInfo } from "./features/auth/authSlice";
+import { getCurrentUserInfo } from "./features/auth/authSlice";
 import LoginPage from "./pages/auth/LoginPage";
 import ProfilePage from "./pages/admin/setting/profile/ProfilePage";
 import PasswordPage from "./pages/admin/setting/password/PasswordPage";
@@ -14,6 +14,7 @@ import PasswordPage from "./pages/admin/setting/password/PasswordPage";
 import { AdminLayout } from "./layouts";
 
 import { DashboardPage } from "./pages/admin";
+import { enqueueSnackbar } from "notistack";
 
 const BannersPage = lazy(() => import("./pages/admin/banner/BannersPage"));
 const UserListPage = lazy(() => import("./pages/admin/user/UserListPage"));
@@ -32,6 +33,16 @@ const AdminOrderDetailsPage = lazy(() =>
 );
 const InventoryListPage = lazy(() =>
   import("./pages/admin/inventory/InventoryListPage")
+);
+
+const ProductListPage = lazy(() =>
+  import("./pages/admin/product/ProductListPage")
+);
+const CreateProductPage = lazy(() =>
+  import("./pages/admin/product/CreateProductPage")
+);
+const EditProductPage = lazy(() =>
+  import("./pages/admin/product/EditProductPage")
 );
 
 const ProductOriginListPage = lazy(() =>
@@ -60,76 +71,89 @@ const ProductVariantDetailsPage = lazy(() =>
   import("./pages/admin/product-variant/ProductVariantDetailsPage")
 );
 
+const DiscountListPage = lazy(() =>
+  import("./pages/admin/discount/DiscountListPage")
+);
+
 const RejectedRoute = () => {
   const dispatch = useDispatch();
   const [accessToken] = useLocalStorage("accessToken", null);
-  // const { getCurrentUserStatus, user } = useSelector((state) => state.auth);
+  const { getCurrentUserStatus, user, isAuthenticated } = useSelector((state) => state.auth);
 
-  // useEffect(() => {
-  //   if (accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
-  //     dispatch(getCurrentUserInfo());
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (accessToken &&
+        !isAuthenticated &&
+        getCurrentUserStatus === ACTION_STATUS.IDLE) {
+      dispatch(getCurrentUserInfo());
+    }
+  }, []);
 
-  // if (getCurrentUserStatus === ACTION_STATUS.LOADING) {
-  //   return <LoadingPage />;
-  // }
+  if (getCurrentUserStatus === ACTION_STATUS.LOADING) {
+    return <LoadingPage />;
+  }
 
-  // if (getCurrentUserStatus === ACTION_STATUS.SUCCEEDED) {
-  //   if (checkoutClicked) {
-  //     return <Navigate to="/checkout" />;
-  //   }
+  if (getCurrentUserStatus === ACTION_STATUS.SUCCEEDED) {
+    // if (checkoutClicked) {
+    //   return <Navigate to="/checkout" />;
+    // }
 
-  //   if (user?.role === ROLES.ADMIN) {
-  //     return <Navigate to="/admin/dashboard" />;
-  //   } else {
-  //     return <Navigate to="/" />;
-  //   }
-  // }
+    if (isAuthenticated &&
+      user?.role?.toLowerCase() === ROLES.ADMIN.toLocaleLowerCase()) {
+      return <Navigate to="/admin/dashboard" />;
+    } else {
+      return <Navigate to="/" />;
+    }
+  }
 
   return <Outlet />;
 };
 
-// const ProtectedAdminRoute = () => {
-//   const dispatch = useDispatch();
-//   const [accessToken] = useLocalStorage("accessToken", null);
-//   const { getCurrentUserStatus, user } = useSelector((state) => state.auth);
+const ProtectedAdminRoute = () => {
+  const dispatch = useDispatch();
+  const [accessToken] = useLocalStorage("accessToken", null);
+  const { getCurrentUserStatus, isAuthenticated, user } = useSelector((state) => state.auth);
 
-//   useEffect(() => {
-//     if (accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
-//       dispatch(getCurrentUserInfo());
-//     }
-//   }, []);
+  useEffect(() => {
+    if (accessToken &&
+      getCurrentUserStatus === ACTION_STATUS.IDLE &&
+      !isAuthenticated) {
+      dispatch(getCurrentUserInfo());
+    }
+  }, []);
 
-//   if (!accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
-//     return <Navigate to="/" />;
-//   }
+  if (!accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
+    return <Navigate to='/login' />;
+  }
 
-//   if (accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
-//     return <Outlet />;
-//   }
+  if (accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
+    return <Outlet />;
+  }
 
-//   if (getCurrentUserStatus === ACTION_STATUS.LOADING) {
-//     return <LoadingPage />;
-//   }
+  if (accessToken && getCurrentUserStatus === ACTION_STATUS.LOADING) {
+    return <LoadingPage />;
+  }
 
-//   if (getCurrentUserStatus === ACTION_STATUS.FAILED) {
-//     return <Navigate to="/" />;
-//   }
+  if (getCurrentUserStatus === ACTION_STATUS.FAILED) {
+    return <Navigate to="/login" />;
+  }
 
-//   return getCurrentUserStatus === ACTION_STATUS.SUCCEEDED &&
-//     user?.role === ROLES.ADMIN ? (
-//     <Outlet />
-//   ) : (
-//     <Navigate to="/" />
-//   );
-// };
+  if (isAuthenticated && user?.role?.toLowerCase() !== ROLES.ADMIN.toLowerCase()) {
+    enqueueSnackbar("You don't have permission to access this page!", { variant: "error" });
+  }
+
+  return isAuthenticated &&
+    user?.role?.toLowerCase() === ROLES.ADMIN.toLowerCase() ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" />
+  );
+};
 
 const Router = () => {
   return useRoutes([
     {
       path: "admin",
-      // element: <ProtectedAdminRoute />,
+      element: <ProtectedAdminRoute />,
       children: [
         {
           path: "",
@@ -161,6 +185,27 @@ const Router = () => {
                   element: <UserDetailsPage />,
                 },
               ],
+            },
+            {
+              path: "products",
+              children: [
+                {
+                  path: "",
+                  element: <Navigate to="list" />,
+                },
+                {
+                  path: "list",
+                  element: <ProductListPage />,
+                },
+                {
+                  path: "create",
+                  element: <CreateProductPage />,
+                },
+                {
+                  path: "edit/:id",
+                  element: <EditProductPage />
+                }
+              ]
             },
             {
               path: "product-origins",
@@ -219,6 +264,10 @@ const Router = () => {
             {
               path: "brands",
               element: <BrandListPage />,
+            },
+            {
+              path: "discounts",
+              element: <DiscountListPage />
             },
             {
               path: "warehouse",

@@ -33,7 +33,7 @@ const Main = styled("div", {
   right: 0,
   width: "100%",
   [theme.breakpoints.up("lg")]: {
-    paddingTop: APP_BAR_DESKTOP + 24,
+    paddingTop: APP_BAR_DESKTOP,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     width: `calc(100% - (${NAV_WIDTH}px + 1px))`,
@@ -49,15 +49,7 @@ export default function DashboardLayout() {
   const isDesktop = useResponsive("up", "lg");
   const [openDesktopNav, setOpenDesktopNav] = useState(true);
   const [openMobileNav, setOpenMobileNav] = useState(false);
-  // const { user } = useSelector((state) => state.auth);
-
-  const user = {
-    firstName: "Pam",
-    lastName:"Pam",
-    email: "PamYeuOi@gmail.com",
-    avatar:
-      "https://i.pinimg.com/736x/fe/84/45/fe8445586b8b22167b97bb6ed89af75c.jpg",
-  };
+  const { user } = useSelector((state) => state.auth);
 
   const handleToggleDesktopNav = () => {
     setOpenDesktopNav((prev) => !prev);

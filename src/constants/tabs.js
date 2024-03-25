@@ -3,3 +3,10 @@ export const PROFILE_TABS = Object.freeze({
   ORDERS: 'orders',
   FAVORITES: 'favorites'
 });
+
+export const EDIT_PRODUCT_TABS = Object.freeze({
+  GENERAL: 'General',
+  ATTRIBUTES: 'Attributes',
+  DISCOUNT: 'Discount',
+  IMAGES: 'Images',
+});

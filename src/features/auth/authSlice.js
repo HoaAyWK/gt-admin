@@ -11,11 +11,12 @@ const initialState = {
 };
 
 export const login = createAsyncThunk('login', async (body, thunkApi) => {
-  console.log(body);
   const res = await authApi.login(body);
-  localStorage.setItem('accessToken', JSON.stringify(res.accessToken));
 
-  thunkApi.dispatch(getCurrentUserInfo());
+  if (res.success) {
+    localStorage.setItem('accessToken', JSON.stringify(res.data.token));
+    thunkApi.dispatch(getCurrentUserInfo());
+  }
 
   return res;
 });
@@ -57,8 +58,11 @@ const authSlice = createSlice({
       })
       .addCase(getCurrentUserInfo.fulfilled, (state, action) => {
         state.getCurrentUserStatus = ACTION_STATUS.SUCCEEDED;
-        state.isAuthenticated = true;
-        state.user = { ...action.payload.user, role: action.payload.role };
+
+        if (action.payload.success) {
+          state.isAuthenticated = true;
+          state.user = { ...action.payload.data };
+        }
       })
       .addCase(getCurrentUserInfo.rejected, (state) => {
         state.getCurrentUserStatus = ACTION_STATUS.FAILED;

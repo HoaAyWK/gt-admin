@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { TableRow,TableCell, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-import { Label } from '../../../components';
 import { MoreMenu, MoreMenuItem } from '../../../components/table';
 import { deleteCategory, updateCategory } from './categorySlice';
 import CategoryForm from './CategoryForm';
 import { ConfirmDialog } from '../components';
+import { fDateTimeSuffix } from '../../../utils/formatTime';
 
 const CategoryLine = ({ category }) => {
-  const { name, status } = category;
+  const { name, createdDateTime, updatedDateTime } = category;
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const { updateCategoryStatus, deleteCategoryStatus } = useSelector((state) => state.adminCategories);
@@ -41,11 +41,11 @@ const CategoryLine = ({ category }) => {
           <Typography variant='body1'>{name}</Typography>
         </TableCell>
         <TableCell>
-          <Label color={ status === true ? 'success' : 'error' }>{status ? 'Available' : 'Unavailable'}</Label>
+          <Typography variant='body1'>{fDateTimeSuffix(createdDateTime)}</Typography>
         </TableCell>
-        {/* <TableCell align='right'>
-          {numberOfProducts}
-        </TableCell> */}
+        <TableCell>
+          <Typography variant='body1'>{fDateTimeSuffix(updatedDateTime)}</Typography>
+        </TableCell>
         <TableCell align="right">
           <MoreMenu>
             <MoreMenuItem title='Edit' iconName='eva:edit-outline' handleClick={handleClickOpenEdit} />

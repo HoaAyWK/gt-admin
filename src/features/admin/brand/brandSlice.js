@@ -28,10 +28,15 @@ export const createBrand = createAsyncThunk(
 
 export const updateBrand = createAsyncThunk(
   'brands/update',
-  async (brand) => {
+  async (brand, thunkApi) => {
     const { id, ...data } = brand;
+    const result =  await brandApi.update(id, data);
 
-    return await brandApi.update(id, data);
+    if (result.data.success) {
+      thunkApi.dispatch(getBrands());
+    }
+
+    return result;
   }
 );
 
@@ -60,7 +65,10 @@ const brandSlice = createSlice({
       })
       .addCase(getBrands.fulfilled, (state, action) => {
         state.getBrandsStatus = ACTION_STATUS.SUCCEEDED;
-        brandsAdapter.setAll(state, action.payload);
+
+        if (action.payload.success) {
+          brandsAdapter.setAll(state, action.payload.data.items);
+        }
       })
       .addCase(getBrands.rejected, (state) => {
         state.getBrandsStatus = ACTION_STATUS.FAILED;
@@ -72,7 +80,10 @@ const brandSlice = createSlice({
       })
       .addCase(createBrand.fulfilled, (state, action) => {
         state.createBrandStatus = ACTION_STATUS.SUCCEEDED;
-        brandsAdapter.addOne(state, action.payload.distributor);
+
+        if (action.payload.success) {
+          brandsAdapter.addOne(state, action.payload.data);
+        }
       })
       .addCase(createBrand.rejected, (state) => {
         state.createBrandStatus = ACTION_STATUS.FAILED;
@@ -84,12 +95,6 @@ const brandSlice = createSlice({
       })
       .addCase(updateBrand.fulfilled, (state, action) => {
         state.updateBrandStatus = ACTION_STATUS.SUCCEEDED;
-
-        let existingBrand = state.entities[action.payload.id];
-
-        if (existingBrand) {
-          existingBrand = action.payload;
-        }
       })
       .addCase(updateBrand.rejected, (state) => {
         state.updateBrandStatus = ACTION_STATUS.FAILED;

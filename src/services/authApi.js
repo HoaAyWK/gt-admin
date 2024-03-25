@@ -7,7 +7,7 @@ class AuthApi {
   };
 
   getCurrentUserInfo = () => {
-    const url = '/user/info';
+    const url = '/api/account/my-profile';
     return axiosClient.get(url);
   };
 }

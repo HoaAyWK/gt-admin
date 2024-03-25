@@ -64,7 +64,10 @@ const categorySlice = createSlice({
       })
       .addCase(getCategories.fulfilled, (state, action) => {
         state.getCategoriesStatus = ACTION_STATUS.SUCCEEDED;
-        categoriesAdapter.setAll(state, action.payload);
+
+        if (action.payload.success) {
+          categoriesAdapter.setAll(state, action.payload.data);
+        }
       })
       .addCase(getCategories.rejected, (state) => {
         state.getCategoriesStatus = ACTION_STATUS.FAILED;

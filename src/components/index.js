@@ -12,3 +12,4 @@ export { default as FilterOnTableNotFound } from './FilterOnTableNotFound';
 export { default as LoadingPage } from './LoadingPage';
 export { default as ShowMoreParagraph } from './ShowMoreParagraph';
 export { default as Loading } from './Loading';
+export { default as Scrollbar } from './Scrollbar';

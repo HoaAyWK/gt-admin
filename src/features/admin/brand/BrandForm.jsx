@@ -17,54 +17,64 @@ const BrandForm = (props) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const CategorySchema = Yup.object().shape({
+  const BrandSchema = Yup.object().shape({
+    id: Yup.string(),
     name: Yup.string()
-      .required('Name is required'),
-    phone: Yup.string()
-      .required('Phone is required')
+      .required('Name is required')
   });
 
   const defaultValues = {
-    name: brand ? brand.name : '',
-    phone: brand ? brand.phone : '',
+    id: brand ? brand.id : '',
+    name: brand ? brand.name : ''
   };
 
   const methods = useForm({
-    resolver: yupResolver(CategorySchema),
+    resolver: yupResolver(BrandSchema),
     defaultValues
   });
 
   const { handleSubmit, reset } = methods;
 
   const onSubmit = async (data) => {
-    try {
-      const actionResult = await dispatch(action(data));
-      const result = unwrapResult(actionResult);
+    const actionResult = await dispatch(action(data));
+    const result = unwrapResult(actionResult);
 
-      if (result) {
-        enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
-        dispatch(refresh());
-        handleClose();
+    if (result.success) {
+      enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
+      dispatch(refresh());
+      handleClose();
 
-        if (!isEdit) {
-          reset();
-        }
+      if (!isEdit) {
+        reset();
       }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+
+      return;
     }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach((error) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        });
+      });
+
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
   };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <RHFTextField name='id' label='Id' type='hidden' sx={{ display: 'none' }}/>
         <DialogTitle>{dialogTitle}</DialogTitle>
         {dialogContent && (<DialogContent>{dialogContent}</DialogContent>)}
         <Box sx={{ p: 2 }}>
-            <Stack spacing={2}>
-              <RHFTextField name='name' label='Name' autoFocus={true} />
-              <RHFTextField name='phone' label='Phone' />
-            </Stack>
+          <Stack spacing={2}>
+            <RHFTextField name='name' label='Name' autoFocus={true} />
+          </Stack>
         </Box>
         <DialogActions>
           <Stack spacing={1} direction='row' sx={{ mb: 1 }}>

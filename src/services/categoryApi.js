@@ -2,13 +2,13 @@ import axiosClient from './axios';
 
 class CategoryApi {
   getAll = () => {
-    const url = '/category/api';
+    const url = '/api/categories/all';
 
     return axiosClient.get(url);
   };
 
   create = (data) => {
-    const url = '/category/api';
+    const url = '/categories/api';
 
     return axiosClient.post(url, data);
   };

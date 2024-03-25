@@ -13,14 +13,17 @@ const visuallyHidden = {
     clip: 'rect(0 0 0 0)',
 };
 
-const SortableTableHead = ({order,
-    orderBy,
-    headLabel,
-    onRequestSort,
+const SortableTableHead = ({
+  order,
+  orderBy,
+  headLabel,
+  onRequestSort,
 }) => {
 
-  const createSortHandler = (property) => (event) => {
+  const createSortHandler = (property, isSortable) => (event) => {
+    if (isSortable) {
       onRequestSort(event, property);
+    }
   };
 
   return (
@@ -29,14 +32,14 @@ const SortableTableHead = ({order,
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.alignRight ? 'right' : 'left'}
+            align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               hideSortIcon
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+              onClick={createSortHandler(headCell.id, headCell.isSortable)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (

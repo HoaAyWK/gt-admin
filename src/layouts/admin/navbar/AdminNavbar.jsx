@@ -95,15 +95,7 @@ const StyledTextLogo = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 const DrawerContent = ({ isOpen, isMiniDrawer }) => {
-  // const { user } = useSelector((state) => state.auth);
-
-  const user = {
-    avatar:
-      "https://i.pinimg.com/736x/fe/84/45/fe8445586b8b22167b97bb6ed89af75c.jpg",
-    firstName: "Pam",
-    lastName: "Pam",
-    email: "PamYeuOi@gmail.com",
-  };
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <Scrollbar

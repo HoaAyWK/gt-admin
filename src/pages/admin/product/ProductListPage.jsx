@@ -24,7 +24,7 @@ const ProductListPage = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: 5
+            mb: 2
           }}
           >
             <Stack spacing={1}>

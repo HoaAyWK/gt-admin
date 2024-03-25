@@ -2,8 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { AdminPageLayout } from '../common';
-import { ProductForm } from '../../../features/admin/product';
-import { createProduct } from '../../../features/admin/product/productSlice';
+import { CreateProductForm } from '../../../features/admin/product';
 
 const breadcrumbs = [
   { label: 'Dashboard', path: '/admin/dashboard' },
@@ -12,7 +11,6 @@ const breadcrumbs = [
 ];
 
 const CreateProductPage = () => {
-  const { createProductStatus } = useSelector((state) => state.adminProducts);
 
   return (
     <AdminPageLayout
@@ -21,7 +19,7 @@ const CreateProductPage = () => {
       breadcrumbs={breadcrumbs}
       showCreateButton={false}
     >
-      <ProductForm isEdit={false} action={createProduct} status={createProductStatus} />
+      <CreateProductForm />
     </AdminPageLayout>
   );
 };

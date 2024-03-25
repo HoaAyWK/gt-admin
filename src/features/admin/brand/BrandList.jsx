@@ -9,8 +9,9 @@ import BrandLine from './BrandLine';
 import { FetchDataErrorMessage, Loading } from '../components';
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'phone', label: 'Phone', alignRight: false },
+  { id: 'name', label: 'Name', align: 'left', isSortable: true },
+  { id: 'createdDateTime', label: 'Created At', align: 'left', isSortable: true },
+  { id: 'updatedDateTime', label: 'Updated At', align: 'left', isSortable: true },
   { id: '', label: '', alignRight: false },
 ];
 
@@ -52,7 +53,7 @@ const BrandList = () => {
 
   const filteredBrands = applySortFilter(brands, getComparator(order, orderBy), filterName);
 
-  const renderCotent = (
+  const renderContent = (
     <DataTable
       order={order}
       orderBy={orderBy}
@@ -73,7 +74,7 @@ const BrandList = () => {
     </DataTable>
   );
 
-  return (getBrandsStatus === ACTION_STATUS.SUCCEEDED ? renderCotent
+  return (getBrandsStatus === ACTION_STATUS.SUCCEEDED ? renderContent
     : (getBrandsStatus === ACTION_STATUS.FAILED) ? (<FetchDataErrorMessage />)
     : (<Loading />)
   );

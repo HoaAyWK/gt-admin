@@ -27,7 +27,7 @@ const AdminPageLayout = ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: 5
+            mb: 2
           }}
           >
             <Stack spacing={1}>
@@ -70,7 +70,7 @@ const AdminPageLayout = ({
               </Button>
             )}
           </Box>
-          <Box sx={{ mt: 4 }}>
+          <Box sx={{ mt: 1 }}>
             {children}
           </Box>
         </Box>

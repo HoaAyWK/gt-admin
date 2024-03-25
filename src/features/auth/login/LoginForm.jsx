@@ -31,13 +31,12 @@ const LoginForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const { loginStatus } = useSelector((state) => state.auth);
-  console.log("loginStatus", loginStatus);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
-      .email("Email must be a valid email address")
+      .email("Email must be a valid email address.")
       .required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    password: Yup.string().required("Password is required."),
   });
 
   const defaultValues = {
@@ -54,23 +53,33 @@ const LoginForm = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    try {
-      const actionResult = await dispatch(login(data));
-      const result = unwrapResult(actionResult);
+    const actionResult = await dispatch(login(data));
+    const result = unwrapResult(actionResult);
 
-      if (result) {
-        enqueueSnackbar("Login successfully", { variant: "success" });
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
+    console.log("result", result);
+
+    if (result.success) {
+      return;
     }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach(error => {
+          enqueueSnackbar(error, { variant: "error" });
+        }
+      )});
+
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         <RHFTextField name="email" label="Email address" />
-
         <RHFTextField
           name="password"
           label="Password"

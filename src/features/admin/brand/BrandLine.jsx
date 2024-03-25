@@ -6,9 +6,10 @@ import { deleteBrand, updateBrand } from './brandSlice';
 import { MoreMenu, MoreMenuItem } from '../../../components/table';
 import BrandForm from './BrandForm';
 import { ConfirmDialog } from '../components';
+import { fDateTime } from '../../../utils/formatTime';
 
 const BrandLine = ({ brand }) => {
-  const { id, name, phone } = brand;
+  const { id, name, createdDateTime, updatedDateTime } = brand;
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const { updateBrandStatus, deleteBrandStatus } = useSelector((state) => state.adminBrands);
@@ -39,8 +40,11 @@ const BrandLine = ({ brand }) => {
         <TableCell component='th' scope='row'>
           <Typography variant='body1'>{name}</Typography>
         </TableCell>
-        <TableCell>
-          {phone}
+        <TableCell align='left'>
+          {fDateTime(createdDateTime)}
+        </TableCell>
+        <TableCell align='left'>
+          {fDateTime(updatedDateTime)}
         </TableCell>
         <TableCell align="right">
           <MoreMenu>
@@ -60,7 +64,7 @@ const BrandLine = ({ brand }) => {
       />
       <ConfirmDialog
         dialogTitle='Confirm Delete'
-        dialogContent='Are you sure to delete this brand'
+        dialogContent='Are you sure to delete this brand?'
         open={openConfirm}
         handleClose={handleCloseConfirm}
         action={deleteBrand}

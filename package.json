@@ -24,6 +24,7 @@
     "@mui/joy": "^5.0.0-alpha.72",
     "@mui/lab": "^5.0.0-alpha.124",
     "@mui/material": "^5.11.14",
+    "@mui/x-date-pickers": "^7.0.0",
     "@reduxjs/toolkit": "^1.9.3",
     "algoliasearch": "^4.16.0",
     "apexcharts": "^3.37.3",

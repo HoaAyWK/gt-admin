@@ -15,10 +15,11 @@ import { useNavigate } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
 import Page from "../../components/Page";
 import LoginForm from "../../features/auth/login/LoginForm";
-import ACTION_STATUS from "../../constants/actionStatus";
+import ROLES from "../../constants/userRoles";
 import { useAppThemeUpdate, useAppTheme } from "../../context/AppThemeContext";
 import { useLocalStorage } from "../../hooks";
 import Iconify from "../../components/iconify";
+import { enqueueSnackbar } from "notistack";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -68,15 +69,20 @@ const Login = () => {
   const darkTheme = useAppTheme();
   const { setLightMode, setDarkMode } = useAppThemeUpdate();
 
-  const { loginStatus } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const mdUp = useResponsive("up", "md");
 
   useEffect(() => {
-    if (loginStatus === ACTION_STATUS.SUCCEEDED) {
-      navigate("/admin/dashboard", { replace: true });
+    if (isAuthenticated) {
+      if (user?.role?.toLowerCase() === ROLES.ADMIN.toLowerCase()) {
+        enqueueSnackbar("Login successfully", { variant: "success" });
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        enqueueSnackbar("You don't have permission to access this page!", { variant: "error" });
+      }
     }
-  }, [loginStatus, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const toggleTheme = (isDark) => () => {
     if (isDark === null) {
