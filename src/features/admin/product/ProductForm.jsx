@@ -26,6 +26,7 @@ import {
 } from '../../../components/hook-form';
 import { refresh, searchProduct } from './productSlice';
 import ACTION_STATUS from '../../../constants/actionStatus';
+import PATHS from '../../../constants/paths';
 
 const ProductForm = ({ isEdit, product, action, status, brands, categories }) => {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const ProductForm = ({ isEdit, product, action, status, brands, categories }) =>
 
     if (result.success) {
       enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
-      navigate(`/admin/products/edit/${result.data.id}`);
+      navigate(`${PATHS.PRODUCTS_EDIT}/${result.data.id}`);
 
       if (!isEdit) {
         reset();

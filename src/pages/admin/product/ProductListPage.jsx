@@ -4,6 +4,7 @@ import { Box, Breadcrumbs, Button, Container, Link, Stack, Typography } from '@m
 
 import { Iconify, Page } from '../../../components'
 import { ProductList } from '../../../features/admin/product';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
   { label: 'Dashboard', path: '/admin/dashboard' },
@@ -46,7 +47,7 @@ const ProductListPage = () => {
                 ))}
               </Breadcrumbs>
             </Stack>
-            <Button LinkComponent={RouterLink} to='/admin/product/create' color='primary' variant='contained'>
+            <Button LinkComponent={RouterLink} to={PATHS.PRODUCTS_CREATE} color='primary' variant='contained'>
               <Stack spacing={1} direction='row'>
                 <Iconify icon='eva:plus-fill' width={24} height={24} />
                 <Typography variant='button'>

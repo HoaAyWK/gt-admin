@@ -46,7 +46,7 @@ const VariantForm = (props) => {
     attributes.forEach(attribute => {
       defaultSelectedAttributes[attribute.id] = variant
         ? variant.attributeSelection[attribute.id]
-        : attribute.attributeValues[0].id
+        : attribute.attributeValues[0]?.id
     });
 
     return defaultSelectedAttributes;

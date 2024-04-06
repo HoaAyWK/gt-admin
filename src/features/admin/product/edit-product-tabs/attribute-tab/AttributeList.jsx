@@ -131,6 +131,10 @@ const AttributeList = ({ productId, attributes }) => {
         handleChangeRowPerPage={handleChangeRowPerPage}
         handleFilterByName={handleFilterByName}
         handleRequestSort={handleRequestSort}
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.content,
+          boxShadow: 'none',
+        }}
       >
         {filteredAttributes
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

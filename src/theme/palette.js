@@ -13,8 +13,8 @@ const GREY = {
   500: '#919EAB',
   600: '#637381',
   700: '#454F5B',
-  800: '#212B36',
-  900: '#161C24',
+  800: '#0D1117',
+  900: '#010409',
   500_8: alpha('#919EAB', 0.08),
   500_12: alpha('#919EAB', 0.12),
   500_16: alpha('#919EAB', 0.16),
@@ -116,7 +116,8 @@ export const lightPalette = {
   background: {
     paper: '#fff',
     default: GREY[100],
-    neutral: GREY[200]
+    neutral: GREY[200],
+    content: '#F6F8Fa'
   },
   action: {
     active: GREY[600],
@@ -152,6 +153,7 @@ export const darkPalette = {
     paper: GREY[800],
     default: GREY[900],
     neutral: GREY[700],
+    content: '#161B22'
   },
   action: {
     active: GREY[600],

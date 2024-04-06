@@ -6,14 +6,17 @@ import { Iconify } from '../../../../../components/';
 import { MoreMenu, MoreMenuItem } from '../../../../../components/table';
 import ProductAttributeForm from './ProductAttributeForm';
 import AttributeValueListDialog from './AttributeValueListDialog';
-import { addAttributeValue } from '../../productSlice';
+import { addAttributeValue, updateProductAttribute } from '../../productSlice';
 
 const AttributeLine = ({ productId, attribute }) => {
   const { id, name, canCombine, displayOrder } = attribute;
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openAttributeForm, setOpenAttributeForm] = useState(false);
   const [openAttributeValueListDialog, setOpenAttributeValueListDialog] = useState(false);
-  const { addAttributeValueStatus } = useSelector((state) => state.products);
+  const {
+    addAttributeValueStatus,
+    updateProductAttributeStatus
+  } = useSelector((state) => state.products);
 
   const handleOpenAttributeForm = () => {
     setOpenAttributeForm(true);
@@ -96,8 +99,9 @@ const AttributeLine = ({ productId, attribute }) => {
         open={openAttributeForm}
         handleClose={handleCloseAttributeForm}
         attribute={attribute}
-        // action={createBrand}
-        // status={createBrandStatus}
+        action={updateProductAttribute}
+        status={updateProductAttributeStatus}
+        productId={productId}
       />
       <AttributeValueListDialog
         productId={productId}

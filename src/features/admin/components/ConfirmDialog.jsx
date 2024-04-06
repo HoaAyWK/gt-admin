@@ -8,22 +8,35 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 const ConfirmDialog = (props) => {
-  const { dialogTitle, dialogContent, open, handleClose, action, status, id } = props;
+  const { dialogTitle, dialogContent, open, handleClose, action, status, ...data } = props;
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleClickConfirm = async () => {
-    try {
-      const actionResult = await dispatch(action(id));
-      const result = unwrapResult(actionResult);
+    const actionResult = await dispatch(action(data));
+    const result = unwrapResult(actionResult);
 
-      if (result) {
-        enqueueSnackbar("Delete successfully", { variant: 'success' });
-        handleClose();
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+    if (result.success) {
+      enqueueSnackbar("Deleted successfully", { variant: 'success' });
+      handleClose();
+      return;
     }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach((error) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        });
+      });
+
+      handleClose();
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
+    handleClose();
   };
 
   return (

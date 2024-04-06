@@ -13,7 +13,6 @@ import { addAttributeValue } from '../../productSlice';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left', isSortable: true },
-  { id: 'alias', label: 'Alias', align: 'left', isSortable: true },
   { id: 'priceAdjustment', label: 'Price Adjustment', align: 'right', isSortable: true },
   { id: 'displayOrder', label: 'Display Order', align: 'right', isSortable: true },
   { id: "", label: "", alignRight: 'center', isSortable: false },
@@ -57,19 +56,6 @@ const AttributeValueListDialog = (props) => {
   const handleChangeRowPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleClickDelete = async (id) => {
-    try {
-      const actionResult = await dispatch(deleteProductOrigin(id));
-      const result = unwrapResult(actionResult);
-
-      if (result) {
-        enqueueSnackbar("Deleted successfully", { variant: "success" });
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
-    }
   };
 
   const handleOpenAttributeValueForm = () => {
@@ -119,11 +105,20 @@ const AttributeValueListDialog = (props) => {
           handleChangeRowPerPage={handleChangeRowPerPage}
           handleFilterByName={handleFilterByName}
           handleRequestSort={handleRequestSort}
+          sx={{
+            backgroundColor: (theme) => theme.palette.background.content,
+            boxShadow: 'none',
+          }}
         >
           {filteredAttributeValues
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => (
-              <AttributeValueLine attributeValue={row} key={row.id} />
+              <AttributeValueLine
+                attributeValue={row}
+                key={row.id}
+                productId={productId}
+                attributeId={attributeId}
+              />
             ))}
         </DataTable>
       </Dialog>

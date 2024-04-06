@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -12,11 +12,13 @@ import {
   DialogActions,
   DialogContent,
   InputAdornment,
-  Stack
+  Stack,
+  TextField
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 
+import { ColorPicker } from '../../../../../components';
 import { FormProvider, RHFSwitch, RHFTextField } from '../../../../../components/hook-form';
 import ACTION_STATUS from '../../../../../constants/actionStatus';
 
@@ -34,6 +36,8 @@ const AttributeValueForm = (props) => {
     attributeId
   } = props;
 
+  const [openColorPicker, setOpenColorPicker] = useState(false);
+  const [color, setColor] = useState(() => ({ r: '0', g: '0', b: '0', a: '1' }));
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -43,8 +47,8 @@ const AttributeValueForm = (props) => {
     id: Yup.string(),
     name: Yup.string()
       .required('Name is required.'),
-    alias: Yup.string()
-      .required('Alias is required.'),
+    color: Yup.string()
+      .required('Color is required.'),
     displayOrder: Yup.number()
       .required('Display Order is required.'),
     priceAdjustment: Yup.number()
@@ -56,7 +60,7 @@ const AttributeValueForm = (props) => {
     attributeId: attributeId,
     id: attributeValue ? attributeValue.id : '',
     name: attributeValue ? attributeValue.name : '',
-    alias: attributeValue ? attributeValue.alias : '',
+    color: attributeValue ? attributeValue.color : '',
     displayOrder: attributeValue ? attributeValue.displayOrder : 0,
     priceAdjustment: attributeValue ? attributeValue.priceAdjustment : 0
   };
@@ -66,7 +70,7 @@ const AttributeValueForm = (props) => {
     defaultValues
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, setValue } = methods;
 
   const onSubmit = async (data) => {
     const actionResult = await dispatch(action(data));
@@ -97,6 +101,19 @@ const AttributeValueForm = (props) => {
     enqueueSnackbar(result.error, { variant: "error" });
   };
 
+  const handleColorChange = (color) => {
+    setColor(color.rgb);
+    setValue('color', `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`);
+  };
+
+  const handleOpenColorPicker = () => {
+    setOpenColorPicker(true);
+  };
+
+  const handleCloseColorPicker = () => {
+    setOpenColorPicker(false);
+  };
+
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -107,7 +124,6 @@ const AttributeValueForm = (props) => {
             <RHFTextField type='hidden' name='id' sx={{ display: 'none' }}/>
             <Stack spacing={2}>
               <RHFTextField autoFocus name='name' label='Name' />
-              <RHFTextField name='alias' label='Alias' />
               <RHFTextField name='displayOrder' type='number' label='Display Order' />
               <RHFTextField
                   name='priceAdjustment'
@@ -116,6 +132,23 @@ const AttributeValueForm = (props) => {
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>
                   }}
+              />
+              <RHFTextField
+                name='color'
+                label='Color'
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <ColorPicker
+                        color={color}
+                        onColorChange={handleColorChange}
+                        open={openColorPicker}
+                        handleOpen={handleOpenColorPicker}
+                        handleClose={handleCloseColorPicker}
+                      />
+                    </InputAdornment>
+                  )
+                }}
               />
             </Stack>
         </Box>

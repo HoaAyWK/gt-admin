@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Tab } from '@mui/material';
+import { Box, Card, CardContent, Tab } from '@mui/material';
 import {
   TabPanel,
   TabList,
@@ -69,35 +69,39 @@ const EditProductTabs = () => {
   }
 
   return (
-    <TabContext value={tab}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList
-          onChange={(e, newValue) => setTab(newValue)}
-          aria-label='Edit product tabs'
-        >
-          {TABS.map((item) => (
-            <Tab key={item.value} label={item.label} value={item.value} />
-          ))}
-        </TabList>
-      </Box>
-      <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.GENERAL}>
-        <ProductGeneralTab product={product} brands={brands} categories={categories} />
-      </TabPanel>
-      <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.ATTRIBUTES}>
-        <AttributeTab
-          productId={id}
-          attributes={product.attributes}
-          variants={product.variants}
-          images={product.images}
-        />
-      </TabPanel>
-      <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.DISCOUNT}>
-        Discount
-      </TabPanel>
-      <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.IMAGES}>
-        <ImagesTab productId={id} images={product.images} />
-      </TabPanel>
-    </TabContext>
+    <Card>
+      <CardContent>
+        <TabContext value={tab}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList
+              onChange={(e, newValue) => setTab(newValue)}
+              aria-label='Edit product tabs'
+            >
+              {TABS.map((item) => (
+                <Tab key={item.value} label={item.label} value={item.value} />
+              ))}
+            </TabList>
+          </Box>
+          <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.GENERAL}>
+            <ProductGeneralTab product={product} brands={brands} categories={categories} />
+          </TabPanel>
+          <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.ATTRIBUTES}>
+            <AttributeTab
+              productId={id}
+              attributes={product.attributes}
+              variants={product.variants}
+              images={product.images}
+            />
+          </TabPanel>
+          <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.DISCOUNT}>
+            Discount
+          </TabPanel>
+          <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.IMAGES}>
+            <ImagesTab productId={id} images={product.images} />
+          </TabPanel>
+        </TabContext>
+      </CardContent>
+    </Card>
   );
 };
 

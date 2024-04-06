@@ -99,7 +99,7 @@ const AccountPopover = ({ user, menuOptions, onLocalCartChange }) => {
           {user?.role === ROLES.ADMIN && (
             <Link
               component={RouterLink}
-              to="/admin/dashboard"
+              to={PATHS.DASHBOARD}
               underline="none"
               color="text.primary"
               onClick={handleClose}

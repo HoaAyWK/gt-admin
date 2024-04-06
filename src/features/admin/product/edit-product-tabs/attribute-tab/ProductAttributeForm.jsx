@@ -40,8 +40,6 @@ const ProductAttributeForm = (props) => {
     productId: Yup.string(),
     name: Yup.string()
       .required('Name is required'),
-    alias: Yup.string()
-      .required('Alias is required'),
     canCombine: Yup.boolean(),
     displayOrder: Yup.number()
       .required('Display Order is required')
@@ -51,7 +49,6 @@ const ProductAttributeForm = (props) => {
     productId: productId,
     id: attribute ? attribute.id : '',
     name: attribute ? attribute.name : '',
-    alias: attribute ? attribute.alias : '',
     canCombine: attribute ? attribute.canCombine : false,
     displayOrder: attribute ? attribute.displayOrder : 0
   };
@@ -75,8 +72,6 @@ const ProductAttributeForm = (props) => {
       }
 
       handleClose();
-
-
       return;
     }
 
@@ -104,7 +99,6 @@ const ProductAttributeForm = (props) => {
             <RHFTextField type='hidden' name='id' sx={{ display: 'none' }}/>
             <Stack spacing={2}>
               <RHFTextField autoFocus name='name' label='Name' />
-              <RHFTextField name='alias' label='Alias' />
               <RHFTextField name='displayOrder' type='number' label='Display Order' />
               <RHFSwitch name='canCombine' id='canCombine' label='Can Combine' />
             </Stack>

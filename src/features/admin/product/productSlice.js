@@ -5,6 +5,7 @@ import productApi from '../../../services/productApi';
 import ACTION_STATUS from '../../../constants/actionStatus';
 import { ORDER_BY, PAGE_SIZES } from '../../../constants/common';
 import { uploadTaskPromise } from '../../../utils/uploadTaskPromise';
+import { update } from 'lodash';
 
 const productAdapter = createEntityAdapter();
 
@@ -24,7 +25,9 @@ const initialState = productAdapter.getInitialState({
   addAttributeStatus: ACTION_STATUS.IDLE,
   addAttributeValueStatus: ACTION_STATUS.IDLE,
   addVariantStatus: ACTION_STATUS.IDLE,
-  addImageStatus: ACTION_STATUS.IDLE
+  addImageStatus: ACTION_STATUS.IDLE,
+  updateProductAttributeStatus: ACTION_STATUS.IDLE,
+  deleteAttributeValueStatus: ACTION_STATUS.IDLE,
 });
 
 export const searchProduct = createAsyncThunk(
@@ -97,7 +100,25 @@ export const addImage = createAsyncThunk(
 
     return await productApi.addImage(productId, data);
   }
-)
+);
+
+export const updateProductAttribute = createAsyncThunk(
+  'products/updateProductAttribute',
+  async (payload) => {
+    const { productId, id, ...data } = payload;
+
+    return await productApi.updateProductAttribute(productId, id, data);
+  }
+);
+
+export const deleteAttributeValue = createAsyncThunk(
+  'products/deleteAttributeValue',
+  async (payload) => {
+    const { productId, attributeId, id } = payload;
+
+    return await productApi.deleteAttributeValue(productId, attributeId, id);
+  }
+);
 
 export const productSlice = createSlice({
   name: 'products',
@@ -251,6 +272,37 @@ export const productSlice = createSlice({
       })
       .addCase(addImage.rejected, (state) => {
         state.addImageStatus = ACTION_STATUS.FAILED;
+      })
+
+
+      // Add Attribute Value
+      .addCase(updateProductAttribute.pending, (state) => {
+        state.updateProductAttributeStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(updateProductAttribute.fulfilled, (state, action) => {
+        state.updateProductAttributeStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.product = action.payload.data;
+        }
+      })
+      .addCase(updateProductAttribute.rejected, (state) => {
+        state.updateProductAttributeStatus = ACTION_STATUS.FAILED;
+      })
+
+      // Delete Attribute value
+      .addCase(deleteAttributeValue.pending, (state) => {
+        state.deleteAttributeValueStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(deleteAttributeValue.fulfilled, (state, action) => {
+        state.deleteAttributeValueStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.product = action.payload.data;
+        }
+      })
+      .addCase(deleteAttributeValue.rejected, (state) => {
+        state.deleteAttributeValueStatus = ACTION_STATUS.FAILED;
       })
   }
 });

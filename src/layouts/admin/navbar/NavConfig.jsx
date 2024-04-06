@@ -1,4 +1,5 @@
 import { Iconify } from  '../../../components';
+import PATHS from '../../../constants/paths';
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -8,7 +9,7 @@ const navConfig = [
   },
     {
         title: 'dashboard',
-        path: '/admin/dashboard',
+        path: '/dashboard',
         icon: getIcon('ri:dashboard-3-line'),
     },
   {
@@ -16,92 +17,57 @@ const navConfig = [
   },
     {
         title: 'user',
-        path: '/admin/users',
+        path: '/users',
         icon: getIcon('eva:people-fill'),
         children: [
           {
             title: 'list',
-            path: '/admin/users/list',
+            path: PATHS.USERS_LIST
           },
           {
             title: 'create',
-            path: '/admin/users/create'
+            path: PATHS.USERS_CREATE
           }
         ]
     },
     {
-      title: 'product origin',
-      path: '/admin/product-origins',
+      title: 'products',
+      path: PATHS.PRODUCTS,
       icon: getIcon('icon-park-outline:ad-product'),
       children: [
         {
           title: 'list',
-          path: '/admin/product-origins/list'
+          path: PATHS.PRODUCTS_LIST
         },
         {
           title: 'create',
-          path: '/admin/product-origins/create'
+          path: PATHS.PRODUCTS_CREATE
         },
       ]
     },
     {
-      title: 'product',
-      path: '/admin/products',
-      icon: getIcon('icon-park-outline:ad-product'),
-      children: [
-        {
-          title: 'list',
-          path: '/admin/products/list'
-        },
-        {
-          title: 'create',
-          path: '/admin/products/create'
-        },
-      ]
-    },
-    {
-      title: 'product variant',
-      path: '/admin/product-variants',
-      icon: getIcon('fluent-mdl2:product-variant'),
-      children: [
-        {
-          title: 'list',
-          path: '/admin/product-variants/list'
-        },
-        {
-          title: 'create',
-          path: '/admin/product-variants/create'
-        },
-      ]
-    },
-    {
-        title: 'category',
-        path: '/admin/categories',
+        title: 'categories',
+        path: PATHS.CATEGORIES,
         icon: getIcon('bxs:category'),
     },
     {
-        title: 'brand',
-        path: '/admin/brands',
+        title: 'brands',
+        path: PATHS.BRANDS,
         icon: getIcon('mdi:alpha-a-circle'),
     },
     {
-        title: 'order',
-        path: '/admin/orders',
+        title: 'orders',
+        path: PATHS.ORDERS,
         icon: getIcon('solar:delivery-bold'),
     },
     {
-      title: 'warehouse',
-      path: '/admin/warehouse',
-      icon: getIcon('material-symbols:inventory-2-outline-rounded')
-    },
-    {
       title: 'discounts',
-      path: '/admin/discounts',
+      path: PATHS.DISCOUNTS,
       icon: getIcon('ic:baseline-discount')
     },
     {
       title: 'banners',
-      path: '/admin/banners',
+      path: PATHS.BANNERS,
       icon: getIcon('ri:advertisement-fill')
     }
 ];

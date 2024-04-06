@@ -26,6 +26,7 @@ import {
 } from "../../../context/AppThemeContext";
 import { useLocalStorage, useResponsive } from "../../../hooks";
 import { useSelector } from "react-redux";
+import PATHS from "../../../constants/paths";
 
 // ----------------------------------------------------------------------
 const NAV_WIDTH = 280;
@@ -57,17 +58,17 @@ const MENU_OPTIONS = [
   {
     label: "Dashboard",
     icon: "eva:home-outline",
-    path: "/admin/dashboard",
+    path: PATHS.DASHBOARD,
   },
   {
     label: "Profile",
     icon: "eva:person-fill",
-    path: "/admin/profile",
+    path: PATHS.PROFILE,
   },
   {
     label: "Password",
     icon: "eva:lock-fill",
-    path: "/admin/password",
+    path: PATHS.PASSWORD,
   },
 ];
 

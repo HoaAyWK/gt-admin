@@ -86,7 +86,7 @@ const RejectedRoute = () => {
         getCurrentUserStatus === ACTION_STATUS.IDLE) {
       dispatch(getCurrentUserInfo());
     }
-  }, []);
+  }, [accessToken, isAuthenticated]);
 
   if (getCurrentUserStatus === ACTION_STATUS.LOADING) {
     return <LoadingPage />;
@@ -119,7 +119,7 @@ const ProtectedAdminRoute = () => {
       !isAuthenticated) {
       dispatch(getCurrentUserInfo());
     }
-  }, []);
+  }, [accessToken, isAuthenticated, getCurrentUserStatus]);
 
   if (!accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
     return <Navigate to='/login' />;
@@ -152,7 +152,7 @@ const ProtectedAdminRoute = () => {
 const Router = () => {
   return useRoutes([
     {
-      path: "admin",
+      path: "/",
       element: <ProtectedAdminRoute />,
       children: [
         {

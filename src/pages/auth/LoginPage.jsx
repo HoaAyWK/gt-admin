@@ -20,6 +20,7 @@ import { useAppThemeUpdate, useAppTheme } from "../../context/AppThemeContext";
 import { useLocalStorage } from "../../hooks";
 import Iconify from "../../components/iconify";
 import { enqueueSnackbar } from "notistack";
+import PATHS from "../../constants/paths";
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -77,7 +78,7 @@ const Login = () => {
     if (isAuthenticated) {
       if (user?.role?.toLowerCase() === ROLES.ADMIN.toLowerCase()) {
         enqueueSnackbar("Login successfully", { variant: "success" });
-        navigate("/admin/dashboard", { replace: true });
+        navigate(PATHS.DASHBOARD, { replace: true });
       } else {
         enqueueSnackbar("You don't have permission to access this page!", { variant: "error" });
       }

@@ -18,6 +18,7 @@ import { useAppTheme, useAppThemeUpdate } from "../../context/AppThemeContext";
 import { AccountPopover } from "../common/header";
 import { Link as RouterLink } from "react-router-dom";
 import hciLogo from "/new_hci_logo.svg";
+import PATHS from "../../constants/paths";
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
@@ -32,12 +33,12 @@ const StyledTextLogo = styled(Typography)(({ theme }) => ({
 const navConfig = [
   {
     title: "profile",
-    path: "/admin/profile",
+    path: PATHS.PROFILE,
     icon: getIcon("eva:person-outline"),
   },
   {
     title: "password",
-    path: "/admin/password",
+    path: PATHS.PASSWORD,
     icon: getIcon("mdi:password"),
   },
 ];
@@ -46,17 +47,17 @@ const MENU_OPTIONS = [
   {
     label: "Dashboard",
     icon: "eva:home-outline",
-    path: "/admin/dashboard",
+    path: PATHS.DASHBOARD,
   },
   {
     label: "Profile",
     icon: "eva:person-fill",
-    path: "/admin/profile",
+    path: PATHS.PROFILE,
   },
   {
     label: "Password",
     icon: "eva:lock-fill",
-    path: "/admin/password",
+    path: PATHS.PASSWORD,
   },
 ];
 

@@ -7,6 +7,7 @@ import { createMarkup } from '../../../utils/sanitizeHtml';
 import { MoreMenu, MoreMenuItem, MoreMenuItemLink } from '../../../components/table';
 import { ConfirmDialog } from '../components';
 import defaultImage from '../../../assets/images/default_product_image.png'
+import PATHS from '../../../constants/paths';
 
 const ProductLine = ({ product }) => {
   const { id, name, description, price, published, hasVariant, images } = product;
@@ -44,12 +45,12 @@ const ProductLine = ({ product }) => {
             alt={name}
             sx={{
               width: 56,
-              height: 56,
+              height: '100%',
               objectFit: 'cover',
               borderRadius: '8px'
             }}
           />
-          <Link component={RouterLink} to={`/admin/products/edit/${id}`} underline='hover'>
+          <Link component={RouterLink} to={`${PATHS.PRODUCTS_EDIT}/${id}`} underline='hover'>
             <Typography
               variant='body1'
               sx={{
@@ -125,7 +126,7 @@ const ProductLine = ({ product }) => {
         <MoreMenu>
           <MoreMenuItemLink
             title='Edit'
-            to={`/admin/products/edit/${id}`}
+            to={`${PATHS.PRODUCTS_EDIT}/${id}`}
             iconName='eva:edit-outline'
           />
           <MoreMenuItem title="Delete" iconName="eva:trash-2-outline" handleClick={handleOpenConfirm} />

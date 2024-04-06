@@ -94,6 +94,10 @@ const ProductVariantList = ({ productId, attributes, variants, images }) => {
       handleChangeRowPerPage={handleChangeRowPerPage}
       handleFilterByName={handleFilterByName}
       handleRequestSort={handleRequestSort}
+      sx={{
+        backgroundColor: (theme) => theme.palette.background.content,
+        boxShadow: 'none',
+      }}
     >
       {filteredVariants
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

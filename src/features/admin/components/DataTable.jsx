@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Table, TableContainer, Card, TableBody, TableRow, TableCell, TablePagination } from '@mui/material';
+import { Paper, Table, TableContainer, Card, TableBody, TableRow, TableCell, TablePagination } from '@mui/material';
 
 import { SearchableTableToolbar, SortableTableHead } from '../../../components/table';
 import { FilterOnTableNotFound } from '../../../components';
-import Scrollbar from '../../../components/scrollbar';
+import { Scrollbar } from '../../../components';
 
-const UserList = ({
+const DataTable = ({
   filteredData = [],
   tableHead,
   title,
@@ -18,14 +18,15 @@ const UserList = ({
   handleFilterByName,
   handleChangePage,
   handleChangeRowPerPage,
-  children }) => {
+  children,
+  ...other }) => {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
   const isRecordNotFound = filteredData.length === 0;
 
 
   return (
-    <Card>
+    <Card {...other} >
       <SearchableTableToolbar filterName={filterName} onFilterName={handleFilterByName} title={title} />
       <Scrollbar>
         <TableContainer sx={{ minWidth: 700 }}>
@@ -49,7 +50,12 @@ const UserList = ({
               <TableBody>
                 <TableRow>
                   <TableCell align='center' colSpan={6} sx={{ py: 3 }}>
-                    <FilterOnTableNotFound searchQuery={filterName} />
+                    <FilterOnTableNotFound
+                      searchQuery={filterName}
+                      sx={{
+                        backgroundColor: (theme) => theme.palette.background.content
+                      }}
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -70,4 +76,4 @@ const UserList = ({
   );
 };
 
-export default UserList;
+export default DataTable;

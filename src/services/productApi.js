@@ -48,6 +48,18 @@ class ProductApi {
 
     return axiosClient.post(url, data);
   };
+
+  updateProductAttribute = (productId, attributeId, data) => {
+    const url = `/api/products/${productId}/attributes/${attributeId}`;
+
+    return axiosClient.put(url, data);
+  };
+
+  deleteAttributeValue = (productId, attributeId, attributeValueId) => {
+    const url = `/api/products/${productId}/attributes/${attributeId}/values/${attributeValueId}`;
+
+    return axiosClient.delete(url);
+  };
 }
 
 export default new ProductApi();

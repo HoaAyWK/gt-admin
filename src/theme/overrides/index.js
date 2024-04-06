@@ -16,7 +16,7 @@ export default function componentsOverrides(theme) {
         Card(theme),
         CssBaseline(theme),
         Input(theme),
-        Paper(),
+        Paper(theme),
         Tooltip(theme),
         Typography(theme)
     );
