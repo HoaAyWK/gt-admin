@@ -23,6 +23,7 @@ const AttributeValueListDialog = (props) => {
   const {
     open,
     handleClose,
+    attribute,
     attributeId,
     attributeValues,
     attributeName,
@@ -118,6 +119,7 @@ const AttributeValueListDialog = (props) => {
                 key={row.id}
                 productId={productId}
                 attributeId={attributeId}
+                colorable={attribute.colorable}
               />
             ))}
         </DataTable>
@@ -125,6 +127,7 @@ const AttributeValueListDialog = (props) => {
       <AttributeValueForm
         productId={productId}
         attributeId={attributeId}
+        attribute={attribute}
         dialogTitle='Add Attribute Value'
         dialogContent={`Add a new value for attribute '${attributeName}'`}
         open={openAttributeValueForm}

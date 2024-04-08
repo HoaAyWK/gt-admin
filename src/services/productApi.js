@@ -55,6 +55,12 @@ class ProductApi {
     return axiosClient.put(url, data);
   };
 
+  updateProductVariant = (productId, variantId, data) => {
+    var url =  `/api/products/${productId}/variants/${variantId}`;
+
+    return axiosClient.put(url, data);
+  };
+
   deleteAttributeValue = (productId, attributeId, attributeValueId) => {
     const url = `/api/products/${productId}/attributes/${attributeId}/values/${attributeValueId}`;
 

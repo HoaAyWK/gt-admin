@@ -22,7 +22,7 @@ const ColorBox = styled(Box)(({ theme }) => ({
 }));
 
 
-const AttributeValueLine = ({ productId, attributeId, attributeValue }) => {
+const AttributeValueLine = ({ productId, attributeId, attributeValue, colorable }) => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const { id, name, color, priceAdjustment, displayOrder } = attributeValue;
   const [openAttributeValueForm, setOpenAttributeValueForm] = useState(false);
@@ -52,9 +52,11 @@ const AttributeValueLine = ({ productId, attributeId, attributeValue }) => {
       >
         <TableCell align='left' sx={{ maxWidth: 200 }}>
           <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
-            <ColorBoxWrapper>
-              <ColorBox sx={{ background: color }} />
-            </ColorBoxWrapper>
+            {colorable && (
+              <ColorBoxWrapper>
+                <ColorBox sx={{ background: color }} />
+              </ColorBoxWrapper>
+            )}
             <Typography
               variant='body1'
               sx={{

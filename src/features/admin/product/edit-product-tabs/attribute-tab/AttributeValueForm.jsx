@@ -33,7 +33,8 @@ const AttributeValueForm = (props) => {
     action,
     status,
     productId,
-    attributeId
+    attributeId,
+    attribute
   } = props;
 
   const [openColorPicker, setOpenColorPicker] = useState(false);
@@ -41,29 +42,46 @@ const AttributeValueForm = (props) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const AttributeValueSchema = Yup.object().shape({
+  let AttributeValueSchema = Yup.object().shape({
     productId: Yup.string(),
     attributeId: Yup.string(),
     id: Yup.string(),
     name: Yup.string()
       .required('Name is required.'),
-    color: Yup.string()
-      .required('Color is required.'),
     displayOrder: Yup.number()
       .required('Display Order is required.'),
     priceAdjustment: Yup.number()
       .min(0, 'Price Adjustment must be greater than or equal to 0.')
   });
 
-  const defaultValues = {
+  if (attribute && attribute.colorable) {
+    AttributeValueSchema = Yup.object().shape({
+      productId: Yup.string(),
+      attributeId: Yup.string(),
+      id: Yup.string(),
+      name: Yup.string()
+        .required('Name is required.'),
+      color: Yup.string()
+        .required('Color is required.'),
+      displayOrder: Yup.number()
+        .required('Display Order is required.'),
+      priceAdjustment: Yup.number()
+        .min(0, 'Price Adjustment must be greater than or equal to 0.')
+    });
+  }
+
+  let defaultValues = {
     productId: productId,
     attributeId: attributeId,
     id: attributeValue ? attributeValue.id : '',
     name: attributeValue ? attributeValue.name : '',
-    color: attributeValue ? attributeValue.color : '',
     displayOrder: attributeValue ? attributeValue.displayOrder : 0,
     priceAdjustment: attributeValue ? attributeValue.priceAdjustment : 0
   };
+
+  if (attribute && attribute.colorable) {
+    defaultValues.color = attributeValue ? attributeValue.color : '';
+  }
 
   const methods = useForm({
     resolver: yupResolver(AttributeValueSchema),
@@ -133,23 +151,25 @@ const AttributeValueForm = (props) => {
                     startAdornment: <InputAdornment position="start">$</InputAdornment>
                   }}
               />
-              <RHFTextField
-                name='color'
-                label='Color'
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <ColorPicker
-                        color={color}
-                        onColorChange={handleColorChange}
-                        open={openColorPicker}
-                        handleOpen={handleOpenColorPicker}
-                        handleClose={handleCloseColorPicker}
-                      />
-                    </InputAdornment>
-                  )
-                }}
-              />
+              {attribute && attribute.colorable && (
+                <RHFTextField
+                  name='color'
+                  label='Color'
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <ColorPicker
+                          color={color}
+                          onColorChange={handleColorChange}
+                          open={openColorPicker}
+                          handleOpen={handleOpenColorPicker}
+                          handleClose={handleCloseColorPicker}
+                        />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              )}
             </Stack>
         </Box>
         <DialogActions>

@@ -7,8 +7,8 @@ import { ProductList } from '../../../features/admin/product';
 import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Product', path: '/admin/products' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Product', path: PATHS.PRODUCTS },
   { label: 'List' },
 ];
 

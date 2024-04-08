@@ -15,6 +15,7 @@ import { AdminLayout } from "./layouts";
 
 import { DashboardPage } from "./pages/admin";
 import { enqueueSnackbar } from "notistack";
+import PATHS from "./constants/paths";
 
 const BannersPage = lazy(() => import("./pages/admin/banner/BannersPage"));
 const UserListPage = lazy(() => import("./pages/admin/user/UserListPage"));
@@ -99,7 +100,7 @@ const RejectedRoute = () => {
 
     if (isAuthenticated &&
       user?.role?.toLowerCase() === ROLES.ADMIN.toLocaleLowerCase()) {
-      return <Navigate to="/admin/dashboard" />;
+      return <Navigate to={PATHS.DASHBOARD} />;
     } else {
       return <Navigate to="/" />;
     }
@@ -119,7 +120,7 @@ const ProtectedAdminRoute = () => {
       !isAuthenticated) {
       dispatch(getCurrentUserInfo());
     }
-  }, [accessToken, isAuthenticated, getCurrentUserStatus]);
+  }, [accessToken, isAuthenticated]);
 
   if (!accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
     return <Navigate to='/login' />;

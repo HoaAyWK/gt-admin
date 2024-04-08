@@ -108,6 +108,7 @@ const AttributeLine = ({ productId, attribute }) => {
         attributeValues={attribute.attributeValues}
         attributeName={attribute.name}
         attributeId={attribute.id}
+        attribute={attribute}
         open={openAttributeValueListDialog}
         handleClose={handleCloseAttributeValueListDialog}
         action={addAttributeValue}

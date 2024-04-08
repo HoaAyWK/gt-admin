@@ -1,13 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, TableRow, TableCell, Stack } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 import { MoreMenu, MoreMenuItem } from '../../../../../components/table';
 import { Iconify } from '../../../../../components';
 import VariantForm from './VariantForm';
+import { updateProductVariant } from '../../productSlice';
 
 const ProductVariantLine = ({ productId, attributes, variant, images }) => {
   const { id, attributes: selectedAttribute, price, stockQuantity, isActive } = variant;
   const [openVariantForm, setOpenVariantForm] = useState(false);
+  const { updateProductVariantStatus } = useSelector(state => state.products);
 
   const combinedAttributes = useMemo(() => {
     return attributes.filter(attribute => attribute.canCombine)
@@ -90,8 +93,8 @@ const ProductVariantLine = ({ productId, attributes, variant, images }) => {
         attributes={combinedAttributes}
         variant={variant}
         images={images}
-        // action={editVariant}
-        // status={addVariantStatus}
+        action={updateProductVariant}
+        status={updateProductVariantStatus}
       />
     </>
   );

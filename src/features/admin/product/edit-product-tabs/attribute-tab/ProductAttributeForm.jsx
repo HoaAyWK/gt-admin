@@ -39,10 +39,11 @@ const ProductAttributeForm = (props) => {
     id: Yup.string(),
     productId: Yup.string(),
     name: Yup.string()
-      .required('Name is required'),
+      .required('Name is required.'),
     canCombine: Yup.boolean(),
+    colorable: Yup.boolean(),
     displayOrder: Yup.number()
-      .required('Display Order is required')
+      .required('Display Order is required.')
   });
 
   const defaultValues = {
@@ -50,6 +51,7 @@ const ProductAttributeForm = (props) => {
     id: attribute ? attribute.id : '',
     name: attribute ? attribute.name : '',
     canCombine: attribute ? attribute.canCombine : false,
+    colorable: attribute ? attribute.colorable : false,
     displayOrder: attribute ? attribute.displayOrder : 0
   };
 
@@ -100,7 +102,10 @@ const ProductAttributeForm = (props) => {
             <Stack spacing={2}>
               <RHFTextField autoFocus name='name' label='Name' />
               <RHFTextField name='displayOrder' type='number' label='Display Order' />
-              <RHFSwitch name='canCombine' id='canCombine' label='Can Combine' />
+              <Stack spacing={2} direction='row'>
+                <RHFSwitch name='canCombine' id='canCombine' label='Can Combine' />
+                <RHFSwitch name='colorable' id='Colorable' label='Colorable' />
+              </Stack>
             </Stack>
         </Box>
         <DialogActions>

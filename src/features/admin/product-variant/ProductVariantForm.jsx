@@ -45,9 +45,6 @@ const ProductVariantForm = ({ productOrigins, product, action, status }) => {
     status: Yup.boolean(),
     colors: Yup.array()
       .min(1, 'Color is required'),
-    price: Yup.number()
-      .required('Price is required')
-      .moreThan(0, 'Price must be more than 0'),
   });
 
   const defaultValues = {
@@ -56,7 +53,6 @@ const ProductVariantForm = ({ productOrigins, product, action, status }) => {
     colors: [],
     specifications: '',
     status: statuses[0].id,
-    price: 0,
   };
 
   const methods = useForm({
@@ -137,14 +133,6 @@ const ProductVariantForm = ({ productOrigins, product, action, status }) => {
                   defaultValue={[]}
                   items={colorItems}
                   onItemsChange={handleColorItemsChange}
-                />
-                <RHFTextField
-                  name='price'
-                  label='Price'
-                  type='number'
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>
-                  }}
                 />
               </Stack>
             </CardContent>

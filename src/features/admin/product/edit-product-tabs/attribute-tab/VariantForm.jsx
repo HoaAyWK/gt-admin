@@ -57,8 +57,6 @@ const VariantForm = (props) => {
     productId: Yup.string(),
     stockQuantity: Yup.number()
       .min(0, 'Stock quantity must be greater than or equal to 0.'),
-    price: Yup.number()
-      .min(0, 'Price must be greater than or equal to 0.'),
     isActive: Yup.boolean()
   });
 
@@ -69,9 +67,9 @@ const VariantForm = (props) => {
   }, [variant]);
 
   const defaultValues = {
+    id: variant ? variant.id : '',
     productId: productId,
     stockQuantity: variant ? variant.stockQuantity : 0,
-    price: variant ? variant.price : 0,
     isActive: variant ? variant.isActive : false,
     ...defaultAttributeValues
   };
@@ -84,13 +82,14 @@ const VariantForm = (props) => {
   const { handleSubmit, reset } = methods;
 
   const onSubmit = async (data) => {
-    const { isActive, price, stockQuantity, productId, ...attributeSelections } = data;
+    const { id, isActive, price, stockQuantity, productId, ...attributeSelections } = data;
     const selectedAttributes = Object.keys(attributeSelections).map((key) => ({
         productAttributeId: key,
         productAttributeValueId: attributeSelections[key]
     }));
 
     const variant = {
+      id,
       productId,
       isActive,
       price,
@@ -184,14 +183,6 @@ const VariantForm = (props) => {
                 </Grid>
               </Box>
               <RHFTextField name='stockQuantity' type='number' label='Stock Quantity' />
-              <RHFTextField
-                  name='price'
-                  label='Price'
-                  type='number'
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>
-                  }}
-              />
             </Stack>
         </Box>
         <DialogActions>

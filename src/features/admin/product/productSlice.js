@@ -28,6 +28,7 @@ const initialState = productAdapter.getInitialState({
   addImageStatus: ACTION_STATUS.IDLE,
   updateProductAttributeStatus: ACTION_STATUS.IDLE,
   deleteAttributeValueStatus: ACTION_STATUS.IDLE,
+  updateProductVariant: ACTION_STATUS.IDLE
 });
 
 export const searchProduct = createAsyncThunk(
@@ -108,6 +109,15 @@ export const updateProductAttribute = createAsyncThunk(
     const { productId, id, ...data } = payload;
 
     return await productApi.updateProductAttribute(productId, id, data);
+  }
+);
+
+export const updateProductVariant = createAsyncThunk(
+  'products/updateProductVariant',
+  async (payload) => {
+    const { productId, id, ...data } = payload;
+
+    return await productApi.updateProductVariant(productId, id, data);
   }
 );
 
@@ -289,6 +299,23 @@ export const productSlice = createSlice({
       .addCase(updateProductAttribute.rejected, (state) => {
         state.updateProductAttributeStatus = ACTION_STATUS.FAILED;
       })
+
+
+      // Update Product Variant
+      .addCase(updateProductVariant.pending, (state) => {
+        state.updateProductVariant = ACTION_STATUS.LOADING;
+      })
+      .addCase(updateProductVariant.fulfilled, (state, action) => {
+        state.updateProductVariant = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.product = action.payload.data;
+        }
+      })
+      .addCase(updateProductVariant.rejected, (state) => {
+        state.updateProductVariant = ACTION_STATUS.FAILED;
+      })
+
 
       // Delete Attribute value
       .addCase(deleteAttributeValue.pending, (state) => {
