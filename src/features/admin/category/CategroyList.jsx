@@ -9,6 +9,7 @@ import ACTION_STATUS from '../../../constants/actionStatus';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
+  { id: 'slug', label: 'Slug', alignRight: false },
   { id: 'createdAt', label: 'Created At', alignRight: false },
   { id: 'updatedAt', label: 'Updated At', alignRight: false },
   { id: '', label: '', alignRight: false },

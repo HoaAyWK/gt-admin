@@ -9,7 +9,7 @@ import { ConfirmDialog } from '../components';
 import { fDateTimeSuffix } from '../../../utils/formatTime';
 
 const CategoryLine = ({ category }) => {
-  const { name, createdDateTime, updatedDateTime } = category;
+  const { name, slug, createdDateTime, updatedDateTime } = category;
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const { updateCategoryStatus, deleteCategoryStatus } = useSelector((state) => state.adminCategories);
@@ -39,6 +39,9 @@ const CategoryLine = ({ category }) => {
       >
         <TableCell component='th' scope='row'>
           <Typography variant='body1'>{name}</Typography>
+        </TableCell>
+        <TableCell component='th' scope='row'>
+          <Typography variant='body1'>{slug}</Typography>
         </TableCell>
         <TableCell>
           <Typography variant='body1'>{fDateTimeSuffix(createdDateTime)}</Typography>

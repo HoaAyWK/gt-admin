@@ -8,6 +8,7 @@ const initialState = {
   isAuthenticated: false,
   loginStatus: ACTION_STATUS.IDLE,
   getCurrentUserStatus: ACTION_STATUS.IDLE,
+  statusCode: null
 };
 
 export const login = createAsyncThunk('login', async (body, thunkApi) => {
@@ -40,6 +41,9 @@ const authSlice = createSlice({
       state.getCurrentUserStatus = ACTION_STATUS.IDLE;
       state.loginStatus = ACTION_STATUS.IDLE;
     },
+    refreshStatusCode: (state) => {
+      state.statusCode = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -62,6 +66,10 @@ const authSlice = createSlice({
         if (action.payload.success) {
           state.isAuthenticated = true;
           state.user = { ...action.payload.data };
+        } else {
+          state.isAuthenticated = false;
+          state.user = null;
+          state.statusCode = action.payload.statusCode;
         }
       })
       .addCase(getCurrentUserInfo.rejected, (state) => {
@@ -72,6 +80,6 @@ const authSlice = createSlice({
 
 const { reducer, actions } = authSlice;
 
-export const { logout } = actions;
+export const { logout, refreshStatusCode } = actions;
 
 export default reducer;

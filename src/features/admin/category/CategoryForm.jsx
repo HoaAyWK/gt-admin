@@ -24,12 +24,16 @@ const CategoryForm = (props) => {
     id: Yup.string(),
     name: Yup.string()
       .required('Name is required'),
+    slug: Yup.string()
+      .required('Slug is required.')
+      .matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Invalid slug format'),
     parentId: Yup.string(),
   });
 
   const defaultValues = category ? category : {
     id: '',
     name: '',
+    slug: '',
     parentId: null,
   };
 
@@ -57,19 +61,30 @@ const CategoryForm = (props) => {
   }, [category, categories]);
 
   const onSubmit = async (data) => {
-    try {
-      const actionResult = await dispatch(action(data));
-      const result = unwrapResult(actionResult);
+    const actionResult = await dispatch(action(data));
+    const result = unwrapResult(actionResult);
 
-      if (result) {
-        enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
-        reset();
-        handleClose();
-        dispatch(refresh());
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+    if (result.success) {
+      enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
+      reset();
+      handleClose();
+      dispatch(refresh());
+
+      return;
     }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach(error => {
+          enqueueSnackbar(error, { variant: "error" });
+        }
+      )});
+
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
   };
 
   return (
@@ -81,6 +96,7 @@ const CategoryForm = (props) => {
             <RHFTextField type='hidden' name='id' sx={{ display: 'none' }}/>
             <Stack spacing={2}>
               <RHFTextField autoFocus name='name' label='Name' />
+              <RHFTextField autoFocus name='slug' label='Slug' />
               <RHFSelect name='parentId' data={exclusiveSelfCategories} label='Parent' id='parentId' />
             </Stack>
 

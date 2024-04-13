@@ -6,7 +6,7 @@ import ROLES from "./constants/userRoles";
 import { useLocalStorage } from "./hooks";
 import { LoadingPage } from "./components";
 import ACTION_STATUS from "./constants/actionStatus";
-import { getCurrentUserInfo } from "./features/auth/authSlice";
+import { getCurrentUserInfo, refreshStatusCode } from "./features/auth/authSlice";
 import LoginPage from "./pages/auth/LoginPage";
 import ProfilePage from "./pages/admin/setting/profile/ProfilePage";
 import PasswordPage from "./pages/admin/setting/password/PasswordPage";
@@ -78,31 +78,31 @@ const DiscountListPage = lazy(() =>
 
 const RejectedRoute = () => {
   const dispatch = useDispatch();
-  const [accessToken] = useLocalStorage("accessToken", null);
-  const { getCurrentUserStatus, user, isAuthenticated } = useSelector((state) => state.auth);
+  const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
+  const { getCurrentUserStatus, user, statusCode, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (accessToken &&
-        !isAuthenticated &&
-        getCurrentUserStatus === ACTION_STATUS.IDLE) {
+      !isAuthenticated &&
+      getCurrentUserStatus === ACTION_STATUS.IDLE) {
       dispatch(getCurrentUserInfo());
     }
   }, [accessToken, isAuthenticated]);
+
+  if (getCurrentUserStatus === ACTION_STATUS.SUCCEEDED &&
+    statusCode === 401) {
+    localStorage.setItem("accessToken", null);
+    return <Outlet />;
+  }
 
   if (getCurrentUserStatus === ACTION_STATUS.LOADING) {
     return <LoadingPage />;
   }
 
   if (getCurrentUserStatus === ACTION_STATUS.SUCCEEDED) {
-    // if (checkoutClicked) {
-    //   return <Navigate to="/checkout" />;
-    // }
-
     if (isAuthenticated &&
       user?.role?.toLowerCase() === ROLES.ADMIN.toLocaleLowerCase()) {
       return <Navigate to={PATHS.DASHBOARD} />;
-    } else {
-      return <Navigate to="/" />;
     }
   }
 
@@ -111,8 +111,8 @@ const RejectedRoute = () => {
 
 const ProtectedAdminRoute = () => {
   const dispatch = useDispatch();
-  const [accessToken] = useLocalStorage("accessToken", null);
-  const { getCurrentUserStatus, isAuthenticated, user } = useSelector((state) => state.auth);
+  const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
+  const { getCurrentUserStatus, statusCode, isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (accessToken &&
@@ -121,6 +121,12 @@ const ProtectedAdminRoute = () => {
       dispatch(getCurrentUserInfo());
     }
   }, [accessToken, isAuthenticated]);
+
+  if (statusCode === 401) {
+    setAccessToken(null);
+    localStorage.setItem("accessToken", null);
+    return <Navigate to="/login" />;
+  }
 
   if (!accessToken && getCurrentUserStatus === ACTION_STATUS.IDLE) {
     return <Navigate to='/login' />;

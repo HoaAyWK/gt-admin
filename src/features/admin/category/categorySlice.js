@@ -79,7 +79,10 @@ const categorySlice = createSlice({
       })
       .addCase(createCategory.fulfilled, (state, action) => {
         state.createCategoryStatus = ACTION_STATUS.SUCCEEDED;
-        categoriesAdapter.addOne(state, action.payload.category);
+
+        if (action.payload.success) {
+          categoriesAdapter.addOne(state, action.payload.data);
+        }
       })
       .addCase(createCategory.rejected, (state) => {
         state.createCategoryStatus = ACTION_STATUS.FAILED;
@@ -91,9 +94,12 @@ const categorySlice = createSlice({
       })
       .addCase(updateCategory.fulfilled, (state, action) => {
         state.updateCategoryStatus = ACTION_STATUS.SUCCEEDED;
-        const { id, ...updatedData } = action.payload.category;
 
-        categoriesAdapter.updateOne(state, { id, changes: updatedData});
+        if (action.payload.success) {
+          const { id, ...updatedData } = action.payload.data;
+
+          categoriesAdapter.updateOne(state, { id, changes: updatedData});
+        }
       })
       .addCase(updateCategory.rejected, (state) => {
         state.updateCategoryStatus = ACTION_STATUS.FAILED;
@@ -105,7 +111,10 @@ const categorySlice = createSlice({
       })
       .addCase(deleteCategory.fulfilled, (state, action) => {
         state.deleteCategoryStatus = ACTION_STATUS.SUCCEEDED;
-        categoriesAdapter.removeOne(state, action.payload.id);
+
+        if (action.payload.success) {
+          categoriesAdapter.removeOne(state, action.payload.id);
+        }
       })
       .addCase(deleteCategory.rejected, (state) => {
         state.deleteCategoryStatus = ACTION_STATUS.FAILED;
