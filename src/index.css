@@ -1,11 +1,9 @@
-
 .slide-width {
   width: auto;
 }
 
-
 .smooth {
-  transition: .3s cubic-bezier(0.3, 0, 0.4, 1) opacity;
+  transition: 0.3s cubic-bezier(0.3, 0, 0.4, 1) opacity;
   opacity: 1;
 }
 
@@ -13,3 +11,6 @@
   opacity: 1;
 }
 
+.ql-container {
+  min-height: 350px;
+}
