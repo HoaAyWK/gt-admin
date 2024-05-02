@@ -12,6 +12,8 @@ import adminBannerReducer from '../features/admin/banner/bannerSlice';
 import adminProductVariantReducer from '../features/admin/product-variant/productVariantSlice';
 import productReducer from '../features/admin/product/productSlice';
 import discountReducer from '../features/admin/discount/discountSlice';
+import notificationReducer from '../features/common/notificationSlice';
+
 
 export const store = configureStore({
   reducer: {
@@ -27,5 +29,9 @@ export const store = configureStore({
     adminBanners: adminBannerReducer,
     products: productReducer,
     discounts: discountReducer,
+    notifications: notificationReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+  })
 });

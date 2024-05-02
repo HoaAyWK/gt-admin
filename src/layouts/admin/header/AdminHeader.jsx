@@ -1,25 +1,19 @@
-import PropTypes from "prop-types";
-import { Link as RouterLink } from "react-router-dom";
 // @mui
 import { styled, alpha } from "@mui/material/styles";
 import {
   Box,
-  Button,
   Stack,
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
-  Link,
   useMediaQuery,
-  Badge,
   Tooltip,
 } from "@mui/material";
 // utils
 // components
 import { Iconify } from "../../../components";
 //
-import { AccountPopover } from "../../common/header";
+import { AccountPopover, NotificationPopover } from "../../common/header";
 import {
   useAppThemeUpdate,
   useAppTheme,
@@ -146,6 +140,7 @@ export default function AdminHeader({ user, openDesktopNav, onOpenMobileNav }) {
               <Iconify icon={icon()} width={24} height={24} />
             </IconButton>
           </Tooltip>
+          <NotificationPopover />
           <AccountPopover user={user} menuOptions={MENU_OPTIONS} />
         </Stack>
       </StyledToolbar>

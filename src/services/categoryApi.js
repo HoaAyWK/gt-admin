@@ -8,7 +8,7 @@ class CategoryApi {
   };
 
   create = (data) => {
-    const url = '/categories/api';
+    const url = '/api/categories';
 
     return axiosClient.post(url, data);
   };
