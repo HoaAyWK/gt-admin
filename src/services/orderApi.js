@@ -2,6 +2,17 @@ import { STATUS } from '../constants/orderStatus';
 import axiosClient from './axios';
 
 class OrderApi {
+  getOrders = (params) => {
+    const { page, pageSize, order, orderBy, orderStatus } = params;
+    let url = `/api/orders?page=${page}&pageSize=${pageSize}&order=${order}&orderBy=${orderBy}`;
+
+    if (orderStatus) {
+      url += `&orderStatus=${orderStatus}`;
+    }
+
+    return axiosClient.get(url);
+  };
+
   getAll = () => {
     const url = '/bill/show';
 

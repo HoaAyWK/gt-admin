@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Iconify, Scrollbar } from '../../../components';
+import { MenuPopover } from '../../../components';
 import NotificationItem from './NotificationItem';
 import {
   selectAllNotifications,
@@ -86,7 +87,7 @@ const NotificationPopover = () => {
         </Badge>
       </IconButton>
 
-      <Popover
+      <MenuPopover
         open={!!open}
         anchorEl={open}
         onClose={handleClose}
@@ -127,7 +128,7 @@ const NotificationPopover = () => {
             View All
           </Button>
         </Box>
-      </Popover>
+      </MenuPopover>
     </>
   );
 }

@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, Divider, Grid, Stack, Typography } from
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
-import LineItemTable from '../../order-details/components/LineItemTable';
+// import LineItemTable from '../../order-details/components/LineItemTable';
 import { Iconify, Label } from '../../../components';
 import ACTION_STATUS from '../../../constants/actionStatus';
 import { fDateTime } from '../../../utils/formatTime';
@@ -13,7 +13,7 @@ import { cancelOrder, getOrders, selectOrderById, finishOrder } from './orderSli
 import { FetchDataErrorMessage, Loading } from '../components';
 import ROLES from '../../../constants/userRoles';
 import { STATUS } from '../../../constants/orderStatus';
-import ConfirmDialog from '../../common/ConfirmDialog';
+// import ConfirmDialog from '../../../common/ConfirmDialog';
 import { getInventories } from '../inventory/inventorySlice';
 
 const OrderDetails = ({ id }) => {
@@ -108,7 +108,7 @@ const OrderDetails = ({ id }) => {
               </Button>
             </Stack>
           </Box>
-          <ConfirmDialog
+          {/* <ConfirmDialog
             dialogTitle='Confirm finish order'
             dialogContent='Are you sure to finish this order'
             open={openConfirmFinishDialog}
@@ -125,7 +125,7 @@ const OrderDetails = ({ id }) => {
             billId={id}
             action={cancelOrder}
             status={cancelOrderStatus}
-          />
+          /> */}
         </>
       )}
       <Card sx={{ mt: 2 }}>
@@ -175,7 +175,7 @@ const OrderDetails = ({ id }) => {
               </Stack>
             </Grid>
           </Grid>
-          <LineItemTable items={bill.orderItems} status={bill.status} orderUser={bill?.userId} />
+          {/* <LineItemTable items={bill.orderItems} status={bill.status} orderUser={bill?.userId} /> */}
           <Box
             sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}
           >

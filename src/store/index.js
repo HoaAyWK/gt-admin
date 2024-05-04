@@ -13,6 +13,7 @@ import adminProductVariantReducer from '../features/admin/product-variant/produc
 import productReducer from '../features/admin/product/productSlice';
 import discountReducer from '../features/admin/discount/discountSlice';
 import notificationReducer from '../features/common/notificationSlice';
+import ordersReducer from '../features/admin/order/orderSlice';
 
 
 export const store = configureStore({
@@ -30,6 +31,7 @@ export const store = configureStore({
     products: productReducer,
     discounts: discountReducer,
     notifications: notificationReducer,
+    orders: ordersReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false,

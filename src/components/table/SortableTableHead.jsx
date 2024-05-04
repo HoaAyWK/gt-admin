@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import { Box, TableRow, TableHead, TableSortLabel } from '@mui/material';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { styled } from '@mui/material/styles';
 
 const visuallyHidden = {
     border: 0,
@@ -12,6 +14,12 @@ const visuallyHidden = {
     whiteSpace: 'nowrap',
     clip: 'rect(0 0 0 0)',
 };
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.background.neutral,
+  }
+}));
 
 const SortableTableHead = ({
   order,
@@ -30,7 +38,7 @@ const SortableTableHead = ({
     <TableHead>
       <TableRow>
         {headLabel.map((headCell) => (
-          <TableCell
+          <StyledTableCell
             key={headCell.id}
             align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -46,7 +54,7 @@ const SortableTableHead = ({
                 <Box sx={{ ...visuallyHidden }}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</Box>
               ) : null}
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
         ))}
       </TableRow>
     </TableHead>

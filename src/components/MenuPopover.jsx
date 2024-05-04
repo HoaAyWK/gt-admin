@@ -24,13 +24,16 @@ const MenuPopover = ({ children, sx, ...other }) => {
         <Popover
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            PaperProps={{
+
+            slotProps={{
+              paper: {
                 sx: {
-                p: 1,
-                width: 200,
-                overflow: 'inherit',
-                ...sx,
-                },
+                  p: 1,
+                  width: 320,
+                  overflow: 'inherit',
+                  ...sx,
+                  },
+              }
             }}
             {...other}
         >

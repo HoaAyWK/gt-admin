@@ -7,12 +7,15 @@ import {
   Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Iconify } from '../../../components';
 
 import { fToNow } from '../../../utils/formatTime';
 import orderIcon from '../../../assets/icons/ic_notification_package.svg';
 import shippingIcon from '../../../assets/icons/ic_notification_shipping.svg';
+import { markNotificationAsRead } from '../../../features/common/notificationSlice';
 
 const renderContent = (notification) => {
   const title = (
@@ -43,6 +46,7 @@ const renderContent = (notification) => {
 
 const NotificationItem = ({ notification }) => {
     const { avatar, title } = renderContent(notification);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleClick = async () => {

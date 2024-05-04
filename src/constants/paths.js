@@ -22,6 +22,7 @@ const PATHS = Object.freeze({
   ORDERS: '/orders',
   ORDERS_LIST: '/orders/list',
   BANNERS: '/banners',
+  ORDERS: '/orders',
 });
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AdminPageLayout } from '../common';
-import { OrderList } from '../../../features/admin/order';
+import { Orders } from '../../../features/admin/order';
 
 const breadcrumbs = [
   { label: 'Dashboard', path: '/admin/dashboard' },
@@ -17,7 +17,7 @@ const OrderListPage = () => {
       showCreateButton={false}
       breadcrumbs={breadcrumbs}
     >
-      <OrderList />
+      <Orders />
     </AdminPageLayout>
   );
 };
