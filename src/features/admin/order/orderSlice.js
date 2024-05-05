@@ -3,41 +3,59 @@ import { createAsyncThunk, createSlice, createEntityAdapter, createSelector } fr
 import ACTION_STATUS from '../../../constants/actionStatus';
 import orderApi from '../../../services/orderApi';
 import { STATUS } from "../../../constants/orderStatus";
+import { ORDER_PER_PAGE_OPTIONS }  from '../../../constants/common';
 
 const ordersAdapter = createEntityAdapter();
 
 const initialState = ordersAdapter.getInitialState({
+  order: null,
+  getOrderStatus: ACTION_STATUS.IDLE,
   getOrdersStatus: ACTION_STATUS.IDLE,
   orderPages: [],
-  ordersPageSize: 10,
+  ordersPageSize: ORDER_PER_PAGE_OPTIONS[0],
   ordersTotalPages: 0,
   ordersTotalItems: 0,
   pendingOrders: [],
   pendingOrdersPages: [],
-  pendingOrdersPageSize: 10,
+  pendingOrdersPageSize: ORDER_PER_PAGE_OPTIONS[0],
   pendingOrdersTotalPages: 0,
   pendingOrdersTotalItems: 0,
   processingOrders: [],
   getProcessingOrdersPages: [],
-  processingOrdersPageSize: 10,
+  processingOrdersPageSize: ORDER_PER_PAGE_OPTIONS[0],
   processingOrdersTotalPages: 0,
   processingOrdersTotalItems: 0,
   completedOrders: [],
   completedOrdersPages: [],
-  completedOrdersPageSize: 10,
+  completedOrdersPageSize: ORDER_PER_PAGE_OPTIONS[0],
   completedOrdersTotalPages: 0,
   completedOrdersTotalItems: 0,
   cancelledOrders: [],
   cancelledOrdersPages: [],
-  cancelledOrdersPageSize: 10,
+  cancelledOrdersPageSize: ORDER_PER_PAGE_OPTIONS[0],
   cancelledOrdersTotalPages: 0,
   cancelledOrdersTotalItems: 0,
   refundedOrders: [],
   refundedOrdersPages: [],
-  refundedOrdersPageSize: 10,
+  refundedOrdersPageSize: ORDER_PER_PAGE_OPTIONS[0],
   refundedOrdersTotalPages: 0,
   refundedOrdersTotalItems: 0,
+  confirmOrderStatus: ACTION_STATUS.IDLE,
 });
+
+export const getOrder = createAsyncThunk(
+  'orders/get',
+  async (id) => {
+    return await orderApi.getOrder(id);
+  }
+);
+
+export const confirmOrder = createAsyncThunk(
+  'orders/confirm',
+  async (id) => {
+    return await orderApi.confirmOrderPaymentInfo(id);
+  }
+);
 
 export const getOrders = createAsyncThunk(
   'orders/all',
@@ -112,6 +130,23 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+
+      .addCase(getOrder.pending, (state) => {
+        state.getOrderStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(getOrder.fulfilled, (state, action) => {
+        state.getOrderStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.order = action.payload.data;
+        }
+      })
+      .addCase(getOrder.rejected, (state) => {
+        state.getOrderStatus = ACTION_STATUS.FAILED;
+      })
+
+
 
       .addCase(getOrders.pending, (state) => {
         state.getOrdersStatus = ACTION_STATUS.LOADING;
@@ -350,6 +385,22 @@ const orderSlice = createSlice({
       .addCase(getRefundedOrders.rejected, (state) => {
         state.getOrdersStatus = ACTION_STATUS.FAILED;
       })
+
+
+
+      .addCase(confirmOrder.pending, (state) => {
+        state.confirmOrderStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(confirmOrder.fulfilled, (state, action) => {
+        state.confirmOrderStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.order = action.payload.data;
+        }
+      })
+      .addCase(confirmOrder.rejected, (state) => {
+        state.confirmOrderStatus = ACTION_STATUS.FAILED;
+      })
   }
 });
 
@@ -357,7 +408,7 @@ export const {
   selectAll: selectAllOrders,
   selectById: selectOrderById,
   selectIds: selectOderIds,
-} = ordersAdapter.getSelectors((state) => state.adminOrders);
+} = ordersAdapter.getSelectors((state) => state.orders);
 
 export const selectOrdersByPage = createSelector(
   selectAllOrders,

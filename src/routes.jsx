@@ -285,7 +285,7 @@ const Router = () => {
               children: [
                 { path: "", element: <Navigate to="list" /> },
                 { path: "list", element: <OrderListPage /> },
-                { path: "details/:id", element: <AdminOrderDetailsPage /> },
+                { path: ":id", element: <AdminOrderDetailsPage /> },
               ],
             },
             {

@@ -2,11 +2,11 @@ import React, { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, TableRow, TableCell, Link, Typography, Stack, Avatar } from '@mui/material';
 
-import PATHS from '../../../../constants/paths';
-import { fDateTime } from '../../../../utils/formatTime';
-import { Label } from '../../../../components';
-import { fCurrency } from '../../../../utils/formatNumber';
-import { MoreMenu, MoreMenuItemLink } from '../../../../components/table';
+import PATHS from '../../../../../constants/paths';
+import { fDateTime } from '../../../../../utils/formatTime';
+import { Label } from '../../../../../components';
+import { fCurrency } from '../../../../../utils/formatNumber';
+import { MoreMenu, MoreMenuItemLink } from '../../../../../components/table';
 
 const OrderLine = ({ order }) => {
   const {

@@ -7,16 +7,26 @@ import {
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useSelector } from 'react-redux';
 
-import AllOrderTab from './AllOrdersTab';
+import {
+  AllOrdersTab,
+  PendingOrdersTab,
+  ProcessingOrdersTab,
+  CompletedOrdersTab,
+  CancelledOrdersTab,
+  RefundedOrdersTab
+} from './order-tabs';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 const TABS = [
   { value: 1, label: 'All' },
   { value: 2, label: 'Pending' },
-  { value: 3, label: 'Completed' },
-  { value: 4, label: 'Cancelled' },
-  { value: 4, label: 'Refunded' },
+  { value: 3, label: 'Processing' },
+  { value: 4, label: 'Completed' },
+  { value: 5, label: 'Cancelled' },
+  { value: 6, label: 'Refunded' },
 ];
+
+const PER_PAGE_OPTIONS = [5, 10, 25, 50, 100];
 
 const TABLE_HEAD = [
   { id: "orderNumber", label: "Order", align: 'left' },
@@ -66,7 +76,22 @@ const Orders = () => {
             </TabList>
           </Box>
           <TabPanel value={TABS[0].value} sx={{ p: 0 }}>
-            <AllOrderTab tableHead={TABLE_HEAD} />
+            <AllOrdersTab tableHead={TABLE_HEAD} />
+          </TabPanel>
+          <TabPanel value={TABS[1].value} sx={{ p: 0 }}>
+            <PendingOrdersTab tableHead={TABLE_HEAD} />
+          </TabPanel>
+          <TabPanel value={TABS[2].value} sx={{ p: 0 }}>
+            <ProcessingOrdersTab tableHead={TABLE_HEAD} />
+          </TabPanel>
+          <TabPanel value={TABS[3].value} sx={{ p: 0 }}>
+            <CompletedOrdersTab tableHead={TABLE_HEAD} />
+          </TabPanel>
+          <TabPanel value={TABS[4].value} sx={{ p: 0 }}>
+            <CancelledOrdersTab tableHead={TABLE_HEAD} />
+          </TabPanel>
+          <TabPanel value={TABS[5].value} sx={{ p: 0 }}>
+            <RefundedOrdersTab tableHead={TABLE_HEAD} />
           </TabPanel>
         </TabContext>
       </Box>

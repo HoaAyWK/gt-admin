@@ -14,3 +14,4 @@ export { default as ShowMoreParagraph } from './ShowMoreParagraph';
 export { default as Loading } from './Loading';
 export { default as Scrollbar } from './Scrollbar';
 export { default as ColorPicker } from './color-picker/ColorPicker';
+export { default as DashedLine } from './dashed-line';

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PAGE_SIZES, ORDER_BY } from '../../../constants/common';
+import { ORDER_BY, ORDER_PER_PAGE_OPTIONS } from '../../../../constants/common';
 import { OrdersTab } from './components';
 import {
   getOrders,
   selectOrdersByPage
-} from './orderSlice';
+} from '../orderSlice';
 
-const AllOrderTab = ({ tableHead }) => {
+const AllOrdersTab = ({ tableHead }) => {
   const defaultPage = 1;
   const defaultOrderBy = 'orderNumber';
 
@@ -16,7 +16,7 @@ const AllOrderTab = ({ tableHead }) => {
   const [order, setOrder] = useState(ORDER_BY.ASC);
   const [orderBy, setOrderBy] = useState(defaultOrderBy);
   const [page, setPage] = useState(defaultPage);
-  const [pageSize, setPageSize] = useState(PAGE_SIZES.DEFAULT);
+  const [pageSize, setPageSize] = useState(ORDER_PER_PAGE_OPTIONS[0]);
 
   const orders = useSelector((state) => selectOrdersByPage(state, page));
   const { ordersTotalItems } = useSelector(state => state.orders);
@@ -58,9 +58,9 @@ const AllOrderTab = ({ tableHead }) => {
       handleRequestSort={handleRequestOrdersSort}
       handleChangePage={handleChangeOrdersPage}
       handleChangeRowPerPage={handleChangeRowPerPage}
-      perPageOptions={PAGE_SIZES}
+      perPageOptions={ORDER_PER_PAGE_OPTIONS}
     />
   );
 };
 
-export default AllOrderTab;
+export default AllOrdersTab;

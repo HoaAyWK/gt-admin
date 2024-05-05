@@ -8,7 +8,16 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 const ConfirmDialog = (props) => {
-  const { dialogTitle, dialogContent, open, handleClose, action, status, ...data } = props;
+  const {
+    dialogTitle,
+    dialogContent,
+    open,
+    handleClose,
+    action,
+    status,
+    successfulMessage,
+    ...data
+  } = props;
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -17,7 +26,7 @@ const ConfirmDialog = (props) => {
     const result = unwrapResult(actionResult);
 
     if (result.success) {
-      enqueueSnackbar("Deleted successfully", { variant: 'success' });
+      enqueueSnackbar(successfulMessage, { variant: 'success' });
       handleClose();
       return;
     }

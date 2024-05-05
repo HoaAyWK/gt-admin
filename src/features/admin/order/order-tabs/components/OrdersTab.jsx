@@ -8,8 +8,8 @@ import {
   TablePagination
 } from '@mui/material';
 
-import { Scrollbar } from '../../../../components';
-import { SortableTableHead, EmptyRow } from '../../../../components/table';
+import { Scrollbar } from '../../../../../components';
+import { SortableTableHead, EmptyRow } from '../../../../../components/table';
 import OrderLine from './OrderLine';
 
 const OrdersTab = (props) => {

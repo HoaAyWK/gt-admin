@@ -132,7 +132,7 @@ const Login = () => {
             <Stack flexDirection="row">
               <img src="/new_hci_logo.svg" alt="logo" />
               <Typography variant="h4" sx={{ ml: 2, color: "text.primary" }}>
-                HCI-Shop Management
+                EStore Management
               </Typography>
             </Stack>
           </Stack>
@@ -141,7 +141,7 @@ const Login = () => {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome back to the HCI-Shop Management
+              Hi, Welcome back to the EStore Management
             </Typography>
             <img src="/static/illustration_login.png" alt="login" />
           </SectionStyle>
@@ -165,7 +165,7 @@ const Login = () => {
 
           <ContentStyle>
             <Typography variant="h4" gutterBottom>
-              Log in to the HCI-Shop Management
+              Log in to the EStore Management
             </Typography>
 
             <Typography sx={{ color: "text.secondary", mb: 2 }}>

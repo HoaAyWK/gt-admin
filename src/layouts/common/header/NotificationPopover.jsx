@@ -45,7 +45,7 @@ const NotificationPopover = () => {
     if (getNotificationsStatus === ACTION_STATUS.IDLE && user) {
       dispatch(getNotifications(user.id));
     }
-  }, [getNotificationsStatus]);
+  }, [getNotificationsStatus, user]);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -91,8 +91,6 @@ const NotificationPopover = () => {
         open={!!open}
         anchorEl={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
@@ -122,12 +120,6 @@ const NotificationPopover = () => {
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
-            View All
-          </Button>
-        </Box>
       </MenuPopover>
     </>
   );
