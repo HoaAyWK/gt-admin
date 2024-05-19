@@ -37,15 +37,13 @@ const chartOptions = {
   },
 };
 
-const StatCard = ({ stat, color }) => {
-  const { label, total, isIncrease, value } = stat;
-
+const StatCard = ({ label, total, isIncreased, comparingValue, data }) => {
   const [options, setOptions] = useState(chartOptions);
   const theme = useTheme();
 
   const [series, setSeries] = useState([{
     name: 'Income',
-    data: stat.data
+    data: data
   }]);
 
   useEffect(() => {
@@ -75,7 +73,7 @@ const StatCard = ({ stat, color }) => {
   }, []);
 
   return (
-    <Card>
+    <Card sx={{ borderRadius: (theme) => theme.spacing(1) }}>
       <CardContent>
         <Box
           sx={{
@@ -89,7 +87,7 @@ const StatCard = ({ stat, color }) => {
               {label}
             </Typography>
             <Typography variant='h4' component='span'>{total}</Typography>
-            {isIncrease ? (
+            {isIncreased ? (
               <Stack spacing={1} direction='row' alignItems='center'>
                 <StyledIconBox
                   sx={{
@@ -100,7 +98,7 @@ const StatCard = ({ stat, color }) => {
                   <Iconify icon='material-symbols:trending-up-rounded' width={20} height={20} />
                 </StyledIconBox>
                 <Typography color='text.primary' variant='subtitle2'>
-                  +{value}%
+                  {comparingValue !== 'NaN' ? Math.ceil(comparingValue) : 0}%
                   <Typography color='text.secondary' variant='body2' component='span'>
                     &nbsp; than last week
                   </Typography>
@@ -117,7 +115,7 @@ const StatCard = ({ stat, color }) => {
                   <Iconify icon='ic:round-trending-down' width={20} height={20} />
                 </StyledIconBox>
                 <Typography color='text.primary' variant='subtitle2'>
-                  -{value}%
+                  {comparingValue !== 'NaN' ? Math.ceil(comparingValue) : 0}%
                   <Typography color='text.secondary' variant='body2' component='span'>
                     &nbsp; than last week
                   </Typography>

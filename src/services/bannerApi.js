@@ -1,22 +1,24 @@
 import axiosClient from './axios';
 
 class BannerApi {
-  getAll = () => {
-    const url = '/banner/show';
+  getBanners = (params) => {
+    const { page, pageSize, order, orderBy } = params;
+    const url = `/api/banners?page=${page}&pageSize=${pageSize}&order=${order}&orderBy=${orderBy}`;
 
     return axiosClient.get(url);
   };
 
-  create = (data) => {
-    const url = '/banner/api';
+  addBanner = (data) => {
+    const url = '/api/banners';
 
     return axiosClient.post(url, data);
   };
 
-  delete = (id) => {
-    const url = `/banner/${id}`;
+  updateBanner = (data) => {
+    const { id, ...rest } = data;
+    const url = `/api/banners/${id}`;
 
-    return axiosClient.delete(url);
+    return axiosClient.put(url, rest);
   };
 }
 

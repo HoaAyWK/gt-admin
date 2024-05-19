@@ -4,7 +4,6 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import Banner from './Banner';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBanners, selectAllBanners } from './bannerSlice';
-import { BANNER_POSITION } from '../../../constants/banner';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 

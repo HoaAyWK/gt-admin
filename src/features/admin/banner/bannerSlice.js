@@ -3,55 +3,43 @@ import {
   createSlice,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
 
 import ACTION_STATUS from '../../../constants/actionStatus';
 import bannerApi from '../../../services/bannerApi';
-import { uploadTaskPromise } from '../../../utils/uploadTaskPromise';
 
 const bannersAdapter = createEntityAdapter();
 
 const initialState = bannersAdapter.getInitialState({
   getBannersStatus: ACTION_STATUS.IDLE,
   createBannerStatus: ACTION_STATUS.IDLE,
-  deleteBannerStatus: ACTION_STATUS.IDLE,
+  updateBannerStatus: ACTION_STATUS.IDLE,
 });
 
-export const getBanners = createAsyncThunk('adminBanners/all', async () => {
-  return await bannerApi.getAll();
-});
-
-export const createBanner = createAsyncThunk(
-  'adminBanners/create',
-  async (banner, thunkApi) => {
-    const { image, ...data } = banner;
-
-    if (image) {
-      const filePath = `files/banners/${uuidv4()}`;
-      data.image = await uploadTaskPromise(filePath, image);
-    }
-
-    const res = await bannerApi.create(data);
-
-    return res;
+export const getBanners = createAsyncThunk(
+  'banners/getBanners',
+  async (params) => {
+    return await bannerApi.getBanners(params);
   }
 );
 
-export const deleteBanner = createAsyncThunk(
-  'adminBanner/delete',
-  async (id) => {
-    return await bannerApi.delete(id);
+export const createBanner = createAsyncThunk(
+  'banners/create',
+  async (data) => {
+    return await bannerApi.addBanner(data);
+  }
+);
+
+export const updateBanner = createAsyncThunk(
+  'banners/update',
+  async (data) => {
+    return await bannerApi.updateBanner(data);
   }
 );
 
 const bannerSlice = createSlice({
-  name: 'adminBanners',
+  name: 'banners',
   initialState,
   reducers: {
-    refresh: (state) => {
-      state.createBannerStatus = ACTION_STATUS.IDLE;
-      state.deleteBannerStatus = ACTION_STATUS.IDLE;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,7 +49,10 @@ const bannerSlice = createSlice({
       })
       .addCase(getBanners.fulfilled, (state, action) => {
         state.getBannersStatus = ACTION_STATUS.SUCCEEDED;
-        bannersAdapter.setAll(state, action.payload);
+
+        if (action.payload.success) {
+          bannersAdapter.setAll(state, action.payload.data.items);
+        }
       })
       .addCase(getBanners.rejected, (state) => {
         state.getBannersStatus = ACTION_STATUS.FAILED;
@@ -72,21 +63,27 @@ const bannerSlice = createSlice({
       })
       .addCase(createBanner.fulfilled, (state, action) => {
         state.createBannerStatus = ACTION_STATUS.SUCCEEDED;
-        bannersAdapter.addOne(state, action.payload);
+
+        if (action.payload.success) {
+          bannersAdapter.addOne(state, action.payload.data);
+        }
       })
       .addCase(createBanner.rejected, (state) => {
         state.createBannerStatus = ACTION_STATUS.FAILED;
       })
 
-      .addCase(deleteBanner.pending, (state) => {
-        state.deleteBannerStatus = ACTION_STATUS.IDLE;
+      .addCase(updateBanner.pending, (state) => {
+        state.updateBannerStatus = ACTION_STATUS.IDLE;
       })
-      .addCase(deleteBanner.fulfilled, (state, action) => {
-        state.deleteBannerStatus = ACTION_STATUS.SUCCEEDED;
-        bannersAdapter.removeOne(state, action.payload);
+      .addCase(updateBanner.fulfilled, (state, action) => {
+        state.updateBannerStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          bannersAdapter.upsertOne(state, action.payload);
+        }
       })
-      .addCase(deleteBanner.rejected, (state) => {
-        state.deleteBannerStatus = ACTION_STATUS.FAILED;
+      .addCase(updateBanner.rejected, (state) => {
+        state.updateBannerStatus = ACTION_STATUS.FAILED;
       });
   },
 });
@@ -95,10 +92,8 @@ export const {
   selectAll: selectAllBanners,
   selectById: selectBannerById,
   selectIds: selectBannerIds,
-} = bannersAdapter.getSelectors((state) => state.adminBanners);
+} = bannersAdapter.getSelectors((state) => state.banners);
 
-const { reducer, actions } = bannerSlice;
-
-export const { refresh } = actions;
+const { reducer } = bannerSlice;
 
 export default reducer;

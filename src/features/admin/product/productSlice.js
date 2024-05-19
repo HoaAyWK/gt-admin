@@ -5,7 +5,6 @@ import productApi from '../../../services/productApi';
 import ACTION_STATUS from '../../../constants/actionStatus';
 import { ORDER_BY, PAGE_SIZES } from '../../../constants/common';
 import { uploadTaskPromise } from '../../../utils/uploadTaskPromise';
-import { update } from 'lodash';
 
 const productAdapter = createEntityAdapter();
 

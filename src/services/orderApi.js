@@ -24,6 +24,18 @@ class OrderApi {
 
     return axiosClient.put(url, {});
   };
+
+  getStats = (fromDay) => {
+    const url = `/api/orders/stats?fromDays=${fromDay}`;
+
+    return axiosClient.get(url);
+  };
+
+  getIncomeStats = (days) => {
+    const url = `/api/orders/income-stats?fromDays=${days}`;
+
+    return axiosClient.get(url);
+  };
 }
 
 export default new OrderApi();

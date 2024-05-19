@@ -13,7 +13,7 @@ import {
 // mock
 // hooks
 // components
-import Scrollbar from "../../../components/scrollbar";
+import { Scrollbar } from "../../../components";
 import NavSection from "../../../components/nav-section";
 //
 import navConfig from "./NavConfig";
@@ -120,7 +120,7 @@ const DrawerContent = ({ isOpen, isMiniDrawer }) => {
           <Box component="img" alt="Logo" src={hciLogo} sx={{ mr: 1 }} />
           {!isMiniDrawer && (
             <StyledTextLogo variant="h3" component="h1">
-              HCI
+              EStore
             </StyledTextLogo>
           )}
         </Link>

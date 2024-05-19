@@ -12,7 +12,7 @@ const breadcrumbs = [
 ];
 
 const CreateUserPage = () => {
-  const { createUserStatus } = useSelector((state) => state.adminUsers);
+  const { createUserStatus } = useSelector((state) => state.users);
 
   return (
     <AdminPageLayout

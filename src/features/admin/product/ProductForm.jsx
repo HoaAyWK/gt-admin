@@ -114,7 +114,7 @@ const ProductForm = ({ isEdit, product, action, status, brands, categories }) =>
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)} >
       <RHFTextField name='id' label='Id' type='hidden' sx={{ display: 'none' }}/>
-      <Card>
+      <Card sx={{ borderRadius: (theme) => theme.spacing(1) }}>
         <CardContent>
           <Stack spacing={2}>
             <Stack spacing={5} direction='row' sx={{ justifyContent: 'flex-end' }}>

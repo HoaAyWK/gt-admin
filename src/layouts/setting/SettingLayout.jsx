@@ -137,7 +137,7 @@ export default function SettingLayout(props) {
         >
           <Box component="img" alt="Logo" src={hciLogo} sx={{ mr: 1 }} />
           <StyledTextLogo variant="h3" component="h1">
-            HCI
+            EStore
           </StyledTextLogo>
         </Link>
         <Stack

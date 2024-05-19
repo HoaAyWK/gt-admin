@@ -23,7 +23,7 @@ import { Label, Loading } from "../../../components";
 import { getUsers, selectUserById } from "./userSlice";
 import { fDate, fDateTime } from "../../../utils/formatTime";
 import { FetchDataErrorMessage } from "../components";
-import { selectOrdersByUserId, getOrders } from "../order/orderSlice";
+// import { selectOrdersByUserId, getOrders } from "../order/orderSlice";
 import ACTION_STATUS from "../../../constants/actionStatus";
 import emptyBag from "../../../assets/images/empty_bag.png";
 import { fCurrency } from "../../../utils/formatNumber";

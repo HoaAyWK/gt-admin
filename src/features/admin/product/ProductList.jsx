@@ -132,7 +132,7 @@ const ProductList = () => {
           sx={{ visibility: `${searchProductStatus === ACTION_STATUS.LOADING ? 'visible' : 'hidden' }` }}
         />
       </Box>
-      <Card>
+      <Card sx={{ borderRadius: (theme) => theme.spacing(1) }}>
         <ToolbarStyled>
           <SearchStyled
             value={searchTerm}

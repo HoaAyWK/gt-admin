@@ -2,7 +2,7 @@ import axiosClient from './axios';
 
 class UserApi {
   getAll = () => {
-    const url = '/user/admin';
+    const url = '/api/customers/all';
 
     return axiosClient.get(url);
   };
@@ -23,6 +23,12 @@ class UserApi {
     const url = `/users/${id}`;
 
     return axiosClient.delete(url);
+  };
+
+  getStats = (fromDay) => {
+    const url = `/api/customers/stats?fromDay=${fromDay}`;
+
+    return axiosClient.get(url);
   };
 };
 

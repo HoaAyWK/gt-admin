@@ -3,11 +3,9 @@ import {
   Box,
   Badge,
   IconButton,
-  Popover,
   Typography,
   Divider,
   List,
-  Button,
   Tooltip
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';

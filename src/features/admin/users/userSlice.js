@@ -14,6 +14,7 @@ const initialState = usersAdapter.getInitialState({
   deleteUserStatus: ACTION_STATUS.IDLE,
 });
 
+
 export const getUsers = createAsyncThunk(
   'users/all',
   async () => {
@@ -74,7 +75,10 @@ const userSlice = createSlice({
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.getUsersStatus = ACTION_STATUS.SUCCEEDED;
-        usersAdapter.setAll(state, action.payload);
+
+        if (action.payload.success) {
+          usersAdapter.setAll(state, action.payload.data.data);
+        }
       })
       .addCase(getUsers.rejected, (state) => {
         state.getUsersStatus = ACTION_STATUS.FAILED;
@@ -127,7 +131,7 @@ export const {
   selectAll: selectAllUsers,
   selectById: selectUserById,
   selectIds: selectUserIds,
-} = usersAdapter.getSelectors((state) => state.adminUsers);
+} = usersAdapter.getSelectors((state) => state.users);
 
 const { reducer, actions } = userSlice;
 export const { refresh } = actions;
