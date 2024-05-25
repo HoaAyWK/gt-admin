@@ -66,7 +66,7 @@ const AttributeLine = ({ productId, attribute }) => {
         <TableCell sx={{ maxWidth: 400 }}>
           <Typography
             variant = 'body1'
-            align = 'left'
+            align = 'center'
           >
             {displayOrder}
           </Typography>

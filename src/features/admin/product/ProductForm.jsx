@@ -46,6 +46,8 @@ const ProductForm = ({ isEdit, product, action, status, brands, categories }) =>
     id: Yup.string(),
     name: Yup.string()
       .required('Name is required.'),
+    shortDescription: Yup.string()
+      .required('Short description is required.'),
     description: Yup.string()
       .required('Description is required.'),
     categoryId: Yup.string()
@@ -65,15 +67,16 @@ const ProductForm = ({ isEdit, product, action, status, brands, categories }) =>
   });
 
   const defaultValues = {
-    name: product?.name ? product.name : '',
-    description: product?.description ? product.description : '',
-    categoryId: product?.categoryId ? product.categoryId : categories[0].id,
-    brandId: product?.brandId ? product.brandId : brands[0].id,
-    price: product?.price ? product.price : 0,
-    stockQuantity: product?.stockQuantity ? product.stockQuantity : 0,
-    published: product?.published ? product.published : false,
-    hasVariant: product?.hasVariant ? product.hasVariant : false,
-    displayOrder: product?.displayOrder ? product.displayOrder : 0
+    name: product?.name ?? '',
+    shortDescription: product?.shortDescription ?? '',
+    description: product?.description ?? '',
+    categoryId: product?.categoryId ?? categories[0].id,
+    brandId: product?.brandId ?? brands[0].id,
+    price: product?.price ?? 0,
+    stockQuantity: product?.stockQuantity ?? 0,
+    published: product?.published ?? false,
+    hasVariant: product?.hasVariant ?? false,
+    displayOrder: product?.displayOrder ?? 0
   };
 
   const methods = useForm({
@@ -133,6 +136,12 @@ const ProductForm = ({ isEdit, product, action, status, brands, categories }) =>
               </Grid>
             </Grid>
             <RHFTextField name='name' label='Name' />
+            <RHFTextField
+              name='shortDescription'
+              label='Short Description'
+              multiline
+              rows={3}
+            />
             <RHFEditor
               name='description'
               label='Description'

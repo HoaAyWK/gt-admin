@@ -7,6 +7,7 @@ import { MoreMenu, MoreMenuItem } from '../../../../../components/table';
 import AttributeValueForm from './AttributeValueForm';
 import { ConfirmDialog } from '../../../components';
 import { deleteAttributeValue } from '../../productSlice';
+import { fCurrency } from '../../../../../utils/formatNumber';
 
 const ColorBoxWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.5),
@@ -78,7 +79,7 @@ const AttributeValueLine = ({ productId, attributeId, attributeValue, colorable 
               whiteSpace: 'nowrap'
             }}
           >
-            {priceAdjustment}
+            {priceAdjustment === 0 ? '$0' : fCurrency(priceAdjustment)}
           </Typography>
         </TableCell>
         <TableCell align='center' sx={{ maxWidth: 300 }}>

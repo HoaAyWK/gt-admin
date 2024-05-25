@@ -17,6 +17,8 @@ const ProductGeneralTab = ({ product, categories, brands }) => {
   const ProductSchema = new Yup.object().shape({
     id: Yup.string().required('Id is required.'),
     name: Yup.string().required('Name is required.'),
+    shortDescription: Yup.string()
+      .required('Short description is required.'),
     description: Yup.string().required('Description is required.'),
     price: Yup.number().required('Price is required.')
       .min(0, 'Price must be at least 0.'),
@@ -32,6 +34,7 @@ const ProductGeneralTab = ({ product, categories, brands }) => {
   const defaultValues = {
     id: product.id,
     name: product.name,
+    shortDescription: product.shortDescription,
     description: product.description,
     price: product.price,
     stockQuantity: product.stockQuantity,
@@ -91,6 +94,14 @@ const ProductGeneralTab = ({ product, categories, brands }) => {
         </Grid>
         <Grid item xs={12} md={6}>
         <RHFSelect name='brandId' label='Brand' data={brands} />
+        </Grid>
+        <Grid item xs={12}>
+          <RHFTextField
+            name='shortDescription'
+            label='Short Description'
+            multiline
+            rows={4}
+          />
         </Grid>
         <Grid item xs={12}>
           <RHFEditor name='description' label='Description' initialContent={initialDescription} />

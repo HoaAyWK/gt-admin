@@ -14,7 +14,7 @@ import { addAttributeValue } from '../../productSlice';
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left', isSortable: true },
   { id: 'priceAdjustment', label: 'Price Adjustment', align: 'right', isSortable: true },
-  { id: 'displayOrder', label: 'Display Order', align: 'right', isSortable: true },
+  { id: 'displayOrder', label: 'Display Order', align: 'center', isSortable: true },
   { id: "", label: "", alignRight: 'center', isSortable: false },
 ];
 

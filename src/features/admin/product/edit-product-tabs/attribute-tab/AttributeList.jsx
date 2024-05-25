@@ -12,7 +12,7 @@ import { Iconify } from '../../../../../components';
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left', isSortable: true },
   { id: 'canCombine', label: 'Can Combine', align: 'center', isSortable: false },
-  { id: 'displayOrder', label: 'Display Order', align: 'left', isSortable: true },
+  { id: 'displayOrder', label: 'Display Order', align: 'center', isSortable: true },
   { id: 'options', label: 'Options', align: 'left', isSortable: true },
   { id: "", label: "", alignRight: 'center', isSortable: false },
 ];
