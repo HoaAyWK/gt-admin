@@ -13,7 +13,6 @@ import ACTION_STATUS from '../../../constants/actionStatus';
 import { FormProvider, RHFSelect, RHFSwitch, RHFTextField } from '../../../components/hook-form';
 import { COLOR } from '../../../constants/colors';
 import { refresh } from './productVariantSlice';
-import { getProductsPerCategory } from '../../common/productDetailsSlice';
 
 const colors = [
   { id: COLOR.NONE, name: 'None' },
@@ -94,7 +93,6 @@ const FullProductVariantForm = ({ productOrigins, productVariant, action, status
 
       if (result) {
         enqueueSnackbar(`Updated successfully`, { variant: 'success' });
-        dispatch(getProductsPerCategory());
         dispatch(refresh());
       }
     } catch (error) {
