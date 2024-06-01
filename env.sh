@@ -5,15 +5,20 @@ touch ./env-config.js
 
 # Add assignment
 echo "window._env_ = {" >> ./env-config.js
+
 # Read each line in .env file
 # Each line represents key=value pairs
-while read -r line || [[ -n "$line" ]];
-do
-  # Split env variables by character `=`
-  if printf '%s\n' "$line" | grep -q -e '='; then
-    varname=$(printf '%s\n' "$line" | sed -e 's/=.*//')
-    varvalue=$(printf '%s\n' "$line" | sed -e 's/^[^=]*=//')
-  fi
+while IFS='=' read -r varname varvalue || [[ -n "$line" ]]; do
+  # Skip lines starting with # or empty lines
+  [[ "$varname" =~ ^#.*$ ]] && continue
+  [[ -z "$varname" ]] && continue
+
+  # Trim whitespace from varname and varvalue
+  varname=$(echo "$varname" | xargs)
+  varvalue=$(echo "$varvalue" | xargs)
+
+  # Escape special characters in varvalue
+  varvalue=$(echo "$varvalue" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
   # Read value of current variable if exists as Environment variable
   value=$(printf '%s\n' "${!varname}")
@@ -24,4 +29,5 @@ do
   echo "  $varname: \"$value\"," >> ./env-config.js
 done < .env
 
+# Close the JavaScript object
 echo "}" >> ./env-config.js
