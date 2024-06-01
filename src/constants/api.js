@@ -1,4 +1,4 @@
-export const API_URL = 'https://estore-be.azurewebsites.net';
+export const API_URL = import.meta.env.VITE_API_URL;
 export const NOTIFICATIONS_HUB = 'hubs/notifications';
 // export const API_URL = 'https://hci-be-new.azurewebsites.net';
 // export const API_URL = 'http://localhost:8080';
