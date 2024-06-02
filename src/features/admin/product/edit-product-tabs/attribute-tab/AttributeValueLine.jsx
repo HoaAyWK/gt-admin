@@ -27,7 +27,10 @@ const AttributeValueLine = ({ productId, attributeId, attributeValue, colorable 
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const { id, name, color, priceAdjustment, displayOrder } = attributeValue;
   const [openAttributeValueForm, setOpenAttributeValueForm] = useState(false);
-  const { deleteAttributeValueStatus } = useSelector((state) => state.products);
+  const {
+    deleteAttributeValueStatus,
+    addAttributeValueStatus
+  } = useSelector((state) => state.products);
 
   const handleOpenAttributeValueForm = () => {
     setOpenAttributeValueForm(true);
@@ -107,6 +110,7 @@ const AttributeValueLine = ({ productId, attributeId, attributeValue, colorable 
         open={openAttributeValueForm}
         handleClose={handleCloseAttributeValueForm}
         attributeValue={attributeValue}
+        status={addAttributeValueStatus}
       />
       <ConfirmDialog
         dialogTitle={`Delete "${name}" Attribute Value`}

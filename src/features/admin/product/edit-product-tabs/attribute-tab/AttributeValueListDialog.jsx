@@ -36,6 +36,7 @@ const AttributeValueListDialog = (props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openAttributeValueForm, setOpenAttributeValueForm] = useState(false);
+  const { addAttributeValueStatus } = useSelector(state => state.products);
 
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
@@ -134,6 +135,7 @@ const AttributeValueListDialog = (props) => {
         isEdit={false}
         handleClose={handleCloseAttributeValueForm}
         action={addAttributeValue}
+        status={addAttributeValueStatus}
       />
     </>
   );
