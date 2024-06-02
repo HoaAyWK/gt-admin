@@ -15,10 +15,10 @@ class BannerApi {
   };
 
   updateBanner = (data) => {
-    const { id, ...rest } = data;
-    const url = `/api/banners/${id}`;
+    const { bannerId } = data;
+    const url = `/api/banners/${bannerId}`;
 
-    return axiosClient.put(url, rest);
+    return axiosClient.put(url, data);
   };
 }
 
