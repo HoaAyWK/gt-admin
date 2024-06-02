@@ -7,13 +7,17 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { Grid, Stack, InputAdornment, Box } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { enqueueSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
 
 import { FormProvider, RHFEditor, RHFSelect, RHFSwitch, RHFTextField } from '../../../../components/hook-form';
 import { updateProduct } from '../productSlice';
+import ACTION_STATUS from '../../../../constants/actionStatus';
 
 const ProductGeneralTab = ({ product, categories, brands }) => {
   const [initialDescription, setInitialDescription] = useState(product.description);
   const dispatch = useDispatch();
+  const { updateProductStatus } = useSelector(state => state.products);
+
   const ProductSchema = new Yup.object().shape({
     id: Yup.string().required('Id is required.'),
     name: Yup.string().required('Name is required.'),
@@ -124,7 +128,13 @@ const ProductGeneralTab = ({ product, categories, brands }) => {
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <LoadingButton type='submit' variant='contained' loading={false}>Save</LoadingButton>
+            <LoadingButton
+              type='submit'
+              variant='contained'
+              loading={updateProductStatus === ACTION_STATUS.LOADING}
+            >
+              Save
+            </LoadingButton>
           </Box>
         </Grid>
       </Grid>

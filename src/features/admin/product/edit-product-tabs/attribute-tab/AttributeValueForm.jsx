@@ -179,7 +179,7 @@ const AttributeValueForm = (props) => {
               variant='contained'
               color='primary'
               type='submit'
-              loading={status === ACTION_STATUS.LOADING ? true : false}
+              loading={status === ACTION_STATUS.LOADING}
             >
               {isEdit ? 'Update' : 'Create' }
             </LoadingButton>

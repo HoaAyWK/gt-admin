@@ -15,22 +15,6 @@ const TABLE_HEAD = [
   { id: "", label: "", alignRight: 'center', isSortable: false },
 ];
 
-const VARIANTS =  [
-  {
-    id: '1',
-    attributes: {
-      Color: 'Black',
-      Storage: '256GB'
-    },
-    price: 9999.99,
-    stockQuantity: 100,
-    isActive: false,
-    attributeSelection: {
-      color: 'color-value-1',
-      storage: 'storage-value-1'
-    }
-  }
-]
 
 const ProductVariantList = ({ productId, attributes, variants, images }) => {
   const [order, setOrder] = useState("asc");
