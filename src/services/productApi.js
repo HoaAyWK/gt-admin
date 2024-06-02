@@ -1,8 +1,14 @@
-import axiosClient from "./axios/axiosClient";
+import axiosClient from './axios/axiosClient';
 
 class ProductApi {
   searchProduct = ({ searchTerm, page, pageSize, order, orderBy }) => {
     const url = `/api/products?search=${searchTerm}&page=${page}&pageSize=${pageSize}&order=${order}&orderBy=${orderBy}`;
+
+    return axiosClient.get(url);
+  };
+
+  getAllProduct = () => {
+    const url = `/api/products?page=1&pageSize=1000`;
 
     return axiosClient.get(url);
   };
@@ -56,7 +62,7 @@ class ProductApi {
   };
 
   updateProductVariant = (productId, variantId, data) => {
-    var url =  `/api/products/${productId}/variants/${variantId}`;
+    var url = `/api/products/${productId}/variants/${variantId}`;
 
     return axiosClient.put(url, data);
   };

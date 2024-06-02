@@ -1,24 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { DataTable } from '../components';
-import { getComparator, applySortFilter } from '../../../utils/tableUtil';
-import { getBrands, selectAllBrands } from './brandSlice';
-import ACTION_STATUS from '../../../constants/actionStatus';
-import BrandLine from './BrandLine';
-import { FetchDataErrorMessage, Loading } from '../components';
+import { DataTable } from "../components";
+import { getComparator, applySortFilter } from "../../../utils/tableUtil";
+import { getBrands, selectAllBrands } from "./brandSlice";
+import ACTION_STATUS from "../../../constants/actionStatus";
+import BrandLine from "./BrandLine";
+import { FetchDataErrorMessage, Loading } from "../components";
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', align: 'left', isSortable: true },
-  { id: 'createdDateTime', label: 'Created At', align: 'left', isSortable: true },
-  { id: 'updatedDateTime', label: 'Updated At', align: 'left', isSortable: true },
-  { id: '', label: '', alignRight: false },
+  { id: "name", label: "Name", align: "left", isSortable: true },
+  {
+    id: "createdDateTime",
+    label: "Created At",
+    align: "left",
+    isSortable: true,
+  },
+  {
+    id: "updatedDateTime",
+    label: "Updated At",
+    align: "left",
+    isSortable: true,
+  },
+  { id: "", label: "", alignRight: false },
 ];
 
 const BrandList = () => {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("name");
+  const [filterName, setFilterName] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -33,8 +43,8 @@ const BrandList = () => {
   }, [getBrandsStatus]);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -51,7 +61,11 @@ const BrandList = () => {
     setPage(0);
   };
 
-  const filteredBrands = applySortFilter(brands, getComparator(order, orderBy), filterName);
+  const filteredBrands = applySortFilter(
+    brands,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const renderContent = (
     <DataTable
@@ -60,7 +74,7 @@ const BrandList = () => {
       filterName={filterName}
       filteredData={filteredBrands}
       tableHead={TABLE_HEAD}
-      title='brands'
+      title="brands"
       page={page}
       rowsPerPage={rowsPerPage}
       handleChangePage={handleChangePage}
@@ -68,15 +82,20 @@ const BrandList = () => {
       handleFilterByName={handleFilterByName}
       handleRequestSort={handleRequestSort}
     >
-      {filteredBrands.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-        <BrandLine key={row.id} brand={row} />
-      ))}
+      {filteredBrands
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((row) => (
+          <BrandLine key={row.id} brand={row} />
+        ))}
     </DataTable>
   );
 
-  return (getBrandsStatus === ACTION_STATUS.SUCCEEDED ? renderContent
-    : (getBrandsStatus === ACTION_STATUS.FAILED) ? (<FetchDataErrorMessage />)
-    : (<Loading />)
+  return getBrandsStatus === ACTION_STATUS.SUCCEEDED ? (
+    renderContent
+  ) : getBrandsStatus === ACTION_STATUS.FAILED ? (
+    <FetchDataErrorMessage />
+  ) : (
+    <Loading />
   );
 };
 

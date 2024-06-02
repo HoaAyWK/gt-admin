@@ -11,3 +11,4 @@ export { default as RHFEditor } from './RHFEditor';
 export { default as RHFRating } from './RHFRating';
 export { default as RHFSwitch } from './RHFSwitch';
 export { default as RHFDateTimePicker } from './RHFDateTimePicker';
+export { default as RHFSelectDirection } from './RHFSelectDirection';

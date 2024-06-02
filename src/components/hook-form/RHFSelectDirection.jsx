@@ -6,8 +6,6 @@ import {
   FormControl,
   FormHelperText,
   InputLabel,
-  Stack,
-  Typography,
 } from "@mui/material";
 
 const MenuProps = {
@@ -22,13 +20,12 @@ const MenuProps = {
   },
 };
 
-const RHFSelect = ({
+const RHFSelectDirection = ({
   name,
   id,
   label,
   defaultValue,
   data,
-  isEdit,
   ...other
 }) => {
   const { control } = useFormContext();
@@ -47,10 +44,6 @@ const RHFSelect = ({
               <Select
                 {...field}
                 fullWidth
-                disabled={
-                  isEdit &&
-                  (name === "productVariantId" || name === "productId")
-                }
                 labelId={id}
                 label={label}
                 value={field.value}
@@ -58,9 +51,7 @@ const RHFSelect = ({
                 onClose={() => {
                   setOpen(false);
                 }}
-                onChange={(event) => {
-                  field.onChange(event.target.value);
-                }}
+                onChange={(event) => field.onChange(event.target.value)}
                 onOpen={() => setOpen(true)}
                 open={open}
                 displayEmpty={true}
@@ -70,30 +61,11 @@ const RHFSelect = ({
                 defaultValue={defaultValue}
                 {...other}
               >
-                {name !== "productVariantId" &&
-                  data?.map((item) => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item?.path || item?.name}
-                      </MenuItem>
-                    );
-                  })}
-                {name === "productVariantId" &&
-                  data?.map((item) =>
-                    item?.variants.map((item) => {
-                      return (
-                        <MenuItem key={item.id} value={item.id}>
-                          <Stack spacing={0.2}>
-                            {Object.keys(item?.attributes).map((key) => (
-                              <Typography key={key} variant="body2">
-                                {key}: {item.attributes[key]}
-                              </Typography>
-                            ))}
-                          </Stack>
-                        </MenuItem>
-                      );
-                    })
-                  )}
+                {data?.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
               </Select>
               <FormHelperText
                 sx={{
@@ -110,4 +82,4 @@ const RHFSelect = ({
   );
 };
 
-export default RHFSelect;
+export default RHFSelectDirection;

@@ -22,25 +22,18 @@ export const getBanners = createAsyncThunk(
   }
 );
 
-export const createBanner = createAsyncThunk(
-  'banners/create',
-  async (data) => {
-    return await bannerApi.addBanner(data);
-  }
-);
+export const createBanner = createAsyncThunk('banners/create', async (data) => {
+  return await bannerApi.addBanner(data);
+});
 
-export const updateBanner = createAsyncThunk(
-  'banners/update',
-  async (data) => {
-    return await bannerApi.updateBanner(data);
-  }
-);
+export const updateBanner = createAsyncThunk('banners/update', async (data) => {
+  return await bannerApi.updateBanner(data);
+});
 
 const bannerSlice = createSlice({
   name: 'banners',
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
 

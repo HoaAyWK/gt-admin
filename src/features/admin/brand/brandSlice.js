@@ -1,7 +1,13 @@
-import { createAsyncThunk, createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  createEntityAdapter,
+} from '@reduxjs/toolkit';
 
 import ACTION_STATUS from '../../../constants/actionStatus';
 import brandApi from '../../../services/brandApi';
+import { v4 as uuidv4 } from 'uuid';
+import { uploadTaskPromise } from '../../../utils/uploadTaskPromise';
 
 const brandsAdapter = createEntityAdapter();
 
@@ -12,25 +18,32 @@ const initialState = brandsAdapter.getInitialState({
   deleteBrandStatus: ACTION_STATUS.IDLE,
 });
 
-export const getBrands = createAsyncThunk(
-  'brands/all',
-  async () => {
-    return await brandApi.getAll();
-  }
-);
+export const getBrands = createAsyncThunk('brands/all', async () => {
+  return await brandApi.getAll();
+});
 
-export const createBrand = createAsyncThunk(
-  'brands/create',
-  async (brand) => {
-    return await brandApi.create(brand);
+export const createBrand = createAsyncThunk('brands/create', async (brand) => {
+  const { imageUrl } = brand;
+
+  if (imageUrl) {
+    const filePath = `file/brand-images/${uuidv4()}`;
+    brand.imageUrl = await uploadTaskPromise(filePath, imageUrl);
   }
-);
+
+  return await brandApi.create(brand);
+});
 
 export const updateBrand = createAsyncThunk(
   'brands/update',
   async (brand, thunkApi) => {
-    const { id, ...data } = brand;
-    const result =  await brandApi.update(id, data);
+    const { id, imageUrl, ...data } = brand;
+
+    if (imageUrl) {
+      const filePath = `file/brand-images/${uuidv4()}`;
+      brand.imageUrl = await uploadTaskPromise(filePath, imageUrl);
+    }
+
+    const result = await brandApi.update(id, data);
 
     if (result.data.success) {
       thunkApi.dispatch(getBrands());
@@ -40,12 +53,9 @@ export const updateBrand = createAsyncThunk(
   }
 );
 
-export const deleteBrand = createAsyncThunk(
-  'brands/delete',
-  async (id) => {
-    return await brandApi.delete(id);
-  }
-);
+export const deleteBrand = createAsyncThunk('brands/delete', async (id) => {
+  return await brandApi.delete(id);
+});
 
 const brandSlice = createSlice({
   name: 'adminBrands',
@@ -55,7 +65,7 @@ const brandSlice = createSlice({
       state.createBrandStatus = ACTION_STATUS.IDLE;
       state.updateBrandStatus = ACTION_STATUS.IDLE;
       state.deleteBrandStatus = ACTION_STATUS.IDLE;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,7 +84,6 @@ const brandSlice = createSlice({
         state.getBrandsStatus = ACTION_STATUS.FAILED;
       })
 
-
       .addCase(createBrand.pending, (state) => {
         state.createBrandStatus = ACTION_STATUS.LOADING;
       })
@@ -89,7 +98,6 @@ const brandSlice = createSlice({
         state.createBrandStatus = ACTION_STATUS.FAILED;
       })
 
-
       .addCase(updateBrand.pending, (state) => {
         state.updateBrandStatus = ACTION_STATUS.LOADING;
       })
@@ -100,7 +108,6 @@ const brandSlice = createSlice({
         state.updateBrandStatus = ACTION_STATUS.FAILED;
       })
 
-
       .addCase(deleteBrand.pending, (state) => {
         state.deleteBrandStatus = ACTION_STATUS.LOADING;
       })
@@ -110,8 +117,8 @@ const brandSlice = createSlice({
       })
       .addCase(deleteBrand.rejected, (state) => {
         state.deleteBrandStatus = ACTION_STATUS.FAILED;
-      })
-  }
+      });
+  },
 });
 
 export const {

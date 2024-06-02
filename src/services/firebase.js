@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -11,8 +11,6 @@ import { getStorage } from "firebase/storage";
 // const STORAGE_BUCKET = window._env_.VITE_FIREBASE_STORAGE_BUCKET;
 // const MESSAGING_SENDER_ID = window._env_.VITE_FIREBASE_MESSAGING_SENDER_ID;
 // const APP_ID = window._env_.VITE_FIREBASE_APP_ID;
-
-
 
 // const firebaseConfig = {
 //   apiKey: API_KEY,

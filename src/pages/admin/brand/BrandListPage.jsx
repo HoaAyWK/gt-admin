@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { AdminPageLayout } from '../common';
-import { BrandList, BrandForm } from '../../../features/admin/brand';
-import { createBrand } from '../../../features/admin/brand/brandSlice';
-import { useSelector } from 'react-redux';
+import { AdminPageLayout } from "../common";
+import { BrandList, BrandForm } from "../../../features/admin/brand";
+import { createBrand } from "../../../features/admin/brand/brandSlice";
+import { useSelector } from "react-redux";
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Brand', path: '/admin/brands' },
-  { label: 'List' },
+  { label: "Dashboard", path: "/admin/dashboard" },
+  { label: "Brand", path: "/admin/brands" },
+  { label: "List" },
 ];
 
 const BrandListPage = () => {
@@ -23,21 +23,20 @@ const BrandListPage = () => {
     setOpenDialog(true);
   };
 
-
   return (
     <AdminPageLayout
-      pageTitle='Brands'
-      pageHeaderName='Brands'
+      pageTitle="Brands"
+      pageHeaderName="Brands"
       showCreateButton={true}
       createWithDialog={true}
-      createName='Brand'
+      createName="Brand"
       onOpenDialog={handleOpenDialog}
       breadcrumbs={breadcrumbs}
     >
       <BrandList />
       <BrandForm
-        dialogTitle='Create Brand'
-        dialogContent='Create a new brand'
+        dialogTitle="Create Brand"
+        dialogContent="Create a new brand"
         isEdit={false}
         open={openDialog}
         handleClose={handleCloseDialog}

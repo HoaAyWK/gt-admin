@@ -1,4 +1,8 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
 import productApi from '../../../services/productApi';
@@ -27,15 +31,23 @@ const initialState = productAdapter.getInitialState({
   addImageStatus: ACTION_STATUS.IDLE,
   updateProductAttributeStatus: ACTION_STATUS.IDLE,
   deleteAttributeValueStatus: ACTION_STATUS.IDLE,
-  updateProductVariant: ACTION_STATUS.IDLE
+  updateProductVariant: ACTION_STATUS.IDLE,
+  getAllProductStatus: ACTION_STATUS.IDLE,
+  getAllProduct: null,
 });
 
 export const searchProduct = createAsyncThunk(
   'products/search',
   async (params) => {
+    console.log('params', params);
     return await productApi.searchProduct({ ...params });
   }
 );
+
+export const getAllProducts = createAsyncThunk('products/getAll', async () => {
+  const data = await productApi.getAllProduct();
+  return data;
+});
 
 export const createProduct = createAsyncThunk(
   'products/create',
@@ -45,12 +57,9 @@ export const createProduct = createAsyncThunk(
   }
 );
 
-export const getProduct = createAsyncThunk(
-  'products/get',
-  async (id) => {
-    return await productApi.getProduct(id);
-  }
-);
+export const getProduct = createAsyncThunk('products/get', async (id) => {
+  return await productApi.getProduct(id);
+});
 
 export const updateProduct = createAsyncThunk(
   'products/update',
@@ -151,7 +160,8 @@ export const productSlice = createSlice({
     refresh: (state) => {
       state.createProductStatus = ACTION_STATUS.IDLE;
       state.getProductStatus = ACTION_STATUS.IDLE;
-    }
+      state.getAllProductStatus = ACTION_STATUS.IDLE;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -175,7 +185,6 @@ export const productSlice = createSlice({
         state.searchProductStatus = ACTION_STATUS.FAILED;
       })
 
-
       // Create product
       .addCase(createProduct.pending, (state) => {
         state.createProductStatus = ACTION_STATUS.LOADING;
@@ -186,7 +195,6 @@ export const productSlice = createSlice({
       .addCase(createProduct.rejected, (state) => {
         state.createProductStatus = ACTION_STATUS.FAILED;
       })
-
 
       // Get Product
       .addCase(getProduct.pending, (state) => {
@@ -203,6 +211,20 @@ export const productSlice = createSlice({
         state.getProductStatus = ACTION_STATUS.FAILED;
       })
 
+      // Get all product
+      .addCase(getAllProducts.pending, (state) => {
+        state.getAllProductStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(getAllProducts.fulfilled, (state, action) => {
+        state.getAllProductStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.getAllProduct = action.payload.data;
+        }
+      })
+      .addCase(getAllProducts.rejected, (state) => {
+        state.getAllProductStatus = ACTION_STATUS.FAILED;
+      })
 
       // Update product
       .addCase(updateProduct.pending, (state) => {
@@ -219,7 +241,6 @@ export const productSlice = createSlice({
         state.updateProductStatus = ACTION_STATUS.FAILED;
       })
 
-
       // Add attribute
       .addCase(addAttribute.pending, (state) => {
         state.addAttributeStatus = ACTION_STATUS.LOADING;
@@ -234,7 +255,6 @@ export const productSlice = createSlice({
       .addCase(addAttribute.rejected, (state) => {
         state.addAttributeStatus = ACTION_STATUS.FAILED;
       })
-
 
       // Add attribute value
       .addCase(addAttributeValue.pending, (state) => {
@@ -251,7 +271,6 @@ export const productSlice = createSlice({
         state.addAttributeValueStatus = ACTION_STATUS.FAILED;
       })
 
-
       // Add variant
       .addCase(addVariant.pending, (state) => {
         state.addVariantStatus = ACTION_STATUS.LOADING;
@@ -266,7 +285,6 @@ export const productSlice = createSlice({
       .addCase(addVariant.rejected, (state) => {
         state.addVariantStatus = ACTION_STATUS.FAILED;
       })
-
 
       // Add image
       .addCase(addImage.pending, (state) => {
@@ -283,7 +301,6 @@ export const productSlice = createSlice({
         state.addImageStatus = ACTION_STATUS.FAILED;
       })
 
-
       // Add Attribute Value
       .addCase(updateProductAttribute.pending, (state) => {
         state.updateProductAttributeStatus = ACTION_STATUS.LOADING;
@@ -298,7 +315,6 @@ export const productSlice = createSlice({
       .addCase(updateProductAttribute.rejected, (state) => {
         state.updateProductAttributeStatus = ACTION_STATUS.FAILED;
       })
-
 
       // Update Product Variant
       .addCase(updateProductVariant.pending, (state) => {
@@ -315,7 +331,6 @@ export const productSlice = createSlice({
         state.updateProductVariant = ACTION_STATUS.FAILED;
       })
 
-
       // Delete Attribute value
       .addCase(deleteAttributeValue.pending, (state) => {
         state.deleteAttributeValueStatus = ACTION_STATUS.LOADING;
@@ -329,8 +344,8 @@ export const productSlice = createSlice({
       })
       .addCase(deleteAttributeValue.rejected, (state) => {
         state.deleteAttributeValueStatus = ACTION_STATUS.FAILED;
-      })
-  }
+      });
+  },
 });
 
 export const {
@@ -346,7 +361,7 @@ export const {
   setOrder,
   setOrderBy,
   setSearchTerm,
-  refresh
+  refresh,
 } = actions;
 
 export default reducer;
