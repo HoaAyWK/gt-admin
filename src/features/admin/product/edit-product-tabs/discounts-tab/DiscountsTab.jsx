@@ -37,7 +37,7 @@ const DiscountsTab = (props) => {
   });
 
   const defaultValues = {
-    discountId: discountId || defaultDiscount.id,
+    discountId: discountId ?? defaultDiscount.id,
   };
 
   const methods = useForm({
@@ -48,14 +48,14 @@ const DiscountsTab = (props) => {
   const { handleSubmit, watch } = methods;
   const currentDiscountId = watch('discountId');
   const currentDiscount = useMemo(() => {
-    return discounts.find((d) => d.id === currentDiscountId);
+    return discountsWithDefault.find((d) => d.id === currentDiscountId);
   }, [currentDiscountId, discountsWithDefault]);
 
   useEffect(() => {
     if (getDiscountsStatus === ACTION_STATUS.IDLE) {
       dispatch(getDiscounts());
     }
-  }, []);
+  }, [getDiscountsStatus]);
 
   const onSubmit = async (data) => {
     data.productId = productId;
@@ -115,7 +115,7 @@ const DiscountsTab = (props) => {
             Save
           </LoadingButton>
         </Grid>
-        {currentDiscountId !== defaultDiscount.id && (
+        {currentDiscountId !== defaultDiscount.id && currentDiscount && (
           <Typography variant="body1" sx={{ mt: 1, ml: 1 }}>
             Discount <strong>{currentDiscount.usePercentage
               ? `${currentDiscount.discountPercentage * 100}% `
