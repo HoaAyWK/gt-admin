@@ -13,6 +13,7 @@ import ACTION_STATUS from '../../../../constants/actionStatus';
 import ProductGeneralTab from './ProductGeneralTab';
 import AttributeTab from './attribute-tab/AttributesTab';
 import ImagesTab from './images-tab/ImagesTab';
+import DiscountsTab from './discounts-tab/DiscountsTab';
 import { getProduct } from '../productSlice';
 import { Loading, FetchDataErrorMessage } from '../../components';
 import { selectAllCategories, getCategories } from '../../category/categorySlice';
@@ -69,7 +70,7 @@ const EditProductTabs = () => {
   }
 
   return (
-    <Card>
+    <Card sx={{ borderRadius: (theme) => theme.spacing(1) }}>
       <CardContent>
         <TabContext value={tab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -94,7 +95,7 @@ const EditProductTabs = () => {
             />
           </TabPanel>
           <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.DISCOUNT}>
-            Discount
+            <DiscountsTab productId={id} discountId={product.discount?.id} />
           </TabPanel>
           <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.IMAGES}>
             <ImagesTab productId={id} images={product.images} />

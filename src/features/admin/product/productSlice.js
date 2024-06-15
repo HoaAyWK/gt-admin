@@ -34,6 +34,7 @@ const initialState = productAdapter.getInitialState({
   updateProductVariant: ACTION_STATUS.IDLE,
   getAllProductStatus: ACTION_STATUS.IDLE,
   getAllProduct: null,
+  assignDiscountStatus: ACTION_STATUS.IDLE,
 });
 
 export const searchProduct = createAsyncThunk(
@@ -135,6 +136,15 @@ export const deleteAttributeValue = createAsyncThunk(
     const { productId, attributeId, id } = payload;
 
     return await productApi.deleteAttributeValue(productId, attributeId, id);
+  }
+);
+
+export const assignDiscount = createAsyncThunk(
+  'products/assignDiscount',
+  async (payload) => {
+    const { productId, ...data } = payload;
+
+    return await productApi.assignDiscount(productId, data);
   }
 );
 
@@ -344,7 +354,22 @@ export const productSlice = createSlice({
       })
       .addCase(deleteAttributeValue.rejected, (state) => {
         state.deleteAttributeValueStatus = ACTION_STATUS.FAILED;
-      });
+      })
+
+
+      .addCase(assignDiscount.pending, (state) => {
+        state.assignDiscountStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(assignDiscount.fulfilled, (state, action) => {
+        state.assignDiscountStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.product = action.payload.data;
+        }
+      })
+      .addCase(assignDiscount.rejected, (state) => {
+        state.assignDiscountStatus = ACTION_STATUS.FAILED;
+      })
   },
 });
 

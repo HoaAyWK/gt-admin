@@ -33,7 +33,7 @@ const ImagesTab = ({ productId, images }) => {
   };
 
   return (
-    <>
+    <Box sx={{ minHeight: 500 }}>
       <Box
         sx={{
           display: "flex",
@@ -77,7 +77,7 @@ const ImagesTab = ({ productId, images }) => {
         image={selectedImage}
         productId={productId}
       />
-    </>
+    </Box>
   );
 };
 

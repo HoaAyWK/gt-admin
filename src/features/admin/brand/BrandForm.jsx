@@ -41,9 +41,9 @@ const BrandForm = (props) => {
   });
 
   const defaultValues = {
-    id: brand ? brand.id : "",
-    name: brand ? brand.name : "",
-    imageUrl: brand ? brand.imageUrl : "",
+    id: brand?.id ?? "",
+    name: brand?.name ?? "",
+    imageUrl: brand?.imageUrl ?? "",
   };
 
   const methods = useForm({
@@ -54,6 +54,7 @@ const BrandForm = (props) => {
   const { handleSubmit, reset, setValue, clearErrors } = methods;
 
   const onSubmit = async (data) => {
+    console.log(data);
     const actionResult = await dispatch(action(data));
     const result = unwrapResult(actionResult);
 

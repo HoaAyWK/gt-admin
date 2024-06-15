@@ -72,6 +72,12 @@ class ProductApi {
 
     return axiosClient.delete(url);
   };
+
+  assignDiscount = (productId, data) => {
+    const url = `/api/products/${productId}/discounts`;
+
+    return axiosClient.put(url, data);
+  };
 }
 
 export default new ProductApi();
