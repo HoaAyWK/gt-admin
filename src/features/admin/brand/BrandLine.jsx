@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TableRow, TableCell, Typography } from '@mui/material';
+import React, { useState, useMemo } from 'react';
+import { Box, Stack, TableRow, TableCell, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { deleteBrand, updateBrand } from './brandSlice';
@@ -7,12 +7,19 @@ import { MoreMenu, MoreMenuItem } from '../../../components/table';
 import BrandForm from './BrandForm';
 import { ConfirmDialog } from '../components';
 import { fDateTime } from '../../../utils/formatTime';
+import emptyImage from '../../../assets/images/default_product_image.png';
 
 const BrandLine = ({ brand }) => {
-  const { id, name, createdDateTime, updatedDateTime } = brand;
+  const { id, name, imageUrl, createdDateTime, updatedDateTime } = brand;
   const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const { updateBrandStatus, deleteBrandStatus } = useSelector((state) => state.adminBrands);
+  const image = useMemo(() => {
+    if (imageUrl) {
+      return imageUrl;
+    }
+    return emptyImage;
+  }, [imageUrl]);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
@@ -38,7 +45,29 @@ const BrandLine = ({ brand }) => {
         tabIndex={-1}
       >
         <TableCell component='th' scope='row'>
-          <Typography variant='body1'>{name}</Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Box
+              component="img"
+              src={image}
+              alt={name}
+              sx={{
+                width: 34,
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
+            />
+            <Typography
+              variant="body2"
+              sx={{
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {name}
+            </Typography>
+          </Stack>
         </TableCell>
         <TableCell align='left'>
           {fDateTime(createdDateTime)}

@@ -38,9 +38,12 @@ export const updateBrand = createAsyncThunk(
   async (brand, thunkApi) => {
     const { id, imageUrl, ...data } = brand;
 
-    if (imageUrl) {
+    if (imageUrl && imageUrl instanceof File) {
       const filePath = `file/brand-images/${uuidv4()}`;
-      brand.imageUrl = await uploadTaskPromise(filePath, imageUrl);
+      data.imageUrl = await uploadTaskPromise(filePath, imageUrl);
+    }
+    else {
+      data.imageUrl = imageUrl;
     }
 
     const result = await brandApi.update(id, data);
@@ -103,6 +106,13 @@ const brandSlice = createSlice({
       })
       .addCase(updateBrand.fulfilled, (state, action) => {
         state.updateBrandStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          brandsAdapter.updateOne(state, {
+            id: action.payload.data.id,
+            changes: action.payload.data,
+          });
+        }
       })
       .addCase(updateBrand.rejected, (state) => {
         state.updateBrandStatus = ACTION_STATUS.FAILED;

@@ -54,7 +54,16 @@ const ConfirmDialog = (props) => {
       {dialogContent && (<DialogContent>{dialogContent}</DialogContent>)}
       <DialogActions>
         <Stack spacing={1} direction='row' sx={{ mb: 1 }}>
-          <Button variant='contained' color='inherit' onClick={handleClose}>Cancel</Button>
+          <Button
+            variant='contained'
+            onClick={handleClose}
+            color='inherit'
+            sx={{
+              color: (theme) => theme.palette.text.primary
+            }}
+          >
+            Cancel
+          </Button>
           <LoadingButton
             variant='contained'
             color='primary'

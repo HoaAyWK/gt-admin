@@ -36,14 +36,14 @@ const BrandForm = (props) => {
 
   const BrandSchema = Yup.object().shape({
     id: Yup.string(),
-    name: Yup.string().required("Name is required"),
-    imageUrl: Yup.mixed().required("Image is required"),
+    name: Yup.string().required("Name is required."),
+    imageUrl: Yup.mixed().required("Image is required."),
   });
 
   const defaultValues = {
     id: brand?.id ?? "",
     name: brand?.name ?? "",
-    imageUrl: brand?.imageUrl ?? "",
+    imageUrl: brand?.imageUrl ?? undefined,
   };
 
   const methods = useForm({
