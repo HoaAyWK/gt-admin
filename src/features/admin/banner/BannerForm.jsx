@@ -57,10 +57,10 @@ const BannerForm = (props) => {
   });
 
   const defaultValues = {
-    productId: banner ? banner.productId : getAllProduct?.items[0].id,
+    productId: banner ? banner?.productId : getAllProduct?.items[0]?.id,
     productVariantId: banner
-      ? banner.productVariantId
-      : getAllProduct?.items[0].variants[0].id,
+      ? banner?.productVariantId
+      : getAllProduct?.items[0]?.variants[0]?.id,
     direction: banner ? banner.direction : "Horizontal",
     displayOrder: 1,
     isActive: false,
@@ -78,8 +78,8 @@ const BannerForm = (props) => {
   useEffect(() => {
     if (!isEdit && getAllProductStatus === ACTION_STATUS.SUCCEEDED) {
       console.log("1");
-      setValue("productId", getAllProduct?.items[0].id);
-      setValue("productVariantId", getAllProduct?.items[0].variants[0].id);
+      setValue("productId", getAllProduct?.items[0]?.id);
+      setValue("productVariantId", getAllProduct?.items[0]?.variants[0]?.id);
     }
   }, [getAllProductStatus, isEdit]);
 

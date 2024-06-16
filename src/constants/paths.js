@@ -20,10 +20,10 @@ const PATHS = Object.freeze({
   DISCOUNTS: '/discounts',
   DISCOUNTS_LIST: '/discounts/list',
   ORDERS: '/orders',
+  INVOICES: '/invoices',
   ORDERS_LIST: '/orders/list',
   BANNERS: '/banners',
   ORDERS: '/orders',
 });
-
 
 export default PATHS;

@@ -4,8 +4,8 @@ import { AdminPageLayout } from "../common";
 import { BannerList, BannerForm } from "../../../features/admin/banner";
 
 const breadcrumbs = [
-  { label: "Dashboard", path: "/admin/dashboard" },
-  { label: "Banner", path: "/admin/banners" },
+  { label: "Dashboard", path: "/dashboard" },
+  { label: "Banner", path: "/banners" },
   { label: "Management" },
 ];
 

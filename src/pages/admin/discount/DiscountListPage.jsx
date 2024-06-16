@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { AdminPageLayout } from '../common';
-import { DiscountList, DiscountForm } from '../../../features/admin/discount';
-import { createDiscount } from '../../../features/admin/discount/discountSlice';
-import { useSelector } from 'react-redux';
+import { AdminPageLayout } from "../common";
+import { DiscountList, DiscountForm } from "../../../features/admin/discount";
+import { createDiscount } from "../../../features/admin/discount/discountSlice";
+import { useSelector } from "react-redux";
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Discounts', path: '/admin/discounts' },
-  { label: 'List' },
+  { label: "Dashboard", path: "/dashboard" },
+  { label: "Discounts", path: "/discounts" },
+  { label: "List" },
 ];
 
 const DiscountListPage = () => {
@@ -23,21 +23,20 @@ const DiscountListPage = () => {
     setOpenDialog(true);
   };
 
-
   return (
     <AdminPageLayout
-      pageTitle='Discounts'
-      pageHeaderName='Discounts'
+      pageTitle="Discounts"
+      pageHeaderName="Discounts"
       showCreateButton={true}
       createWithDialog={true}
-      createName='Discount'
+      createName="Discount"
       onOpenDialog={handleOpenDialog}
       breadcrumbs={breadcrumbs}
     >
       <DiscountList />
       <DiscountForm
-        dialogTitle='Create Discount'
-        dialogContent='Create a new discount'
+        dialogTitle="Create Discount"
+        dialogContent="Create a new discount"
         isEdit={false}
         open={openDialog}
         handleClose={handleCloseDialog}

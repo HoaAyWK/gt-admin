@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import { AdminPageLayout } from '../common';
-import { Orders } from '../../../features/admin/order';
+import { AdminPageLayout } from "../common";
+import { Orders } from "../../../features/admin/order";
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Order', path: '/admin/orders' },
-  { label: 'List' },
+  { label: "Dashboard", path: "/dashboard" },
+  { label: "Order", path: "/orders" },
+  { label: "List" },
 ];
 
 const OrderListPage = () => {
   return (
     <AdminPageLayout
-      pageHeaderName='Orders'
-      pageTitle='Orders'
+      pageHeaderName="Orders"
+      pageTitle="Orders"
       showCreateButton={false}
       breadcrumbs={breadcrumbs}
     >

@@ -6,8 +6,8 @@ import { createBrand } from "../../../features/admin/brand/brandSlice";
 import { useSelector } from "react-redux";
 
 const breadcrumbs = [
-  { label: "Dashboard", path: "/admin/dashboard" },
-  { label: "Brand", path: "/admin/brands" },
+  { label: "Dashboard", path: "/dashboard" },
+  { label: "Brand", path: "/brands" },
   { label: "List" },
 ];
 
