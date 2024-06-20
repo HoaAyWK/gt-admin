@@ -69,7 +69,7 @@ const renderContent = (notification) => {
   };
 };
 
-const NotificationItem = ({ notification }) => {
+const NotificationItem = ({ notification, onClose }) => {
   const { avatar, title } = renderContent(notification);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -83,6 +83,7 @@ const NotificationItem = ({ notification }) => {
     if (result.success) {
       if (notification.domain === "Order") {
         const url = `/orders/${notification.entityId}`;
+        onClose();
         navigate(url);
       }
       return;

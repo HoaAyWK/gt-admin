@@ -9,10 +9,18 @@ import ProductAttributeForm from './ProductAttributeForm';
 import VariantForm from './VariantForm';
 import { addAttribute, addVariant } from '../../productSlice';
 
-const AttributesTab = ({ productId, attributes, variants, images }) => {
+const AttributesTab = ({ productId, product, attributes, variants, images }) => {
   const [openProductAttributeForm, setOpenProductAttributeForm] = useState(false);
   const [openVariantForm, setOpenVariantForm] = useState(false);
   const { addAttributeStatus, addVariantStatus } = useSelector((state) => state.products);
+
+  const canAddVariant = useMemo(() => {
+    if (images && images.length > 0) {
+      return true;
+    }
+
+    return false;
+  }, [images]);
 
   const combinedAttributes = useMemo(() => {
     return attributes.filter(attribute => attribute.canCombine)
@@ -60,7 +68,7 @@ const AttributesTab = ({ productId, attributes, variants, images }) => {
         <>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
             <Typography component='h2' variant='h5'>Product Variants (Attribute Combinations)</Typography>
-            <Button variant='contained' color='primary' onClick={handleOpenVariantForm}>
+            <Button variant='contained' color='primary' disabled={!canAddVariant} onClick={handleOpenVariantForm}>
               <Iconify icon='material-symbols:add' width={20} height={20} />
               Add Variant
             </Button>
@@ -69,12 +77,14 @@ const AttributesTab = ({ productId, attributes, variants, images }) => {
             <ProductVariantList
               variants={variants}
               productId={productId}
+              product={product}
               attributes={attributes}
               images={images}
             />
           </Box>
           <VariantForm
             open={openVariantForm}
+            product={product}
             handleClose={handleCloseVariantForm}
             dialogTitle='Add Product Variant'
             dialogContent='Add a new product variant'

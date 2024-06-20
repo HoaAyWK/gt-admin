@@ -217,13 +217,13 @@ const OrderDetails = ({ id }) => {
                     <Typography variant='body2' color='text.secondary' textAlign='end'>Discount</Typography>
                   </Grid>
                   <Grid item xs={2}>
-                    <Typography variant='body1' color='error' textAlign='end'>-{fCurrency(totalDiscount)}</Typography>
+                    <Typography variant='body1' color='error' textAlign='end'>{fCurrency(totalDiscount)}</Typography>
                   </Grid>
                   <Grid item xs={10}>
                     <Typography variant='subtitle1' textAlign='end'>Total</Typography>
                   </Grid>
                   <Grid item xs={2}>
-                  <Typography variant='subtitle1' textAlign='end'>{fCurrency(order.totalAmount)}</Typography>
+                  <Typography variant='subtitle1' textAlign='end'>{fCurrency(order.totalAmount + totalDiscount)}</Typography>
                   </Grid>
                 </Grid>
               </Box>

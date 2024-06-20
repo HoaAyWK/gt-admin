@@ -13,7 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 
 import {
@@ -22,6 +22,7 @@ import {
   RHFTextField,
 } from "../../../../../components/hook-form";
 import ImageUploader from "./ImageUploader";
+import { searchProduct } from '../../productSlice';
 import ACTION_STATUS from "../../../../../constants/actionStatus";
 
 const ProductImageForm = (props) => {
@@ -39,6 +40,7 @@ const ProductImageForm = (props) => {
 
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const { page, pageSize, order, orderBy, searchTerm } = useSelector((state) => state.products);
 
   const ProductImageSchema = Yup.object().shape({
     id: Yup.string(),
@@ -49,8 +51,6 @@ const ProductImageForm = (props) => {
     ),
     image: Yup.mixed().required("Image is required."),
   });
-
-  console.log("image", image);
 
   const defaultValues = {
     id: image ? image.id : "",
@@ -72,6 +72,13 @@ const ProductImageForm = (props) => {
       methods.setValue("image", image.imageUrl);
     }
   }, [image, methods]);
+
+  // Update the product list to get the latest data
+  useEffect(() => {
+    if (status === ACTION_STATUS.SUCCEEDED) {
+      dispatch(searchProduct({ searchTerm, page, pageSize, order, orderBy }));
+    }
+  }, [status]);
 
   const { handleSubmit, reset, clearErrors, setValue } = methods;
 

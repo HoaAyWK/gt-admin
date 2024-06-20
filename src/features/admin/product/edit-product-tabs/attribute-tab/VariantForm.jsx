@@ -35,6 +35,7 @@ const VariantForm = (props) => {
     status,
     productId,
     attributes,
+    product,
     images
   } = props;
   const [assignedImageIds, setAssignedImageIds] = useState([]);
@@ -50,7 +51,7 @@ const VariantForm = (props) => {
     });
 
     return defaultSelectedAttributes;
-  }, [attributes, variant]);
+  }, [attributes, variant, product]);
 
   const VariantSchema = Yup.object().shape({
     id: Yup.string(),

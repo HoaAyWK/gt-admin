@@ -17,57 +17,6 @@ const TABLE_HEAD = [
   { id: "", label: "", alignRight: 'center', isSortable: false },
 ];
 
-const ATTRIBUTES = [
-  {
-    id: '1',
-    name: 'Color',
-    canCombine: true,
-    displayOrder: 1,
-    attributeValues: [
-      {
-        id: 1,
-        priceAdjustment: 0,
-        name: 'Black',
-        displayOrder: 1
-      },
-      {
-        id: 2,
-        priceAdjustment: 0,
-        name: 'White',
-        displayOrder: 2
-      },
-    ]
-  },
-  {
-    id: '2',
-    name: 'Storage',
-    canCombine: true,
-    displayOrder: 2,
-    attributeValues: [
-      {
-        id: 1,
-        priceAdjustment: 0,
-        name: '8GB',
-        displayOrder: 1
-      },
-      {
-        id: 2,
-        priceAdjustment: 200,
-        name: '16GB',
-        displayOrder: 2
-      },
-    ]
-  },
-  {
-    id: '3',
-    name: 'Storage Type',
-    canCombine: false,
-    displayOrder: 3,
-    attributeValues: [
-    ]
-  },
-];
-
 const AttributeList = ({ productId, attributes }) => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");

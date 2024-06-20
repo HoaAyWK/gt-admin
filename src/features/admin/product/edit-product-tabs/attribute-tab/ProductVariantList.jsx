@@ -16,7 +16,7 @@ const TABLE_HEAD = [
 ];
 
 
-const ProductVariantList = ({ productId, attributes, variants, images }) => {
+const ProductVariantList = ({ productId, product, attributes, variants, images }) => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("price");
   const [filterName, setFilterName] = useState("");
@@ -88,6 +88,7 @@ const ProductVariantList = ({ productId, attributes, variants, images }) => {
         .map((row) => (
           <ProductVariantLine
             key={row.id}
+            product={product}
             productId={productId}
             variant={row}
             attributes={attributes}

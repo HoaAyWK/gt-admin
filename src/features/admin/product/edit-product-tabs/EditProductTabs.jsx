@@ -92,6 +92,7 @@ const EditProductTabs = () => {
               attributes={product.attributes}
               variants={product.variants}
               images={product.images}
+              product={product}
             />
           </TabPanel>
           <TabPanel sx={{ px: 0 }} value={EDIT_PRODUCT_TABS.DISCOUNT}>

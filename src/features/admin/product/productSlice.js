@@ -31,7 +31,7 @@ const initialState = productAdapter.getInitialState({
   addImageStatus: ACTION_STATUS.IDLE,
   updateProductAttributeStatus: ACTION_STATUS.IDLE,
   deleteAttributeValueStatus: ACTION_STATUS.IDLE,
-  updateProductVariant: ACTION_STATUS.IDLE,
+  updateProductVariantStatus: ACTION_STATUS.IDLE,
   getAllProductStatus: ACTION_STATUS.IDLE,
   getAllProduct: null,
   assignDiscountStatus: ACTION_STATUS.IDLE,
@@ -328,17 +328,17 @@ export const productSlice = createSlice({
 
       // Update Product Variant
       .addCase(updateProductVariant.pending, (state) => {
-        state.updateProductVariant = ACTION_STATUS.LOADING;
+        state.updateProductVariantStatus = ACTION_STATUS.LOADING;
       })
       .addCase(updateProductVariant.fulfilled, (state, action) => {
-        state.updateProductVariant = ACTION_STATUS.SUCCEEDED;
+        state.updateProductVariantStatus = ACTION_STATUS.SUCCEEDED;
 
         if (action.payload.success) {
           state.product = action.payload.data;
         }
       })
       .addCase(updateProductVariant.rejected, (state) => {
-        state.updateProductVariant = ACTION_STATUS.FAILED;
+        state.updateProductVariantStatus = ACTION_STATUS.FAILED;
       })
 
       // Delete Attribute value

@@ -7,7 +7,7 @@ import { Iconify } from '../../../../../components';
 import VariantForm from './VariantForm';
 import { updateProductVariant } from '../../productSlice';
 
-const ProductVariantLine = ({ productId, attributes, variant, images }) => {
+const ProductVariantLine = ({ productId, product, attributes, variant, images }) => {
   const { id, attributes: selectedAttribute, price, stockQuantity, isActive } = variant;
   const [openVariantForm, setOpenVariantForm] = useState(false);
   const { updateProductVariantStatus } = useSelector(state => state.products);
@@ -93,6 +93,7 @@ const ProductVariantLine = ({ productId, attributes, variant, images }) => {
         attributes={combinedAttributes}
         variant={variant}
         images={images}
+        product={product}
         action={updateProductVariant}
         status={updateProductVariantStatus}
       />
