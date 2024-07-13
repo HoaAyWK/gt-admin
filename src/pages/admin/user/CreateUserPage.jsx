@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux';
 import { AdminPageLayout } from '../common';
 import { UserForm } from '../../../features/admin/users';
 import { createUser } from '../../../features/admin/users/userSlice';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'User', path: '/admin/users' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'User', path: PATHS.USERS },
   { label: 'Create new user' },
 ];
 

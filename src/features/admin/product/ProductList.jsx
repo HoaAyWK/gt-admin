@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { EmptyRow, SortableTableHead } from '../../../components/table';
 import {
@@ -32,11 +33,12 @@ import { Iconify, Scrollbar } from '../../../components';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 const TABLE_HEAD = [
-  { id: "name", label: "Name", align: 'left' },
+  { id: "name", label: "Name", align: 'left', isSortable: true },
   { id: "description", label: "Description", align: 'left' },
-  { id: "price", label: "Price", align: 'right' },
+  { id: "price", label: "Price", align: 'right', isSortable: true },
   { id: "published", label: "Published", align: 'center' },
   { id: "hasVariant", label: "Has Variant", align: 'center' },
+  { id: "updatedDateTime", label: "Updated Date", align: 'center', isSortable: true },
   { id: "", label: "", align: 'left' },
 ];
 
@@ -77,8 +79,24 @@ const ProductList = () => {
     searchProductStatus
   } = useSelector((state) => state.products);
 
+  const [term, setTerm] = useState(searchTerm);
   const products = useSelector(selectAllProducts);
   const dispatch = useDispatch();
+
+  function onSearchTermChange(value) {
+    console.log('onSearchTermChange', value);
+    dispatch(setSearchTerm(value));
+    dispatch(searchProduct({ searchTerm: value, page, pageSize, order, orderBy }));
+  };
+
+  const delaySearchTermChange = debounce((event) =>
+    onSearchTermChange(event.target.value), 1000);
+
+  const handleSearchTermChange = (event) => {
+    setTerm(event.target.value);
+    console.log('call debounceSearch', event.target.value);
+    delaySearchTermChange(event);
+  };
 
   useEffect(() => {
     if (searchProductStatus === ACTION_STATUS.IDLE) {
@@ -91,10 +109,6 @@ const ProductList = () => {
     dispatch(setOrder(isAsc ? ORDER_BY.DESC : ORDER_BY.ASC));
     dispatch(setOrderBy(property));
     dispatch(searchProduct({ searchTerm, page, pageSize, order, orderBy: property }));
-  };
-
-  const onSearchTermChange = (event) => {
-    dispatch(setSearchTerm(event.target.value));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -135,8 +149,8 @@ const ProductList = () => {
       <Card sx={{ borderRadius: (theme) => theme.spacing(1) }}>
         <ToolbarStyled>
           <SearchStyled
-            value={searchTerm}
-            onChange={onSearchTermChange}
+            value={term}
+            onChange={handleSearchTermChange}
             placeholder={`Search ...`}
             startAdornment={
               <InputAdornment position="start">

@@ -5,6 +5,7 @@ import { ORDER_BY, ORDER_PER_PAGE_OPTIONS } from '../../../../constants/common';
 import { OrdersTab } from './components';
 import {
   getPendingOrders,
+  refreshGetPendingOrders,
   selectPendingOrdersByPage
 } from '../orderSlice';
 
@@ -27,10 +28,11 @@ const PendingOrdersTab = ({ tableHead }) => {
 
   const handleRequestOrdersSort = (event, property) => {
     const isAsc = orderBy === property && order === ORDER_BY.ASC;
-
-    setOrder(isAsc ? ORDER_BY.DESC : ORDER_BY.ASC);
+    const sortOrder = isAsc ? ORDER_BY.DESC : ORDER_BY.ASC;
+    setOrder(sortOrder);
     setOrderBy(property);
-    dispatch(getPendingOrders({ page, pageSize, order, orderBy: property }));
+    dispatch(refreshGetPendingOrders());
+    dispatch(getPendingOrders({ page, pageSize, order: sortOrder, orderBy: property }));
   };
 
   const handleChangeOrdersPage = (event, newPage) => {

@@ -20,10 +20,19 @@ import {
 import { ConfirmDialog } from "../components";
 import defaultImage from "../../../assets/images/default_product_image.png";
 import PATHS from "../../../constants/paths";
+import { fDateTime } from "../../../utils/formatTime";
 
 const ProductLine = ({ product }) => {
-  const { id, name, description, price, published, hasVariant, images } =
-    product;
+  const {
+    id,
+    name,
+    description,
+    price,
+    published,
+    hasVariant,
+    images,
+    updatedDateTime
+  } = product;
   const [openConfirm, setOpenConfirm] = useState(false);
 
   const mainImage = useMemo(() => {
@@ -143,6 +152,11 @@ const ProductLine = ({ product }) => {
             style={{ color: hasVariant ? "#00B074" : "#454F5B" }}
           />
         </Box>
+      </TableCell>
+      <TableCell sx={{ maxWidth: 100 }}>
+        <Typography variant="body2" align="center">
+          {fDateTime(updatedDateTime)}
+        </Typography>
       </TableCell>
       <TableCell align="right">
         <MoreMenu>

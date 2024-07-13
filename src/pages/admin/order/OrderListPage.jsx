@@ -2,10 +2,11 @@ import React from 'react';
 
 import { AdminPageLayout } from '../common';
 import { Orders } from '../../../features/admin/order';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Order', path: '/admin/orders' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Order', path: PATHS.ORDERS },
   { label: 'List' },
 ];
 

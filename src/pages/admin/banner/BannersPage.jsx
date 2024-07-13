@@ -2,10 +2,11 @@ import React, { useState } from "react";
 
 import { AdminPageLayout } from "../common";
 import { BannerList, BannerForm } from "../../../features/admin/banner";
+import PATHS from "../../../constants/paths";
 
 const breadcrumbs = [
-  { label: "Dashboard", path: "/admin/dashboard" },
-  { label: "Banner", path: "/admin/banners" },
+  { label: "Dashboard", path: PATHS.DASHBOARD },
+  { label: "Banner", path: PATHS.BANNERS },
   { label: "Management" },
 ];
 

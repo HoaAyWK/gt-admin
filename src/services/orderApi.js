@@ -36,6 +36,12 @@ class OrderApi {
 
     return axiosClient.get(url);
   };
+
+  cancelOrder = (id) => {
+    const url = `/api/orders/${id}/cancel`;
+
+    return axiosClient.put(url, {});
+  }
 }
 
 export default new OrderApi();

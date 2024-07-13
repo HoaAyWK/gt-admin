@@ -1,12 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import AdminPageLayout from '../common/AdminPageLayout';
 
 import { EditProductTabs } from '../../../features/admin/product';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Product', path: '/admin/products' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Product', path: PATHS.PRODUCTS },
   { label: 'Edit' }
 ];
 

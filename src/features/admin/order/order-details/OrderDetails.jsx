@@ -18,7 +18,7 @@ import { OrderLineItem, OrderTimelines } from './components';
 import { fDateTime } from '../../../../utils/formatTime';
 import { fCurrency } from '../../../../utils/formatNumber';
 import creditCard from '../../../../assets/icons/payments/ic_visa.svg';
-import { confirmOrder, getOrder } from '../orderSlice';
+import { confirmOrder, getOrder, cancelOrder } from '../orderSlice';
 import ACTION_STATUS from '../../../../constants/actionStatus';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { ConfirmDialogV2 } from '../../../admin/components';
@@ -30,7 +30,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 const OrderDetails = ({ id }) => {
-  const { order, getOrderStatus, confirmOrderStatus } = useSelector(state => state.orders);
+  const {
+    order,
+    getOrderStatus,
+    confirmOrderStatus,
+    cancelOrderStatus
+  } = useSelector(state => state.orders);
   const { hubConnection } = useSelector((state) => state.notifications);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,7 +76,7 @@ const OrderDetails = ({ id }) => {
       return false;
     }
 
-    if (order.orderStatus === 'Pending' || order.orderStatus === 'Processing') {
+    if (order.orderStatus === 'Pending') {
       return true;
     }
 
@@ -138,6 +143,42 @@ const OrderDetails = ({ id }) => {
     handleCloseConfirmDialog();
   };
 
+  const handleCancelOrder = async () => {
+    const actionResult = await dispatch(cancelOrder(id));
+    const result = unwrapResult(actionResult);
+
+    if (result.success) {
+      enqueueSnackbar('Order cancelled successfully', { variant: 'success' });
+
+      if (hubConnection) {
+        try {
+          await hubConnection.invoke('NotifyCustomerWhenOrderCancelled', order.id);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      handleCloseCancelDialog();
+      return;
+    }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach((error) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        });
+      });
+
+      handleCloseCancelDialog();
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
+    handleCloseCancelDialog();
+  }
+
   if ( getOrderStatus === ACTION_STATUS.IDLE ||
     getOrderStatus === ACTION_STATUS.LOADING) {
     return <Loading />;
@@ -188,7 +229,12 @@ const OrderDetails = ({ id }) => {
             </Button>
           )}
           {canCancelOrder && (
-           <Button color='error' variant='outlined' size='small'>
+           <Button
+            color='error'
+            variant='outlined'
+            size='small'
+            onClick={handleOpenCancelDialog}
+          >
               Cancel Order
             </Button>
           )}
@@ -353,6 +399,14 @@ const OrderDetails = ({ id }) => {
         handleClose={handleCloseConfirmDialog}
         status={confirmOrderStatus}
         onConfirm={handleConfirmOrder}
+      />
+      <ConfirmDialogV2
+        dialogTitle='Cancel Order'
+        dialogContent='Are you sure you want to cancel this order?'
+        open={openCancelDialog}
+        handleClose={handleCloseCancelDialog}
+        status={cancelOrderStatus}
+        onConfirm={handleCancelOrder}
       />
     </Box>
   );

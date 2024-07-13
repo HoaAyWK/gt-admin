@@ -5,6 +5,7 @@ import { ORDER_BY, ORDER_PER_PAGE_OPTIONS } from '../../../../constants/common';
 import { OrdersTab } from './components';
 import {
   getCancelledOrders,
+  refreshGetCancelledOrders,
   selectCancelledOrdersByPage
 } from '../orderSlice';
 
@@ -27,10 +28,12 @@ const CancelledOrdersTab = ({ tableHead }) => {
 
   const handleRequestOrdersSort = (event, property) => {
     const isAsc = orderBy === property && order === ORDER_BY.ASC;
+    const sortOrder = isAsc ? ORDER_BY.DESC : ORDER_BY.ASC;
 
-    setOrder(isAsc ? ORDER_BY.DESC : ORDER_BY.ASC);
+    setOrder(sortOrder);
     setOrderBy(property);
-    dispatch(getCancelledOrders({ page, pageSize, order, orderBy: property }));
+    dispatch(refreshGetCancelledOrders());
+    dispatch(getCancelledOrders({ page, pageSize, order: sortOrder, orderBy: property }));
   };
 
   const handleChangeOrdersPage = (event, newPage) => {

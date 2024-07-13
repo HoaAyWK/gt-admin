@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 
 import { AdminPageLayout } from '../common';
 import { CreateProductForm } from '../../../features/admin/product';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Product', path: '/admin/product' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Product', path: PATHS.PRODUCTS },
   { label: 'Create' }
 ];
 

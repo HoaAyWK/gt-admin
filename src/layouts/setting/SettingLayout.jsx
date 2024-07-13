@@ -10,13 +10,15 @@ import {
   IconButton,
   Toolbar,
 } from "@mui/material";
-import { Iconify } from "../../components";
+import { useSelector } from "react-redux";
 import { styled, alpha } from "@mui/material/styles";
+import { Link as RouterLink } from "react-router-dom";
+
+import { Iconify } from "../../components";
 import { NavSection } from "../../components";
 import { useLocalStorage } from "../../hooks";
 import { useAppTheme, useAppThemeUpdate } from "../../context/AppThemeContext";
 import { AccountPopover } from "../common/header";
-import { Link as RouterLink } from "react-router-dom";
 import hciLogo from "/new_hci_logo.svg";
 import PATHS from "../../constants/paths";
 
@@ -77,15 +79,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 1),
 }));
 
-const user = {
-  avatar:
-    "https://i.pinimg.com/736x/28/41/71/2841716e64ff836211f9a433bca44147.jpg",
-  firstName: "Pam",
-  lastName: "Pam",
-  email: "PamYeuOi@gmail.com",
-};
 
 export default function SettingLayout(props) {
+  const { user } = useSelector((state) => state.auth);
   const [, setModeValueStored] = useLocalStorage("darkMode", null);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
@@ -131,7 +127,7 @@ export default function SettingLayout(props) {
       <StyledToolbar>
         <Link
           component={RouterLink}
-          to="/admin/dashboard"
+          to={PATHS.DASHBOARD}
           underline="none"
           sx={{ display: "inline-flex", alginItems: "center" }}
         >
@@ -168,7 +164,7 @@ export default function SettingLayout(props) {
             <Box sx={{ mb: 5, mx: 2.5 }}>
               <Link underline="none">
                 <StyledAccount>
-                  <Avatar src={user?.avatar} />
+                  <Avatar src={user?.avatarUrl} />
 
                   <Box sx={{ ml: 2 }}>
                     <Typography

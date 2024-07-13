@@ -5,10 +5,11 @@ import { Box, Button, Breadcrumbs, Container, Grid, Link, Stack, Typography } fr
 import { UserDetails } from '../../../features/admin/users';
 import { Page, Iconify } from '../../../components';
 import { useResponsive } from '../../../hooks';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'User', path: '/admin/users' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'User', path: PATHS.USERS },
   { label: 'Details' },
 ];
 

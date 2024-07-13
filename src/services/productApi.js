@@ -2,7 +2,7 @@ import axiosClient from './axios/axiosClient';
 
 class ProductApi {
   searchProduct = ({ searchTerm, page, pageSize, order, orderBy }) => {
-    const url = `/api/products?search=${searchTerm}&page=${page}&pageSize=${pageSize}&order=${order}&orderBy=${orderBy}`;
+    const url = `/api/products?searchTerm=${searchTerm}&page=${page}&pageSize=${pageSize}&order=${order}&orderBy=${orderBy}`;
 
     return axiosClient.get(url);
   };

@@ -4,10 +4,11 @@ import { AdminPageLayout } from "../common";
 import { BrandList, BrandForm } from "../../../features/admin/brand";
 import { createBrand } from "../../../features/admin/brand/brandSlice";
 import { useSelector } from "react-redux";
+import PATHS from "../../../constants/paths";
 
 const breadcrumbs = [
-  { label: "Dashboard", path: "/admin/dashboard" },
-  { label: "Brand", path: "/admin/brands" },
+  { label: "Dashboard", path: PATHS.DASHBOARD },
+  { label: "Brand", path: PATHS.BRANDS },
   { label: "List" },
 ];
 

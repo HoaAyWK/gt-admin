@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 
 import { AdminPageLayout } from "../common";
 import { EditUser } from "../../../features/admin/users";
+import PATHS from "../../../constants/paths";
 
 const breadcrumbs = [
-  { label: "Dashboard", path: "/admin/dashboard" },
-  { label: "User", path: "/admin/users" },
+  { label: "Dashboard", path: PATHS.DASHBOARD },
+  { label: "User", path: PATHS.USERS },
   { label: "Update user" },
 ];
 

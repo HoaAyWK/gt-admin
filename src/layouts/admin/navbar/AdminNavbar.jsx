@@ -129,7 +129,7 @@ const DrawerContent = ({ isOpen, isMiniDrawer }) => {
       <Box sx={{ mb: 5, mx: 2.5, display: isOpen ? "block" : "none" }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={user?.avatar} alt="photoURL" />
+            <Avatar src={user?.avatarUrl} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>

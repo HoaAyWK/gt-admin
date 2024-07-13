@@ -41,6 +41,7 @@ const initialState = ordersAdapter.getInitialState({
   refundedOrdersTotalPages: 0,
   refundedOrdersTotalItems: 0,
   confirmOrderStatus: ACTION_STATUS.IDLE,
+  cancelOrderStatus: ACTION_STATUS.IDLE,
 });
 
 export const getOrder = createAsyncThunk(
@@ -54,6 +55,13 @@ export const confirmOrder = createAsyncThunk(
   'orders/confirm',
   async (id) => {
     return await orderApi.confirmOrderPaymentInfo(id);
+  }
+);
+
+export const cancelOrder = createAsyncThunk(
+  'orders/cancel',
+  async (id) => {
+    return await orderApi.cancelOrder(id);
   }
 );
 
@@ -104,13 +112,6 @@ export const getRefundedOrders = createAsyncThunk(
   }
 );
 
-export const cancelOrder = createAsyncThunk(
-  'orders/cancel',
-  async (id) => {
-    return await orderApi.update({ id, status: STATUS.CANCELLED });
-  }
-);
-
 export const finishOrder = createAsyncThunk(
   'orders/finish',
   async (id) => {
@@ -124,8 +125,31 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     refresh: (state) => {
-      state.cancelOrderStatus = ACTION_STATUS.IDLE;
-      state.finishOrderStatus = ACTION_STATUS.IDLE;
+    },
+    refreshGetOrders: (state) => {
+      state.getOrdersStatus = ACTION_STATUS.IDLE;
+      ordersAdapter.removeAll(state);
+      state.orderPages = [];
+    },
+    refreshGetPendingOrders: (state) => {
+      state.pendingOrders = [];
+      state.pendingOrdersPages = [];
+    },
+    refreshGetProcessingOrders: (state) => {
+      state.processingOrders = [];
+      state.pendingOrdersPages = [];
+    },
+    refreshGetCompletedOrders: (state) => {
+      state.completedOrders = [];
+      state.completedOrdersPages = [];
+    },
+    refreshGetCancelledOrders: (state) => {
+      state.cancelledOrders = [];
+      state.cancelledOrdersPages = [];
+    },
+    refreshRefundedOrders: (state) => {
+      state.refundedOrders = [];
+      state.refundedOrdersPages = [];
     }
   },
   extraReducers: (builder) => {
@@ -401,6 +425,21 @@ const orderSlice = createSlice({
       .addCase(confirmOrder.rejected, (state) => {
         state.confirmOrderStatus = ACTION_STATUS.FAILED;
       })
+
+
+      .addCase(cancelOrder.pending, (state) => {
+        state.cancelOrderStatus = ACTION_STATUS.LOADING;
+      })
+      .addCase(cancelOrder.fulfilled, (state, action) => {
+        state.cancelOrderStatus = ACTION_STATUS.SUCCEEDED;
+
+        if (action.payload.success) {
+          state.order = action.payload.data;
+        }
+      })
+      .addCase(cancelOrder.rejected, (state) => {
+        state.cancelOrderStatus = ACTION_STATUS.FAILED;
+      })
   }
 });
 
@@ -448,6 +487,14 @@ export const selectRefundedOrdersByPage = createSelector(
 
 const { reducer, actions } = orderSlice;
 
-export const { refresh } = actions;
+export const {
+  refresh,
+  refreshGetOrders,
+  refreshGetPendingOrders,
+  refreshGetProcessingOrders,
+  refreshGetCompletedOrders,
+  refreshGetCancelledOrders,
+  refreshGetRefundedOrders
+ } = actions;
 
 export default reducer;

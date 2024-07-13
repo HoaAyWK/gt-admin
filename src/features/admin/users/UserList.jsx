@@ -17,7 +17,7 @@ import { getUsers, selectAllUsers } from "./userSlice";
 const TABLE_HEAD = [
   { id: "firstName", label: "Name", align: 'left', isSortable: true },
   { id: "email", label: "Email", align: 'left', isSortable: true },
-  { id: "phoneNumber", label: "Phone Number", align: 'left', isSortable: true },
+  { id: "phone", label: "Phone Number", align: 'left', isSortable: true },
   { id: "role", label: "Role", align: 'center', isSortable: true },
   { id: "emailConfirmed", label: "Email Confirmed", align: 'center', isSortable: true },
   { id: "", label: "", align: "" },
@@ -86,7 +86,7 @@ const UserList = () => {
       {filteredUsers
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((row) => {
-          const { id, firstName, lastName, email, phoneNumber, role, emailConfirmed, avatarUrl } = row;
+          const { id, firstName, lastName, email, phone, role, emailConfirmed, avatarUrl } = row;
 
           return (
             <TableRow key={id} hover tabIndex={-1}>
@@ -104,12 +104,12 @@ const UserList = () => {
               </TableCell>
               <TableCell>{email}</TableCell>
               <TableCell>
-                {phoneNumber}
+                {phone}
               </TableCell>
               <TableCell>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItem: 'center' }}>
-                  <Label color={role === "admin" ? "primary" : "warning"}>
-                    {role === "admin" ? "Admin" : "User"}
+                  <Label color={role === "Admin" ? "primary" : "warning"}>
+                    {role}
                   </Label>
                 </Box>
               </TableCell>
@@ -126,13 +126,8 @@ const UserList = () => {
               <TableCell align="right">
                 <MoreMenu>
                   <MoreMenuItemLink
-                    title="Details"
-                    to={`/admin/users/details/${id}`}
-                    iconName="eva:eye-outline"
-                  />
-                  <MoreMenuItemLink
                     title="Edit"
-                    to={`/admin/users/edit/${id}`}
+                    to={`/users/edit/${id}`}
                     iconName="eva:edit-outline"
                   />
                 </MoreMenu>

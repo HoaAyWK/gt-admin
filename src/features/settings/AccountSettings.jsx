@@ -9,11 +9,10 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
 
 import { AvatarUploader, Page } from '../../components';
-import { FormProvider, RHFDateTextField, RHFRadioGroup, RHFTextField } from '../../components/hook-form';
+import { FormProvider, RHFTextField } from '../../components/hook-form';
 import { updateAccount } from './accountSlice';
 import ACTION_STATUS from '../../constants/actionStatus';
 
-const genders = ['Male', 'Female'];
 
 const AccountSettings = () => {
   const { user } = useSelector((state) => state.auth);
@@ -22,23 +21,19 @@ const AccountSettings = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const ProfileSchema = Yup.object().shape({
-    firstName: Yup.string().required('First Name is required'),
-    lastName: Yup.string().required('Last Name is required'),
-    phone: Yup.string().required('Phone is required'),
-    address: Yup.string().required('Address is required'),
-    birthDate: Yup.string().required('Date of birth is required'),
-    gender: Yup.string(),
+    firstName: Yup.string().required('First Name is required.'),
+    lastName: Yup.string().required('Last Name is required.'),
+    phone: Yup.string().required('Phone is required.')
+      .matches(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Phone number is not valid.'),
     image: Yup.mixed()
   });
 
   const defaultValues = {
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-    phone: user?.phone,
-    address: user?.address,
-    birthDate: user?.birthDate,
-    gender: user?.gender,
-    avatar: ''
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    avatar: user.avatarUrl
   };
 
   const methods = useForm({
@@ -49,17 +44,29 @@ const AccountSettings = () => {
   const { handleSubmit, reset } = methods;
 
   const onSubmit = async (data) => {
-    try {
-      const actionResult = await dispatch(updateAccount(data));
-      const result = unwrapResult(actionResult);
+    data.id = user.id;
+    const actionResult = await dispatch(updateAccount(data));
+    const result = unwrapResult(actionResult);
 
-      if (result) {
-        enqueueSnackbar('Updated successfully', { variant: 'success' });
-        reset({ ...user, avatar: '' });
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+    if (result.success) {
+      enqueueSnackbar('Updated successfully', { variant: 'success' });
+      reset({ ...user, avatar: '' });
+
+      return;
     }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach(error => {
+          enqueueSnackbar(error, { variant: "error" });
+        }
+      )});
+
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
   };
 
   return (
@@ -86,16 +93,13 @@ const AccountSettings = () => {
                   <RHFTextField name='firstName' label='First Name' />
                   <RHFTextField name='lastName' label='Last Name' />
                   <RHFTextField name='phone' label='Phone' />
-                  <RHFDateTextField name='birthDate' label='Date of birth' />
-                  <RHFRadioGroup name='gender' id='gender-radios' label='Gender' items={genders} row />
-                  <RHFTextField multiline minRows={3} name='address' label='Address' />
                 </Stack>
                 <Box sx={{ mt: 2 }}>
                   <LoadingButton
                     color='primary'
                     variant='contained'
                     type='submit'
-                    loading={updateAccountStatus === ACTION_STATUS.LOADING ? true : false}
+                    loading={updateAccountStatus === ACTION_STATUS.LOADING}
                   >
                     Update Profile
                   </LoadingButton>
@@ -106,7 +110,7 @@ const AccountSettings = () => {
                 <Box
                   sx={{ marginBlock: 1 }}
                 >
-                  <AvatarUploader avatarUrl={user?.avatar} name='avatar' />
+                  <AvatarUploader avatarUrl={user?.avatarUrl} name='avatar' />
                 </Box>
               </Grid>
             </Grid>

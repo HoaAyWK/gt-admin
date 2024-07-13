@@ -14,10 +14,10 @@ import ACTION_STATUS from '../../../constants/actionStatus';
 import { refresh } from './userSlice';
 import { Iconify } from '../../../components';
 
-const genders = ['Male', 'Female'];
 
 const UserForm = ({  isEdit, defaultUser, action, status }) => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
@@ -25,36 +25,27 @@ const UserForm = ({  isEdit, defaultUser, action, status }) => {
 
   const UserSchema = Yup.object().shape({
     firstName: Yup.string()
-      .required('First Name is required'),
+      .required('First Name is required.'),
     lastName: Yup.string()
-      .required('Last Name is required'),
+      .required('Last Name is required.'),
     email: Yup.string()
-      .email('Email must be a valid email address')
-      .required('Email is required'),
-    phone: Yup.string()
-      .required('Phone is required'),
-    gender: Yup.string()
-      .required('Gender is required'),
-    birthDate: Yup.string()
-      .required('Date of birth is required'),
-    address: Yup.string()
-      .required('Address is required'),
+      .email('Email must be a valid email address.')
+      .required('Email is required.'),
+    phoneNumber: Yup.string()
+      .required('Phone is required.')
+      .matches(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Phone is not valid.'),
     avatar: Yup.mixed(),
     password: Yup
       .string()
-      .required('Password is required')
-
+      .required('Password is required.')
   });
 
   const defaultValues = defaultUser ? defaultUser : {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
-    gender: genders[0],
-    birthDate: '',
+    phoneNumber: '',
     avatar: '',
-    address: '',
     password: '',
   };
 
@@ -66,30 +57,42 @@ const UserForm = ({  isEdit, defaultUser, action, status }) => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    const formData = { ...data, role: isAdmin ? 'admin' : 'user' };
+    const formData = { ...data, role: isAdmin ? 'Admin' : 'Customer', isEmailConfirmed };
+    const actionResult = await dispatch(action(formData));
+    const result = unwrapResult(actionResult);
 
-    try {
-      const actionResult = await dispatch(action(formData));
-      const result = unwrapResult(actionResult);
-
-      if (result) {
-        enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
-        dispatch(refresh());
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+    if (result.success) {
+      enqueueSnackbar(`${isEdit ? 'Updated' : 'Created'} successfully`, { variant: 'success' });
+      return;
     }
+
+    if (result.errors) {
+      const errorKeys = Object.keys(result.errors);
+      errorKeys.forEach((key) => {
+        result.errors[key].forEach(error => {
+          enqueueSnackbar(error, { variant: "error" });
+        }
+      )});
+
+      return;
+    }
+
+    enqueueSnackbar(result.error, { variant: "error" });
   };
 
   const handleSwitchChange = (event) => {
     setIsAdmin(event.target.checked);
   };
 
+  const handleSwitchEmailConfirmedChange = (event) => {
+    setIsEmailConfirmed(event.target.checked);
+  };
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 1 }}>
+          <Card sx={{ borderRadius: (theme) => theme.spacing(1) }}>
             <CardContent>
               <Box
                 sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -111,6 +114,23 @@ const UserForm = ({  isEdit, defaultUser, action, status }) => {
                   checked={isAdmin}
                   inputProps={{ 'aria-label': 'switch admin or not' }}
                   onChange={handleSwitchChange}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mt: 1
+                }}
+              >
+                <Typography variant='subtitle1'>
+                  Email Confirmed
+                </Typography>
+                <Switch
+                  checked={isEmailConfirmed}
+                  inputProps={{ 'aria-label': 'switch confirmed email or not' }}
+                  onChange={handleSwitchEmailConfirmedChange}
                 />
               </Box>
             </CardContent>
@@ -146,16 +166,7 @@ const UserForm = ({  isEdit, defaultUser, action, status }) => {
                   <RHFTextField name='lastName' label='Last Name' />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <RHFTextField name='phone' label='Phone' />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <RHFDateTextField name='birthDate' label='Date Of Birth' />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <RHFRadioGroup name='gender' id='radios-gender' label='Gender' items={genders} row  />
-                </Grid>
-                <Grid item xs={12}>
-                  <RHFTextField name='address' label='Address' multiline minRows={3} />
+                  <RHFTextField name='phoneNumber' label='Phone' />
                 </Grid>
               </Grid>
               <Box

@@ -2,10 +2,11 @@ import React from 'react';
 
 import { AdminPageLayout } from '../common';
 import { UserList } from '../../../features/admin/users';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'User', path: '/admin/users' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'User', path: PATHS.USERS },
   { label: 'List' },
 ];
 
@@ -17,7 +18,7 @@ const UserListPage = () => {
       breadcrumbs={breadcrumbs}
       showCreateButton={true}
       createName='User'
-      createPath='/admin/users/create'
+      createPath={PATHS.USERS_CREATE}
     >
       <UserList />
     </AdminPageLayout>

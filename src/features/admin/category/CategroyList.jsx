@@ -8,10 +8,10 @@ import { getCategories, selectAllCategories } from './categorySlice';
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'slug', label: 'Slug', alignRight: false },
-  { id: 'createdAt', label: 'Created At', alignRight: false },
-  { id: 'updatedAt', label: 'Updated At', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false, isSortable: true },
+  { id: 'slug', label: 'Slug', alignRight: false, isSortable: true },
+  { id: 'createdAt', label: 'Created At', alignRight: false, isSortable: true },
+  { id: 'updatedAt', label: 'Updated At', alignRight: false, isSortable: true },
   { id: '', label: '', alignRight: false },
 ];
 

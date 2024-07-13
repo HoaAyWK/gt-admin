@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   Box,
+  Button,
   Badge,
   IconButton,
   Typography,
@@ -11,8 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 
-import { Iconify, Scrollbar } from '../../../components';
-import { MenuPopover } from '../../../components';
+import { Iconify, Scrollbar, MenuPopover } from '../../../components';
 import NotificationItem from './NotificationItem';
 import {
   selectAllNotifications,
@@ -22,9 +22,9 @@ import {
 import ACTION_STATUS from '../../../constants/actionStatus';
 
 const NotificationPopover = () => {
-  const [open, setOpen] = useState(null);
   const dispatch = useDispatch();
   const notifications = useSelector(selectAllNotifications);
+  const [open, setOpen] = useState(null);
   const { user } = useSelector(state => state.auth);
   const { getNotificationsStatus } = useSelector(state => state.notifications);
 
@@ -109,7 +109,7 @@ const NotificationPopover = () => {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
+        <Scrollbar sx={{ height: { xs: 340, sm: 520 } }}>
           <List disablePadding>
             {sortedNotifications.map((notification) => (
               <NotificationItem
@@ -122,6 +122,12 @@ const NotificationPopover = () => {
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
+
+        <Box sx={{ p: 1 }}>
+          <Button fullWidth disableRipple>
+            View All
+          </Button>
+        </Box>
       </MenuPopover>
     </>
   );

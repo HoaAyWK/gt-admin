@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { AdminPageLayout } from '../common';
 import { DiscountList, DiscountForm } from '../../../features/admin/discount';
 import { createDiscount } from '../../../features/admin/discount/discountSlice';
-import { useSelector } from 'react-redux';
+import PATHS from '../../../constants/paths';
+
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Discounts', path: '/admin/discounts' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Discounts', path: PATHS.DISCOUNTS },
   { label: 'List' },
 ];
 

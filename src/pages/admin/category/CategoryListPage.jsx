@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux';
 import { AdminPageLayout } from '../common';
 import { CategoryList, CategoryForm } from '../../../features/admin/category';
 import { createCategory } from '../../../features/admin/category/categorySlice';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Category', path: '/admin/categories' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Category', path: PATHS.CATEGORIES },
   { label: 'List' },
 ];
 

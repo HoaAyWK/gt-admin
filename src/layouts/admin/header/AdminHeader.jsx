@@ -19,7 +19,6 @@ import {
   useAppTheme,
 } from "../../../context/AppThemeContext";
 import { useLocalStorage, useResponsive } from "../../../hooks";
-import { useSelector } from "react-redux";
 import PATHS from "../../../constants/paths";
 
 // ----------------------------------------------------------------------
@@ -140,7 +139,9 @@ export default function AdminHeader({ user, openDesktopNav, onOpenMobileNav }) {
               <Iconify icon={icon()} width={24} height={24} />
             </IconButton>
           </Tooltip>
-          <NotificationPopover />
+          {user && (
+            <NotificationPopover />
+          )}
           <AccountPopover user={user} menuOptions={MENU_OPTIONS} />
         </Stack>
       </StyledToolbar>

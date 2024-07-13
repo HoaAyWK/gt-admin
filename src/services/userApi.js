@@ -8,7 +8,7 @@ class UserApi {
   };
 
   create = (data) => {
-    const url = '/user/api';
+    const url = '/api/account/create-user';
 
     return axiosClient.post(url, data);
   };

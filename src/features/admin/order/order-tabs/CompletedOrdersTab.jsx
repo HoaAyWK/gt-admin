@@ -5,6 +5,7 @@ import { ORDER_BY, ORDER_PER_PAGE_OPTIONS } from '../../../../constants/common';
 import { OrdersTab } from './components';
 import {
   getCompletedOrders,
+  refreshGetCompletedOrders,
   selectCompletedOrdersByPage
 } from '../orderSlice';
 
@@ -27,10 +28,12 @@ const CompletedOrdersTab = ({ tableHead }) => {
 
   const handleRequestOrdersSort = (event, property) => {
     const isAsc = orderBy === property && order === ORDER_BY.ASC;
+    const sortOrder = isAsc ? ORDER_BY.DESC : ORDER_BY.ASC;
 
-    setOrder(isAsc ? ORDER_BY.DESC : ORDER_BY.ASC);
+    setOrder(sortOrder);
     setOrderBy(property);
-    dispatch(getCompletedOrders({ page, pageSize, order, orderBy: property }));
+    dispatch(refreshGetCompletedOrders());
+    dispatch(getCompletedOrders({ page, pageSize, order: sortOrder, orderBy: property }));
   };
 
   const handleChangeOrdersPage = (event, newPage) => {

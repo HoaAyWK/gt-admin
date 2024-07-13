@@ -5,10 +5,11 @@ import { AdminPageLayout } from '../common';
 import { ProductForm } from '../../../features/admin/product';
 import { selectProductById, updateProduct } from '../../../features/admin/product/productSlice';
 import { useParams } from 'react-router-dom';
+import PATHS from '../../../constants/paths';
 
 const breadcrumbs = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Product', path: '/admin/product' },
+  { label: 'Dashboard', path: PATHS.DASHBOARD },
+  { label: 'Product', path: PATHS.PRODUCTS },
   { label: 'Create' }
 ];
 

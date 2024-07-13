@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import ACTION_STATUS from '../../constants/actionStatus';
 import accountApi from '../../services/accountApi';
-// import { getCurrentUserInfo } from "../auth/authSlice";
+import { getCurrentUserInfo } from "../auth/authSlice";
 import { uploadTaskPromise } from '../../utils/uploadTaskPromise';
 
 const initialState = {
@@ -16,14 +16,17 @@ export const updateAccount = createAsyncThunk(
   async (data, thunkApi) => {
     const { avatar, ...dataToUpdate } = data;
 
-    if (avatar) {
+    if (avatar instanceof File) {
       const filePath = `files/avatar/${uuidv4()}`;
-      dataToUpdate.avatar = await uploadTaskPromise(filePath, avatar);
+      dataToUpdate.avatarUrl = await uploadTaskPromise(filePath, avatar);
+    }
+    else {
+      dataToUpdate.avatarUrl = avatar;
     }
 
     const res = await accountApi.updateAccount(dataToUpdate);
 
-    // thunkApi.dispatch(getCurrentUserInfo());
+    thunkApi.dispatch(getCurrentUserInfo());
 
     return res;
   }

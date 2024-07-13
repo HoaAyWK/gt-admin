@@ -5,7 +5,8 @@ import { ORDER_BY, ORDER_PER_PAGE_OPTIONS } from '../../../../constants/common';
 import { OrdersTab } from './components';
 import {
   getOrders,
-  selectOrdersByPage
+  selectOrdersByPage,
+  refreshGetOrders
 } from '../orderSlice';
 
 const AllOrdersTab = ({ tableHead }) => {
@@ -28,9 +29,11 @@ const AllOrdersTab = ({ tableHead }) => {
   const handleRequestOrdersSort = (event, property) => {
     const isAsc = orderBy === property && order === ORDER_BY.ASC;
 
-    setOrder(isAsc ? ORDER_BY.DESC : ORDER_BY.ASC);
+    const sortOrder = isAsc ? ORDER_BY.DESC : ORDER_BY.ASC;
+    setOrder(sortOrder);
     setOrderBy(property);
-    dispatch(getOrders({ page, pageSize, order, orderBy: property }));
+    dispatch(refreshGetOrders());
+    dispatch(getOrders({ page, pageSize, order: sortOrder, orderBy: property }));
   };
 
   const handleChangeOrdersPage = (event, newPage) => {

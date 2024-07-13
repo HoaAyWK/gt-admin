@@ -24,15 +24,23 @@ export const getUsers = createAsyncThunk(
 
 export const createUser = createAsyncThunk(
   'users/create',
-  async (user) => {
+  async (user, thunkApi) => {
     const { avatar, ...data } = user;
 
-    if (avatar) {
+    if (avatar instanceof File) {
       const filePath = `files/avatar/${uuidv4()}`;
-      data.avatar = await uploadTaskPromise(filePath, avatar);
+      data.avatarUrl = await uploadTaskPromise(filePath, avatar);
+    } else if (avatar) {
+      data.avatarUrl = avatar;
     }
 
-    return await userApi.create(data);
+    const result = await userApi.create(data);
+
+    if (result.success) {
+      thunkApi.dispatch(getUsers());
+    }
+
+    return result;
   }
 );
 
@@ -90,7 +98,6 @@ const userSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.createUserStatus = ACTION_STATUS.SUCCEEDED;
-        usersAdapter.addOne(state, action.payload);
       })
       .addCase(createUser.rejected, (state) => {
         state.createUserStatus = ACTION_STATUS.FAILED;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Avatar,
   ListItemAvatar,
@@ -6,20 +6,21 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { useSnackbar } from "notistack";
 
 import { Iconify } from "../../../components";
 
 import { fToNow } from "../../../utils/formatTime";
-import orderIcon from "../../../assets/icons/ic_notification_package.svg";
 import shippingOutIcon from "../../../assets/images/shipingout.png";
 import orderCompletedIcon from "../../../assets/images/ordercompleted.jpg";
 import orderReceivedIcon from "../../../assets/images/orderreceive.webp";
 import paymentConfirmedIcon from "../../../assets/images/paymentconfirm.webp";
 import inTrasitIcon from "../../../assets/images/intrasit.webp";
 import { markNotificationAsRead } from "../../../features/common/notificationSlice";
+import PATHS from '../../../constants/paths';
 
 const renderContent = (notification) => {
   const title = (
@@ -73,19 +74,28 @@ const NotificationItem = ({ notification, onClose }) => {
   const { avatar, title } = renderContent(notification);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const orderUrl = useMemo(() => {
+    if (notification?.domain === 'Order') {
+      return `${PATHS.ORDERS}/${notification?.entityId}`
+    }
+
+    return '#';
+  }, [notification]);
 
   const handleClick = async () => {
+    if (notification.isRead) {
+      onClose();
+      return;
+    }
+
     const actionResult = await dispatch(
       markNotificationAsRead(notification.id)
     );
     const result = unwrapResult(actionResult);
 
     if (result.success) {
-      if (notification.domain === "Order") {
-        const url = `/orders/${notification.entityId}`;
-        onClose();
-        navigate(url);
-      }
+      onClose();
       return;
     }
 
@@ -113,6 +123,8 @@ const NotificationItem = ({ notification, onClose }) => {
           bgcolor: "action.selected",
         }),
       }}
+      LinkComponent={RouterLink}
+      to={orderUrl}
       onClick={handleClick}
     >
       <ListItemAvatar>

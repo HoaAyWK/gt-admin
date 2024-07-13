@@ -9,7 +9,7 @@ export default defineConfig(({ command, mode }) => {
     plugins: [react()],
     define: {
       __APP_ENV__: env.APP_ENV,
-      _global: ({})
+    _global: ({})
     },
   };
 });

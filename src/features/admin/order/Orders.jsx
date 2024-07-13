@@ -26,14 +26,12 @@ const TABS = [
   { value: 6, label: 'Refunded' },
 ];
 
-const PER_PAGE_OPTIONS = [5, 10, 25, 50, 100];
-
 const TABLE_HEAD = [
-  { id: "orderNumber", label: "Order", align: 'left' },
+  { id: "orderNumber", label: "Order", align: 'left', isSortable: true },
   { id: "customer", label: "Customer", align: 'left' },
-  { id: "createdDateTime", label: "Date", align: 'left' },
-  { id: "items", label: "Items", align: 'center' },
-  { id: "totalAmount", label: "Total", align: 'center' },
+  { id: "createdDateTime", label: "Date", align: 'left', isSortable: true },
+  { id: "items", label: "Items", align: 'center', isSortable: true },
+  { id: "totalAmount", label: "Total", align: 'center', isSortable: true },
   { id: "orderStatus", label: "Status", align: 'center' },
   { id: "paymentStatus", label: "Payment Status", align: 'center' },
   { id: "", label: "", align: 'left' },
